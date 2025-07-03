@@ -4,7 +4,7 @@ The library that allows you to easily implement a stateful object.
 # Reference
 ```
 namespace System.StateMachine;
-public interface IStateful<T> where T : notnull, StateBase<T> {
+public interface IStateMachine<T> where T : notnull, StateBase<T> {
 
     protected T? State { get; set; }
 
@@ -22,7 +22,7 @@ public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<
         Deactivating,
     }
 
-    public IStateful<TThis>? Stateful { get; }
+    public IStateMachine<TThis>? Machine { get; }
 
     public Activity_ Activity { get; }
 
@@ -66,7 +66,7 @@ public abstract partial class StateBase<TThis> {
 # Reference (Hierarchical)
 ```
 namespace System.StateMachine.Hierarchical;
-public interface IStateful<T> where T : notnull, StateBase<T> {
+public interface IStateMachine<T> where T : notnull, StateBase<T> {
 
     protected T? State { get; set; }
 
@@ -84,7 +84,7 @@ public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<
         Deactivating,
     }
 
-    public IStateful<TThis>? Stateful { get; }
+    public IStateMachine<TThis>? Machine { get; }
 
     public bool IsRoot { get; }
     public TThis Root { get; }
@@ -147,4 +147,4 @@ public abstract partial class StateBase<TThis> {
 
 # Link
 - https://github.com/Denis535/StateMachine.Pro
-- https://www.nuget.org/packages/StateMachine.Pro
+- https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro

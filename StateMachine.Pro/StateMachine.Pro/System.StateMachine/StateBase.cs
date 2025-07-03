@@ -13,9 +13,9 @@ namespace System.StateMachine {
         }
 
         // Owner
-        private IStateful<TThis>? Owner { get; set; }
-        // Stateful
-        public IStateful<TThis>? Stateful => this.Owner;
+        private IStateMachine<TThis>? Owner { get; set; }
+        // Machine
+        public IStateMachine<TThis>? Machine => this.Owner;
 
         // Activity
         public Activity_ Activity { get; private set; } = Activity_.Inactive;
@@ -34,12 +34,12 @@ namespace System.StateMachine {
         public event Action<object?>? OnAfterDetachCallback;
 
         // Attach
-        internal void Attach(IStateful<TThis> stateful, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'stateful' must be non-null", stateful != null );
-            Assert.Operation.Valid( $"State {this} must have no {this.Stateful} stateful", this.Stateful == null );
+        internal void Attach(IStateMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"State {this} must have no {this.Machine} machine", this.Machine == null );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
             {
-                this.Owner = stateful;
+                this.Owner = machine;
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
@@ -48,9 +48,9 @@ namespace System.StateMachine {
         }
 
         // Detach
-        internal void Detach(IStateful<TThis> stateful, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'stateful' must be non-null", stateful != null );
-            Assert.Operation.Valid( $"State {this} must have {stateful} stateful", this.Stateful == stateful );
+        internal void Detach(IStateMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine == machine );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
             this.Deactivate( argument );
             {
@@ -90,7 +90,7 @@ namespace System.StateMachine {
 
         // Activate
         private void Activate(object? argument) {
-            Assert.Operation.Valid( $"State {this} must have stateful", this.Stateful != null );
+            Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
             this.OnBeforeActivate( argument );
             this.Activity = Activity_.Activating;
@@ -103,7 +103,7 @@ namespace System.StateMachine {
 
         // Deactivate
         private void Deactivate(object? argument) {
-            Assert.Operation.Valid( $"State {this} must have stateful", this.Stateful != null );
+            Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
             this.OnBeforeDeactivate( argument );
             this.Activity = Activity_.Deactivating;

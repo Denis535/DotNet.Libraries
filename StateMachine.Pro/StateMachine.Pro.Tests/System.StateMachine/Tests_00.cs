@@ -9,63 +9,91 @@ namespace System.StateMachine {
 
         [Test]
         public void Test_00() {
-            var stateful = new Stateful();
+            var machine = new StateMachine();
             var a = new A();
             var b = new B();
             {
-                // SetState a
-                stateful.SetState( a, null, null );
-                Assert.That( stateful.State, Is.EqualTo( a ) );
-
-                Assert.That( a.Stateful, Is.EqualTo( stateful ) );
+                // AddState a
+                machine.AddState( a, null );
+                Assert.That( machine.State, Is.EqualTo( a ) );
+                Assert.That( a.Machine, Is.EqualTo( machine ) );
                 Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
-
-                Assert.That( b.Stateful, Is.Null );
+            }
+            {
+                // RemoveState a
+                machine.RemoveState( a, null, null );
+                Assert.That( machine.State, Is.Null );
+                Assert.That( a.Machine, Is.Null );
+                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+            }
+            {
+                // AddState b
+                machine.AddState( b, null );
+                Assert.That( machine.State, Is.EqualTo( b ) );
+                Assert.That( b.Machine, Is.EqualTo( machine ) );
+                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
+            }
+            {
+                // RemoveState b
+                machine.RemoveState( b, null, null );
+                Assert.That( machine.State, Is.Null );
+                Assert.That( b.Machine, Is.Null );
                 Assert.That( b.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+            }
+        }
+
+        [Test]
+        public void Test_01() {
+            var machine = new StateMachine();
+            var a = new A();
+            var b = new B();
+            {
+                // SetState null
+                machine.SetState( null, null, null );
+                Assert.That( machine.State, Is.Null );
+            }
+            {
+                // SetState null
+                machine.SetState( null, null, null );
+                Assert.That( machine.State, Is.Null );
             }
             {
                 // SetState a
-                stateful.SetState( a, null, null );
-                Assert.That( stateful.State, Is.EqualTo( a ) );
-
-                Assert.That( a.Stateful, Is.EqualTo( stateful ) );
+                machine.SetState( a, null, null );
+                Assert.That( machine.State, Is.EqualTo( a ) );
+                Assert.That( a.Machine, Is.EqualTo( machine ) );
                 Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
-
-                Assert.That( b.Stateful, Is.Null );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+            }
+            {
+                // SetState a
+                machine.SetState( a, null, null );
+                Assert.That( machine.State, Is.EqualTo( a ) );
+                Assert.That( a.Machine, Is.EqualTo( machine ) );
+                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
             }
             {
                 // SetState b
-                stateful.SetState( b, null, null );
-                Assert.That( stateful.State, Is.EqualTo( b ) );
-
-                Assert.That( a.Stateful, Is.Null );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Inactive ) );
-
-                Assert.That( b.Stateful, Is.EqualTo( stateful ) );
+                machine.SetState( b, null, null );
+                Assert.That( machine.State, Is.EqualTo( b ) );
+                Assert.That( b.Machine, Is.EqualTo( machine ) );
+                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
+            }
+            {
+                // SetState b
+                machine.SetState( b, null, null );
+                Assert.That( machine.State, Is.EqualTo( b ) );
+                Assert.That( b.Machine, Is.EqualTo( machine ) );
                 Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
             }
             {
                 // SetState null
-                stateful.SetState( null, null, null );
-                Assert.That( stateful.State, Is.Null );
-
-                Assert.That( a.Stateful, Is.Null );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Inactive ) );
-
-                Assert.That( b.Stateful, Is.Null );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+                machine.SetState( null, null, null );
+                Assert.That( machine.State, Is.Null );
             }
             {
                 // SetState null
-                stateful.SetState( null, null, null );
-                Assert.That( stateful.State, Is.Null );
-
-                Assert.That( a.Stateful, Is.Null );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Inactive ) );
-
-                Assert.That( b.Stateful, Is.Null );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+                machine.SetState( null, null, null );
+                Assert.That( machine.State, Is.Null );
             }
         }
 
