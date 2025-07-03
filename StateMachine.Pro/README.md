@@ -136,7 +136,7 @@ public abstract partial class StateBase<TThis> {
 }
 public abstract partial class StateBase<TThis> {
 
-    protected void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback);
+    protected virtual void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback);
     protected virtual void AddChild(TThis child, object? argument);
     protected virtual void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback);
     protected void RemoveChild(object? argument, Action<TThis, object?>? callback);
