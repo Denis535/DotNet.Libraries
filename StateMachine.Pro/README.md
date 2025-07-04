@@ -146,5 +146,5 @@ public abstract partial class StateBase<TThis> {
 ```
 
 # Link
-- https://github.com/Denis535/StateMachine.Pro
 - https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro
+- https://www.nuget.org/packages/StateMachine.Pro
