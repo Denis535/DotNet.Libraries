@@ -7,13 +7,13 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>1.4.0</Version>
-        <Description>The library that allows you to easily implement a tree structure.</Description>
+        <Version>1.5.0</Version>
+        <Description>The library that allows you to easily implement a hierarchical object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
         <Product>$(AssemblyName)</Product>
         <Copyright></Copyright>
-        <RepositoryUrl>https://github.com/Denis535/TreeMachine.Pro</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro</RepositoryUrl>
 
         <!--Package attributes-->
         <IsPackable>true</IsPackable>
@@ -24,8 +24,8 @@
         <PackageIcon>Icon.png</PackageIcon>
         <PackageIconUrl></PackageIconUrl>
         <PackageDescription>$(Description)</PackageDescription>
-        <PackageProjectUrl>https://github.com/Denis535/TreeMachine.Pro</PackageProjectUrl>
-        <PackageTags>node; hierarchy; tree;</PackageTags>
+        <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro</PackageProjectUrl>
+        <PackageTags>tree machine; tree; hierarchy; node; pattern</PackageTags>
 
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseUrl></PackageLicenseUrl>

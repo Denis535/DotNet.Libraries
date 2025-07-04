@@ -1,5 +1,5 @@
 # Overview
-The library that allows you to easily implement a tree structure.
+The library that allows you to easily implement a hierarchical object.
 
 # Reference
 ```
@@ -78,5 +78,5 @@ public abstract partial class NodeBase<TThis> {
 ```
 
 # Link
-- https://github.com/Denis535/TreeMachine.Pro
+- https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro
 - https://www.nuget.org/packages/TreeMachine.Pro
