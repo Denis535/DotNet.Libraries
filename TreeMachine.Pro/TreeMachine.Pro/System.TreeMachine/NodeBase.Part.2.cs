@@ -13,13 +13,13 @@ namespace System.TreeMachine {
         public event Action<object?>? OnAfterDetachCallback;
 
         // Attach
-        internal void Attach(ITree<TThis> tree, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'tree' must be non-null", tree != null );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Tree_NoRecursive} tree", this.Tree_NoRecursive == null );
+        internal void Attach(ITreeMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"Node {this} must have no {this.Parent} parent", this.Parent == null );
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity_.Inactive );
             {
-                this.Owner = tree;
+                this.Owner = machine;
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
@@ -30,7 +30,7 @@ namespace System.TreeMachine {
         }
         internal void Attach(TThis parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Tree_NoRecursive} tree", this.Tree_NoRecursive == null );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"Node {this} must have no {this.Parent} parent", this.Parent == null );
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity_.Inactive );
             {
@@ -46,9 +46,9 @@ namespace System.TreeMachine {
         }
 
         // Detach
-        internal void Detach(ITree<TThis> tree, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'tree' must be non-null", tree != null );
-            Assert.Operation.Valid( $"Node {this} must have {tree} tree", this.Tree_NoRecursive == tree );
+        internal void Detach(ITreeMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );
             Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity_.Active );
             {
                 this.Deactivate( argument );

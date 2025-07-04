@@ -15,8 +15,8 @@ namespace System.TreeMachine {
 
         // Activate
         private void Activate(object? argument) {
-            Assert.Operation.Valid( $"Node {this} must have owner", this.Tree_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Tree_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Activating );
+            Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
+            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Activating );
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity_.Inactive );
             this.OnBeforeActivate( argument );
             this.Activity = Activity_.Activating;
@@ -32,8 +32,8 @@ namespace System.TreeMachine {
 
         // Deactivate
         private void Deactivate(object? argument) {
-            Assert.Operation.Valid( $"Node {this} must have owner", this.Tree_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Tree_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Deactivating );
+            Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
+            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Deactivating );
             Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity_.Active );
             this.OnBeforeDeactivate( argument );
             this.Activity = Activity_.Deactivating;

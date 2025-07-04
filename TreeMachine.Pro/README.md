@@ -4,6 +4,15 @@ The library that allows you to easily implement a hierarchical object.
 # Reference
 ```
 namespace System.TreeMachine;
+public interface ITreeMachine<T> where T : notnull, NodeBase<T> {
+
+    protected T? Root { get; set; }
+
+    protected void AddRoot(T root, object? argument);
+    protected void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
+    protected void RemoveRoot(object? argument, Action<T, object?>? callback);
+
+}
 public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
     public enum Activity_ {
         Inactive,
@@ -12,7 +21,7 @@ public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TT
         Deactivating,
     }
 
-    public ITree<TThis>? Tree { get; }
+    public ITreeMachine<TThis>? Machine { get; }
 
     public bool IsRoot { get; }
     public TThis Root { get; }
@@ -73,6 +82,45 @@ public abstract partial class NodeBase<TThis> {
     protected void RemoveSelf(object? argument, Action<TThis, object?>? callback);
 
     protected virtual void Sort(List<TThis> children);
+
+}
+public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : notnull, NodeBase2<TThis> {
+
+    public event Action<TThis, object?>? OnBeforeDescendantAttachCallback;
+    public event Action<TThis, object?>? OnAfterDescendantAttachCallback;
+    public event Action<TThis, object?>? OnBeforeDescendantDetachCallback;
+    public event Action<TThis, object?>? OnAfterDescendantDetachCallback;
+
+    public NodeBase2() {
+    }
+
+    protected override void OnBeforeAttach(object? argument);
+    protected override void OnAfterAttach(object? argument);
+    protected override void OnBeforeDetach(object? argument);
+    protected override void OnAfterDetach(object? argument);
+
+    protected abstract void OnBeforeDescendantAttach(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantAttach(TThis descendant, object? argument);
+    protected abstract void OnBeforeDescendantDetach(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantDetach(TThis descendant, object? argument);
+
+}
+public abstract partial class NodeBase2<TThis> {
+
+    public event Action<TThis, object?>? OnBeforeDescendantActivateCallback;
+    public event Action<TThis, object?>? OnAfterDescendantActivateCallback;
+    public event Action<TThis, object?>? OnBeforeDescendantDeactivateCallback;
+    public event Action<TThis, object?>? OnAfterDescendantDeactivateCallback;
+
+    protected override void OnBeforeActivate(object? argument);
+    protected override void OnAfterActivate(object? argument);
+    protected override void OnBeforeDeactivate(object? argument);
+    protected override void OnAfterDeactivate(object? argument);
+
+    protected abstract void OnBeforeDescendantActivate(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantActivate(TThis descendant, object? argument);
+    protected abstract void OnBeforeDescendantDeactivate(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantDeactivate(TThis descendant, object? argument);
 
 }
 ```

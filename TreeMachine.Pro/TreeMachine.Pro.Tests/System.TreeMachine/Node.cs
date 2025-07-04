@@ -13,7 +13,7 @@
         //public virtual void Dispose() {
         //    System.Assert.Operation.Message( $"Node {this} must be non-disposed" ).Valid( !IsDisposed );
         //    System.Assert.Operation.Message( $"Node {this} must be inactive" ).Valid( Activity == Activity_.Inactive );
-        //    System.Assert.Operation.Message( $"Node {this} must have no tree" ).Valid( Tree == null );
+        //    System.Assert.Operation.Message( $"Node {this} must have no machine" ).Valid( Machine == null );
         //    foreach (var child in Children) {
         //        child.Dispose();
         //    }
@@ -79,6 +79,8 @@
         public new void AddChildren(Node[] children, object? argument) {
             base.AddChildren( children, argument );
         }
+
+        // RemoveChild
         public new void RemoveChild(Node child, object? argument, Action<Node, object?>? callback) {
             base.RemoveChild( child, argument, callback );
         }
@@ -91,6 +93,8 @@
         public new int RemoveChildren(object? argument, Action<Node, object?>? callback) {
             return base.RemoveChildren( argument, callback );
         }
+
+        // RemoveSelf
         public new void RemoveSelf(object? argument, Action<Node, object?>? callback) {
             base.RemoveSelf( argument, callback );
         }

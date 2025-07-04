@@ -18,9 +18,9 @@ namespace System.TreeMachine {
 
         // Owner
         private object? Owner { get; set; }
-        // Tree
-        public ITree<TThis>? Tree => (this.Owner as ITree<TThis>) ?? (this.Owner as NodeBase<TThis>)?.Tree;
-        internal ITree<TThis>? Tree_NoRecursive => this.Owner as ITree<TThis>;
+        // Machine
+        public ITreeMachine<TThis>? Machine => (this.Owner as ITreeMachine<TThis>) ?? (this.Owner as NodeBase<TThis>)?.Machine;
+        internal ITreeMachine<TThis>? Machine_NoRecursive => this.Owner as ITreeMachine<TThis>;
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Parent == null;
