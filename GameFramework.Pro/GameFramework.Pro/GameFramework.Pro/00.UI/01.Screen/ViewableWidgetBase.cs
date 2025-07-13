@@ -10,6 +10,7 @@
         public ViewableWidgetBase() {
         }
         public override void Dispose() {
+            Assert.Operation.Valid( $"View {this.View} must be disposed", this.View.IsDisposed );
             base.Dispose();
         }
 

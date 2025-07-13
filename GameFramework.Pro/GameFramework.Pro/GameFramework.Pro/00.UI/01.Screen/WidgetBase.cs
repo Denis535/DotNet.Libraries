@@ -28,6 +28,9 @@
             Assert.Operation.Valid( $"Disposable '{this}' must be disposed", this.IsDisposed );
         }
         public virtual void Dispose() {
+            foreach (var child in base.Children) {
+                Assert.Operation.Valid( $"Child {child} must be disposed", child.IsDisposed );
+            }
             Assert.Operation.NotDisposed( $"Disposable {this} must be non-disposed", !this.IsDisposed );
             this.disposeCancellationTokenSource?.Cancel();
             this.IsDisposed = true;

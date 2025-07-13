@@ -28,23 +28,182 @@ namespace GameFramework.Pro {
         public Theme(Router router, Application application) {
             base.Router = router;
             base.Application = application;
+            base.SetState( new MainPlayList(), null, (state, arg) => state.Dispose() );
+            base.SetState( new GamePlayList(), null, (state, arg) => state.Dispose() );
+        }
+        public override void Dispose() {
+            base.SetState( null, null, (state, arg) => state.Dispose() );
+            base.Dispose();
+        }
+
+    }
+    internal class MainPlayList : PlayListBase {
+
+        public MainPlayList() {
         }
         public override void Dispose() {
             base.Dispose();
         }
 
+        protected override void OnAttach(object? argument) {
+        }
+        protected override void OnDetach(object? argument) {
+        }
+
+        protected override void OnActivate(object? argument) {
+        }
+        protected override void OnDeactivate(object? argument) {
+        }
+
     }
+    internal class GamePlayList : PlayListBase {
+
+        public GamePlayList() {
+        }
+        public override void Dispose() {
+            base.Dispose();
+        }
+
+        protected override void OnAttach(object? argument) {
+        }
+        protected override void OnDetach(object? argument) {
+        }
+
+        protected override void OnActivate(object? argument) {
+        }
+        protected override void OnDeactivate(object? argument) {
+        }
+
+    }
+
     internal class Screen : ScreenBase2<Router, Application> {
 
         public Screen(Router router, Application application) {
             base.Router = router;
             base.Application = application;
+            base.AddRoot( new RootWidget(), null );
+        }
+        public override void Dispose() {
+            base.RemoveRoot( null, (root, arg) => root.Dispose() );
+            base.Dispose();
+        }
+
+    }
+    internal class RootWidget : WidgetBase {
+
+        public RootWidget() {
+            base.AddChild( new MainWidget(), null );
+            base.AddChild( new GameWidget(), null );
+        }
+        public override void Dispose() {
+            base.RemoveChildren( null, (child, arg) => child.Dispose() );
+            base.Dispose();
+        }
+
+        protected override void OnAttach(object? argument) {
+        }
+        protected override void OnDetach(object? argument) {
+        }
+
+        protected override void OnActivate(object? argument) {
+        }
+        protected override void OnDeactivate(object? argument) {
+        }
+
+        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+
+        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+
+    }
+    internal class MainWidget : WidgetBase {
+
+        public MainWidget() {
         }
         public override void Dispose() {
             base.Dispose();
         }
 
+        protected override void OnAttach(object? argument) {
+        }
+        protected override void OnDetach(object? argument) {
+        }
+
+        protected override void OnActivate(object? argument) {
+        }
+        protected override void OnDeactivate(object? argument) {
+        }
+
+        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+
+        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+
     }
+    internal class GameWidget : WidgetBase {
+
+        public GameWidget() {
+        }
+        public override void Dispose() {
+            base.Dispose();
+        }
+
+        protected override void OnAttach(object? argument) {
+        }
+        protected override void OnDetach(object? argument) {
+        }
+
+        protected override void OnActivate(object? argument) {
+        }
+        protected override void OnDeactivate(object? argument) {
+        }
+
+        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        }
+
+        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        }
+
+    }
+
     internal class Router : RouterBase2<Theme, Screen, Application> {
 
         public Router(Func<Theme> theme, Func<Screen> screen, Application application) {
