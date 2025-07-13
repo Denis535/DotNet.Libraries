@@ -3,7 +3,7 @@ The library that allows you to easily implement a hierarchical object.
 
 # Reference
 ```
-namespace System.TreeMachine;
+namespace System.TreeMachine.Pro;
 public interface ITreeMachine<T> where T : notnull, NodeBase<T> {
 
     protected T? Root { get; set; }

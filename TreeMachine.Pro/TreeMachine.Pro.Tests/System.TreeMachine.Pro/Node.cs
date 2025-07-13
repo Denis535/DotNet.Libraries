@@ -1,4 +1,4 @@
-﻿namespace System.TreeMachine {
+﻿namespace System.TreeMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -105,10 +105,10 @@
         }
 
     }
-    public class Root : Node {
+    public sealed class Root : Node {
     }
-    public class A : Node {
+    public sealed class A : Node {
     }
-    public class B : Node {
+    public sealed class B : Node {
     }
 }

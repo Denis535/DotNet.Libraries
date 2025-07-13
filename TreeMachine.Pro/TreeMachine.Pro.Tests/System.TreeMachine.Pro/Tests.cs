@@ -1,4 +1,4 @@
-﻿namespace System.TreeMachine {
+﻿namespace System.TreeMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;

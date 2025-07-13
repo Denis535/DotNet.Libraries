@@ -1,9 +1,9 @@
-﻿namespace System.TreeMachine {
+﻿namespace System.TreeMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    public class TreeMachine : ITreeMachine<Node> {
+    public sealed class TreeMachine : ITreeMachine<Node> {
 
         // Root
         Node? ITreeMachine<Node>.Root { get => this.Root; set => this.Root = value; }
