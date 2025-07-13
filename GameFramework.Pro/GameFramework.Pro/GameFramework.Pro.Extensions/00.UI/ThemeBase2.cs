@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class ThemeBase2<TRouter, TApplication> : ProgramBase where TRouter : RouterBase where TApplication : ApplicationBase {
+    public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
 
         private TRouter router = default!;
         private TApplication application = default!;
