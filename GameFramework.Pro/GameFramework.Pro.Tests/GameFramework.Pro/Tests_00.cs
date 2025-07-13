@@ -5,6 +5,15 @@ namespace GameFramework.Pro {
     using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
+    public class Tests_00 {
+
+        [Test]
+        public void Test_00() {
+            using var program = new Program();
+        }
+
+    }
+
     internal class Program : ProgramBase2<Theme, Screen, Router, Application> {
 
         public Program() {
@@ -129,11 +138,20 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class MainWidget : WidgetBase {
+    internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
+        internal class MainWidgetView : ViewBase {
+            public MainWidgetView() {
+            }
+            public override void Dispose() {
+                base.Dispose();
+            }
+        }
 
         public MainWidget() {
+            this.View = new MainWidgetView();
         }
         public override void Dispose() {
+            this.View.Dispose();
             base.Dispose();
         }
 
@@ -166,11 +184,20 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class GameWidget : WidgetBase {
+    internal class GameWidget : ViewableWidgetBase<GameWidget.GameWidgetView> {
+        internal class GameWidgetView : ViewBase {
+            public GameWidgetView() {
+            }
+            public override void Dispose() {
+                base.Dispose();
+            }
+        }
 
         public GameWidget() {
+            this.View = new GameWidgetView();
         }
         public override void Dispose() {
+            this.View.Dispose();
             base.Dispose();
         }
 
@@ -262,15 +289,6 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             base.Dispose();
-        }
-
-    }
-
-    public class Tests_00 {
-
-        [Test]
-        public void Test_00() {
-            using var program = new Program();
         }
 
     }
