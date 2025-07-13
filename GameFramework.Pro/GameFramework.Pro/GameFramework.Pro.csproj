@@ -25,7 +25,7 @@
         <PackageIconUrl></PackageIconUrl>
         <PackageDescription>$(Description)</PackageDescription>
         <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro</PackageProjectUrl>
-        <PackageTags>game framework; architecture; game; framework</PackageTags>
+        <PackageTags>game; framework; architecture; best practices</PackageTags>
 
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseUrl></PackageLicenseUrl>
@@ -60,8 +60,8 @@
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="StateMachine.Pro" Version="1.5.1" />
-      <PackageReference Include="TreeMachine.Pro" Version="1.5.1" />
+        <PackageReference Include="StateMachine.Pro" Version="1.5.1" />
+        <PackageReference Include="TreeMachine.Pro" Version="1.5.1" />
     </ItemGroup>
 
     <!--PackageReference-->
