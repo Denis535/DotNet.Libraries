@@ -1,7 +1,7 @@
 ﻿namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
-    using System.StateMachine;
+    using System.StateMachine.Pro;
     using System.Text;
     using System.Threading;
 

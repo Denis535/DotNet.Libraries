@@ -60,8 +60,8 @@
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="StateMachine.Pro" Version="1.5.0" />
-      <PackageReference Include="TreeMachine.Pro" Version="1.5.0" />
+      <PackageReference Include="StateMachine.Pro" Version="1.5.1" />
+      <PackageReference Include="TreeMachine.Pro" Version="1.5.1" />
     </ItemGroup>
 
     <!--PackageReference-->

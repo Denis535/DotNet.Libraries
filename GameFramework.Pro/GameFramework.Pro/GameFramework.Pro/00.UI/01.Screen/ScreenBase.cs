@@ -2,7 +2,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.TreeMachine;
+    using System.TreeMachine.Pro;
 
     public abstract class ScreenBase : DisposableBase, ITreeMachine<WidgetBase> {
 

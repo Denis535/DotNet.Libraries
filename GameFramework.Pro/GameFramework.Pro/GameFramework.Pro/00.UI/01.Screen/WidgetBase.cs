@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
-    using System.TreeMachine;
+    using System.TreeMachine.Pro;
 
     public abstract class WidgetBase : NodeBase2<WidgetBase>, IDisposable {
 
