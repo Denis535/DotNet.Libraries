@@ -1,0 +1,84 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace />
+
+        <!--Assembly attributes-->
+        <Version>1.0.0</Version>
+        <Description>The framework that allows you to design high-quality architecture of your game project.</Description>
+        <Authors>Denis535</Authors>
+        <Company>Denis535</Company>
+        <Product>$(AssemblyName)</Product>
+        <Copyright></Copyright>
+        <RepositoryUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro</RepositoryUrl>
+
+        <!--Package attributes-->
+        <IsPackable>true</IsPackable>
+        <Title>$(AssemblyName)</Title>
+        <PackageId>$(AssemblyName)</PackageId>
+        <PackageVersion>$(Version)</PackageVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>Icon.png</PackageIcon>
+        <PackageIconUrl></PackageIconUrl>
+        <PackageDescription>$(Description)</PackageDescription>
+        <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro</PackageProjectUrl>
+        <PackageTags>game framework; architecture; game; framework</PackageTags>
+
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageLicenseUrl></PackageLicenseUrl>
+        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+
+        <IsTool>false</IsTool>
+        <DevelopmentDependency>false</DevelopmentDependency>
+
+        <!--Pack options-->
+        <PackRelease>true</PackRelease>
+
+        <EnableDefaultItems>true</EnableDefaultItems>
+        <EnableDefaultNoneItems>true</EnableDefaultNoneItems>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+        <EnableDefaultEmbeddedResourceItems>true</EnableDefaultEmbeddedResourceItems>
+
+        <IncludeBuildOutput>true</IncludeBuildOutput>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeSymbols>false</IncludeSymbols>
+        <IncludeSource>false</IncludeSource>
+
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeBuilds</TargetsForTfmSpecificBuildOutput>
+        <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeContent</TargetsForTfmSpecificContentInPackage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    </ItemGroup>
+
+    <!--Clean-->
+    <ItemGroup>
+        <Clean Include="$(PackageOutputPath)\*.nupkg" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="StateMachine.Pro" Version="1.5.0" />
+      <PackageReference Include="TreeMachine.Pro" Version="1.5.0" />
+    </ItemGroup>
+
+    <!--PackageReference-->
+
+    <!--Include Builds-->
+    <Target Name="IncludeBuilds">
+        <ItemGroup>
+        </ItemGroup>
+    </Target>
+
+    <!--Include Content-->
+    <Target Name="IncludeContent">
+        <ItemGroup>
+            <TfmSpecificPackageFile Include="../README.md" PackagePath="/" />
+            <TfmSpecificPackageFile Include="../LICENSE" PackagePath="/" />
+            <TfmSpecificPackageFile Include="../Icon.png" PackagePath="/" />
+        </ItemGroup>
+    </Target>
+
+</Project>
