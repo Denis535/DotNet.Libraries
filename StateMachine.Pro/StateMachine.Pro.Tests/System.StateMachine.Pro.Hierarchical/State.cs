@@ -1,10 +1,10 @@
-﻿namespace System.StateMachine.Hierarchical {
+﻿namespace System.StateMachine.Pro.Hierarchical {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Text;
 
-    public class State : StateBase<State> {
+    public abstract class State : StateBase<State> {
 
         //public bool IsDisposed { get; private set; }
 
@@ -50,8 +50,8 @@
         }
 
     }
-    public class A : State {
+    public sealed class A : State {
     }
-    public class B : State {
+    public sealed class B : State {
     }
 }

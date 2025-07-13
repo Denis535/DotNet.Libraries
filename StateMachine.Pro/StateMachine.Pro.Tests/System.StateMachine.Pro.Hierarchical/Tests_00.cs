@@ -1,4 +1,4 @@
-namespace System.StateMachine.Hierarchical {
+namespace System.StateMachine.Pro.Hierarchical {
     using System;
     using System.Collections.Generic;
     using System.Linq;

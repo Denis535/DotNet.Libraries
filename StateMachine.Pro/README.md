@@ -3,7 +3,7 @@ The library that allows you to easily implement a stateful object.
 
 # Reference
 ```
-namespace System.StateMachine;
+namespace System.StateMachine.Pro;
 public interface IStateMachine<T> where T : notnull, StateBase<T> {
 
     protected T? State { get; set; }
@@ -65,7 +65,7 @@ public abstract partial class StateBase<TThis> {
 
 # Reference (Hierarchical)
 ```
-namespace System.StateMachine.Hierarchical;
+namespace System.StateMachine.Pro.Hierarchical;
 public interface IStateMachine<T> where T : notnull, StateBase<T> {
 
     protected T? State { get; set; }

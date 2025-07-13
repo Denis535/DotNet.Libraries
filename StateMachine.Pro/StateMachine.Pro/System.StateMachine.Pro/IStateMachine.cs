@@ -1,5 +1,5 @@
 #nullable enable
-namespace System.StateMachine.Hierarchical {
+namespace System.StateMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -12,7 +12,7 @@ namespace System.StateMachine.Hierarchical {
         // SetState
         protected void SetState(T? state, object? argument, Action<T, object?>? callback);
         protected void AddState(T state, object? argument);
-        protected internal void RemoveState(T state, object? argument, Action<T, object?>? callback);
+        protected void RemoveState(T state, object? argument, Action<T, object?>? callback);
         protected void RemoveState(object? argument, Action<T, object?>? callback);
 
         // Helpers

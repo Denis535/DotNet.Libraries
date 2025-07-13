@@ -1,9 +1,9 @@
-﻿namespace System.StateMachine {
+﻿namespace System.StateMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    public class StateMachine : IStateMachine<State> {
+    public sealed class StateMachine : IStateMachine<State> {
 
         // State
         State? IStateMachine<State>.State { get => this.State; set => this.State = value; }
