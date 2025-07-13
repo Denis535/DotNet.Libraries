@@ -137,6 +137,25 @@ namespace GameFramework.Pro {
         protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
         }
 
+        protected override bool TryShowWidget(WidgetBase widget) {
+            if (widget is MainWidget) {
+                return true;
+            }
+            if (widget is GameWidget) {
+                return true;
+            }
+            return false;
+        }
+        protected override bool TryHideWidget(WidgetBase widget) {
+            if (widget is MainWidget) {
+                return true;
+            }
+            if (widget is GameWidget) {
+                return true;
+            }
+            return false;
+        }
+
     }
     internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
         internal class MainWidgetView : ViewBase {
@@ -161,8 +180,10 @@ namespace GameFramework.Pro {
         }
 
         protected override void OnActivate(object? argument) {
+            base.ShowSelf();
         }
         protected override void OnDeactivate(object? argument) {
+            base.HideSelf();
         }
 
         protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
@@ -207,8 +228,10 @@ namespace GameFramework.Pro {
         }
 
         protected override void OnActivate(object? argument) {
+            base.ShowSelf();
         }
         protected override void OnDeactivate(object? argument) {
+            base.HideSelf();
         }
 
         protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
