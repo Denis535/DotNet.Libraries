@@ -44,7 +44,9 @@ namespace System.StateMachine.Pro {
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
             }
-            this.Activate( argument );
+            {
+                this.Activate( argument );
+            }
         }
 
         // Detach
@@ -52,7 +54,9 @@ namespace System.StateMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine == machine );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
-            this.Deactivate( argument );
+            {
+                this.Deactivate( argument );
+            }
             {
                 this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
