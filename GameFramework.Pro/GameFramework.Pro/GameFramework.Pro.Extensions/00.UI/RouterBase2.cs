@@ -12,7 +12,9 @@
         protected TTheme Theme {
             get {
                 Assert.Operation.Valid( $"Theme must be non-null", this.theme != null );
-                return this.theme() ?? throw new InvalidOperationException( $"Theme must be non-null" );
+                var result = this.theme();
+                Assert.Operation.Valid( $"Theme must be non-null", result != null );
+                return result;
             }
         }
         protected Func<TTheme> Theme_ {
@@ -24,7 +26,9 @@
         protected TScreen Screen {
             get {
                 Assert.Operation.Valid( $"Theme must be non-null", this.screen != null );
-                return this.screen() ?? throw new InvalidOperationException( $"Screen must be non-null" );
+                var result = this.screen();
+                Assert.Operation.Valid( $"Theme must be non-null", result != null );
+                return result;
             }
         }
         protected Func<TScreen> Screen_ {
