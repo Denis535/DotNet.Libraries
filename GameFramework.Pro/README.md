@@ -8,7 +8,7 @@ The framework that allows you to design high-quality architecture of your game p
 namespace System;
 public abstract class DisposableBase : IDisposable {
 
-    public bool IsDisposed { get; private set; }
+    public bool IsDisposed { get; }
     public CancellationToken DisposeCancellationToken { get; }
 
     public DisposableBase();
