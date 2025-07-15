@@ -100,6 +100,7 @@ public abstract class ViewBase : DisposableBase {
     public override void Dispose();
 
 }
+
 public abstract class RouterBase : DisposableBase {
 
     public RouterBase();
