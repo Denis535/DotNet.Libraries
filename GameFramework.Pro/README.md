@@ -94,10 +94,13 @@ public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView
     public override void Dispose();
 
 }
-public abstract class ViewBase : DisposableBase {
+public abstract class ViewBase : IDisposable {
+
+    public bool IsDisposed { get; }
+    public CancellationToken DisposeCancellationToken { get; }
 
     public ViewBase();
-    public override void Dispose();
+    public virtual void Dispose();
 
 }
 

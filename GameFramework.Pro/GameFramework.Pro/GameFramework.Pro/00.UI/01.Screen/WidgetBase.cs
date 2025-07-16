@@ -37,4 +37,28 @@
         }
 
     }
+    public abstract class ViewableWidgetBase : WidgetBase {
+
+        protected ViewBase View { get; init; } = default!;
+
+        public ViewableWidgetBase() {
+        }
+        public override void Dispose() {
+            Assert.Operation.Valid( $"View {this.View} must be non-null", this.View != null );
+            Assert.Operation.Valid( $"View {this.View} must be disposed", this.View.IsDisposed );
+            base.Dispose();
+        }
+
+    }
+    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : ViewBase {
+
+        protected new TView View { get => (TView) base.View; init => base.View = value; }
+
+        public ViewableWidgetBase() {
+        }
+        public override void Dispose() {
+            base.Dispose();
+        }
+
+    }
 }
