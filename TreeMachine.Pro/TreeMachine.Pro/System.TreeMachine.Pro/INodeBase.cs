@@ -9,6 +9,7 @@ namespace System.TreeMachine.Pro {
 
         // Owner
         protected object? Owner { get; }
+
         // Machine
         public ITreeMachine<TThis>? Machine { get; }
         protected internal ITreeMachine<TThis>? Machine_NoRecursive { get; }

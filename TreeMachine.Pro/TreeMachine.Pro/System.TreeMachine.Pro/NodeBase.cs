@@ -9,6 +9,7 @@ namespace System.TreeMachine.Pro {
     public abstract partial class NodeBase<TThis> : INodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
 
         object? INodeBase<TThis>.Owner => this.Owner;
+
         ITreeMachine<TThis>? INodeBase<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
 
         void INodeBase<TThis>.Attach(ITreeMachine<TThis> machine, object? argument) {
@@ -48,6 +49,7 @@ namespace System.TreeMachine.Pro {
         void INodeBase<TThis>.Activate(object? argument) {
             this.Activate( argument );
         }
+
         void INodeBase<TThis>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
@@ -104,6 +106,7 @@ namespace System.TreeMachine.Pro {
 
         // Owner
         private object? Owner { get; set; }
+
         // Machine
         public ITreeMachine<TThis>? Machine => (this.Owner as ITreeMachine<TThis>) ?? (this.Owner as NodeBase<TThis>)?.Machine;
         internal ITreeMachine<TThis>? Machine_NoRecursive => this.Owner as ITreeMachine<TThis>;
