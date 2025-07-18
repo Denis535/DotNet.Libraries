@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IStateMachine<T> where T : notnull, StateBase<T> {
+    public interface IStateMachine<T> where T : class, IStateBase<T> {
 
         // State
         protected T? State { get; set; }
@@ -30,7 +30,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have no {machine.State} state", machine.State == null );
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine} machine", state.Machine == null );
-            Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == StateBase<T>.Activity_.Inactive );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == Activity.Inactive );
             machine.State = state;
             machine.State.Attach( machine, argument );
         }
@@ -39,7 +39,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have {state} state", machine.State == state );
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have {machine} machine", state.Machine == machine );
-            Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == StateBase<T>.Activity_.Active );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == Activity.Active );
             machine.State.Detach( machine, argument );
             machine.State = null;
             callback?.Invoke( state, argument );
