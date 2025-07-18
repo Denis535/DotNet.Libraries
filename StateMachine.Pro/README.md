@@ -4,14 +4,16 @@ The library that allows you to easily implement a stateful object.
 # Reference
 ```
 namespace System.StateMachine.Pro;
-public interface IStateMachine<T> where T : notnull, StateBase<T> {
+public abstract class StateMachineBase<T> : IStateMachine<T> where T : notnull, StateBase<T> {
 
-    protected T? State { get; set; }
+    protected T? State { get; }
 
-    protected void SetState(T? state, object? argument, Action<T, object?>? callback);
-    protected void AddState(T state, object? argument);
-    protected void RemoveState(T state, object? argument, Action<T, object?>? callback);
-    protected void RemoveState(object? argument, Action<T, object?>? callback);
+    public StateMachineBase();
+
+    protected virtual void SetState(T? state, object? argument, Action<T, object?>? callback);
+    protected virtual void AddState(T state, object? argument);
+    protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    protected virtual void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<TThis> {
@@ -62,18 +64,18 @@ public abstract partial class StateBase<TThis> {
 
 }
 ```
-
-# Reference (Hierarchical)
 ```
 namespace System.StateMachine.Pro.Hierarchical;
-public interface IStateMachine<T> where T : notnull, StateBase<T> {
+public abstract class StateMachineBase<T> : IStateMachine<T> where T : notnull, StateBase<T> {
 
-    protected T? State { get; set; }
+    protected T? State { get; }
 
-    protected void SetState(T? state, object? argument, Action<T, object?>? callback);
-    protected void AddState(T state, object? argument);
-    protected void RemoveState(T state, object? argument, Action<T, object?>? callback);
-    protected void RemoveState(object? argument, Action<T, object?>? callback);
+    public StateMachineBase();
+
+    protected virtual void SetState(T? state, object? argument, Action<T, object?>? callback);
+    protected virtual void AddState(T state, object? argument);
+    protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    protected virtual void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<TThis> {

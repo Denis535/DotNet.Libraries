@@ -3,28 +3,27 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class StateMachine : IStateMachine<State> {
+    public sealed class StateMachine : StateMachineBase<State> {
 
         // State
-        State? IStateMachine<State>.State { get => this.State; set => this.State = value; }
-        public State? State { get; private set; }
+        public new State? State => base.State;
 
         // Constructor
         public StateMachine() {
         }
 
         // SetState
-        public void SetState(State? state, object? argument, Action<State, object?>? callback) {
-            IStateMachine<State>.SetState( this, state, argument, callback );
+        public new void SetState(State? state, object? argument, Action<State, object?>? callback) {
+            base.SetState( state, argument, callback );
         }
-        public void AddState(State state, object? argument) {
-            IStateMachine<State>.AddState( this, state, argument );
+        public new void AddState(State state, object? argument) {
+            base.AddState( state, argument );
         }
-        public void RemoveState(State state, object? argument, Action<State, object?>? callback) {
-            IStateMachine<State>.RemoveState( this, state, argument, callback );
+        public new void RemoveState(State state, object? argument, Action<State, object?>? callback) {
+            base.RemoveState( state, argument, callback );
         }
-        public void RemoveState(object? argument, Action<State, object?>? callback) {
-            IStateMachine<State>.RemoveState( this, argument, callback );
+        public new void RemoveState(object? argument, Action<State, object?>? callback) {
+            base.RemoveState( argument, callback );
         }
 
     }
