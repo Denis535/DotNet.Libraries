@@ -4,13 +4,15 @@ The library that allows you to easily implement a hierarchical object.
 # Reference
 ```
 namespace System.TreeMachine.Pro;
-public interface ITreeMachine<T> where T : notnull, NodeBase<T> {
+public abstract class TreeMachineBase<T> : ITreeMachine<T> where T : notnull, NodeBase<T> {
 
-    protected T? Root { get; set; }
+    protected T? Root { get; }
 
-    protected void AddRoot(T root, object? argument);
-    protected void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
-    protected void RemoveRoot(object? argument, Action<T, object?>? callback);
+    public TreeMachineBase();
+
+    protected virtual void AddRoot(T root, object? argument);
+    protected virtual void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
+    protected virtual void RemoveRoot(object? argument, Action<T, object?>? callback);
 
 }
 public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
