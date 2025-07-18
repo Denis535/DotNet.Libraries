@@ -33,7 +33,7 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Parent, Is.Null );
                 Assert.That( machine.Root.Ancestors.Count(), Is.EqualTo( 0 ) );
                 Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( machine.Root.Activity, Is.EqualTo( Node.Activity_.Active ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( machine.Root.Children.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
@@ -46,7 +46,7 @@ namespace System.TreeMachine.Pro {
                     Assert.That( child.Parent, Is.EqualTo( root ) );
                     Assert.That( child.Ancestors.Count(), Is.EqualTo( 1 ) );
                     Assert.That( child.AncestorsAndSelf.Count(), Is.EqualTo( 2 ) );
-                    Assert.That( child.Activity, Is.EqualTo( Node.Activity_.Active ) );
+                    Assert.That( child.Activity, Is.EqualTo( Activity.Active ) );
                     Assert.That( child.Children.Count, Is.EqualTo( 0 ) );
                     Assert.That( child.Descendants.Count, Is.EqualTo( 0 ) );
                     Assert.That( child.DescendantsAndSelf.Count, Is.EqualTo( 1 ) );
@@ -84,7 +84,7 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Parent, Is.Null );
                 Assert.That( machine.Root.Ancestors.Count(), Is.EqualTo( 0 ) );
                 Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( machine.Root.Activity, Is.EqualTo( Node.Activity_.Active ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( machine.Root.Children.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
@@ -97,7 +97,7 @@ namespace System.TreeMachine.Pro {
                     Assert.That( child.Parent, Is.EqualTo( root ) );
                     Assert.That( child.Ancestors.Count(), Is.EqualTo( 1 ) );
                     Assert.That( child.AncestorsAndSelf.Count(), Is.EqualTo( 2 ) );
-                    Assert.That( child.Activity, Is.EqualTo( Node.Activity_.Active ) );
+                    Assert.That( child.Activity, Is.EqualTo( Activity.Active ) );
                     Assert.That( child.Children.Count, Is.EqualTo( 0 ) );
                     Assert.That( child.Descendants.Count, Is.EqualTo( 0 ) );
                     Assert.That( child.DescendantsAndSelf.Count, Is.EqualTo( 1 ) );

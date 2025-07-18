@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class TreeMachineBase<T> : ITreeMachine<T> where T : notnull, NodeBase<T> {
+    public abstract class TreeMachineBase<T> : ITreeMachine<T> where T : class, INodeBase<T> {
 
         // Root
         T? ITreeMachine<T>.Root { get => this.Root; set => this.Root = value; }

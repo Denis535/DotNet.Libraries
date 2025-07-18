@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface ITreeMachine<T> where T : notnull, NodeBase<T> {
+    public interface ITreeMachine<T> where T : class, INodeBase<T> {
 
         // Root
         protected T? Root { get; set; }
@@ -21,7 +21,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no machine", root.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no parent", root.Parent == null );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == NodeBase<T>.Activity_.Inactive );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
             machine.Root = root;
             machine.Root.Attach( machine, argument );
         }
@@ -31,7 +31,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {machine} machine", root.Machine_NoRecursive == machine );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no parent", root.Parent == null );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == NodeBase<T>.Activity_.Active );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );
             machine.Root.Detach( machine, argument );
             machine.Root = null;
             callback?.Invoke( root, argument );
