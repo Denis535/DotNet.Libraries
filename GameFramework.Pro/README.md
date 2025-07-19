@@ -87,23 +87,15 @@ public abstract class WidgetBase : NodeBase2<WidgetBase>, IDisposable {
     public WidgetBase();
     public virtual void Dispose();
 
-    protected virtual void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
-    }
+    protected virtual void OnBeforeDescendantAttach(WidgetBase descendant, object? argument);
+    protected virtual void OnAfterDescendantAttach(WidgetBase descendant, object? argument);
+    protected virtual void OnBeforeDescendantDetach(WidgetBase descendant, object? argument);
+    protected virtual void OnAfterDescendantDetach(WidgetBase descendant, object? argument);
 
-    protected virtual void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
-    }
-    protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
-    }
+    protected virtual void OnBeforeDescendantActivate(WidgetBase descendant, object? argument);
+    protected virtual void OnAfterDescendantActivate(WidgetBase descendant, object? argument);
+    protected virtual void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument);
+    protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
