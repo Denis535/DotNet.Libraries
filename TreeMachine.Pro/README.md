@@ -4,7 +4,7 @@ The library that allows you to easily implement a hierarchical object.
 # Reference
 ```
 namespace System.TreeMachine.Pro;
-public interface ITreeMachine<T> where T : class, INodeBase<T> {
+public interface ITreeMachine<T> where T : class, INode<T> {
 
     protected T? Root { get; set; }
 
@@ -13,7 +13,7 @@ public interface ITreeMachine<T> where T : class, INodeBase<T> {
     protected void RemoveRoot(object? argument, Action<T, object?>? callback);
 
 }
-public partial interface INodeBase<TThis> where TThis : class, INodeBase<TThis> {
+public partial interface INode<TThis> where TThis : class, INode<TThis> {
 
     protected object? Owner { get; }
 
@@ -34,7 +34,7 @@ public partial interface INodeBase<TThis> where TThis : class, INodeBase<TThis> 
     public IEnumerable<TThis> DescendantsAndSelf { get; }
 
 }
-public partial interface INodeBase<TThis> {
+public partial interface INode<TThis> {
 
     public event Action<object?>? OnBeforeAttachCallback;
     public event Action<object?>? OnAfterAttachCallback;
@@ -55,7 +55,7 @@ public partial interface INodeBase<TThis> {
     protected void OnAfterDetach(object? argument);
 
 }
-public partial interface INodeBase<TThis> {
+public partial interface INode<TThis> {
 
     public event Action<object?>? OnBeforeActivateCallback;
     public event Action<object?>? OnAfterActivateCallback;
@@ -74,10 +74,10 @@ public partial interface INodeBase<TThis> {
     protected void OnAfterDeactivate(object? argument);
 
 }
-public partial interface INodeBase<TThis> {
+public partial interface INode<TThis> {
 
     protected void AddChild(TThis child, object? argument);
-    protected void AddChildren(TThis[] children, object? argument);
+    protected void AddChildren(IEnumerable<TThis> children, object? argument);
 
     protected void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback);
     protected bool RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback);

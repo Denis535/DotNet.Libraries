@@ -6,30 +6,30 @@ namespace System.TreeMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class NodeBase<TThis> : INodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
+    public abstract partial class NodeBase<TThis> : INode<TThis> where TThis : notnull, NodeBase<TThis> {
 
-        object? INodeBase<TThis>.Owner => this.Owner;
+        object? INode<TThis>.Owner => this.Owner;
 
-        ITreeMachine<TThis>? INodeBase<TThis>.Machine => this.Machine;
-        ITreeMachine<TThis>? INodeBase<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
+        ITreeMachine<TThis>? INode<TThis>.Machine => this.Machine;
+        ITreeMachine<TThis>? INode<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
 
-        bool INodeBase<TThis>.IsRoot => this.IsRoot;
-        TThis INodeBase<TThis>.Root => this.Root;
+        bool INode<TThis>.IsRoot => this.IsRoot;
+        TThis INode<TThis>.Root => this.Root;
 
-        TThis? INodeBase<TThis>.Parent => this.Parent;
-        IEnumerable<TThis> INodeBase<TThis>.Ancestors => this.Ancestors;
-        IEnumerable<TThis> INodeBase<TThis>.AncestorsAndSelf => this.AncestorsAndSelf;
+        TThis? INode<TThis>.Parent => this.Parent;
+        IEnumerable<TThis> INode<TThis>.Ancestors => this.Ancestors;
+        IEnumerable<TThis> INode<TThis>.AncestorsAndSelf => this.AncestorsAndSelf;
 
-        Activity INodeBase<TThis>.Activity => this.Activity;
+        Activity INode<TThis>.Activity => this.Activity;
 
-        IReadOnlyList<TThis> INodeBase<TThis>.Children => this.Children;
-        IEnumerable<TThis> INodeBase<TThis>.Descendants => this.Descendants;
-        IEnumerable<TThis> INodeBase<TThis>.DescendantsAndSelf => this.DescendantsAndSelf;
+        IReadOnlyList<TThis> INode<TThis>.Children => this.Children;
+        IEnumerable<TThis> INode<TThis>.Descendants => this.Descendants;
+        IEnumerable<TThis> INode<TThis>.DescendantsAndSelf => this.DescendantsAndSelf;
 
     }
     public abstract partial class NodeBase<TThis> {
 
-        event Action<object?>? INodeBase<TThis>.OnBeforeAttachCallback {
+        event Action<object?>? INode<TThis>.OnBeforeAttachCallback {
             add {
                 this.OnBeforeAttachCallback += value;
             }
@@ -37,7 +37,7 @@ namespace System.TreeMachine.Pro {
                 this.OnBeforeAttachCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnAfterAttachCallback {
+        event Action<object?>? INode<TThis>.OnAfterAttachCallback {
             add {
                 this.OnAfterAttachCallback += value;
             }
@@ -45,7 +45,7 @@ namespace System.TreeMachine.Pro {
                 this.OnAfterAttachCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnBeforeDetachCallback {
+        event Action<object?>? INode<TThis>.OnBeforeDetachCallback {
             add {
                 this.OnBeforeDetachCallback += value;
             }
@@ -53,7 +53,7 @@ namespace System.TreeMachine.Pro {
                 this.OnBeforeDetachCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnAfterDetachCallback {
+        event Action<object?>? INode<TThis>.OnAfterDetachCallback {
             add {
                 this.OnAfterDetachCallback += value;
             }
@@ -62,43 +62,43 @@ namespace System.TreeMachine.Pro {
             }
         }
 
-        void INodeBase<TThis>.Attach(ITreeMachine<TThis> machine, object? argument) {
+        void INode<TThis>.Attach(ITreeMachine<TThis> machine, object? argument) {
             this.Attach( machine, argument );
         }
-        void INodeBase<TThis>.Attach(TThis parent, object? argument) {
+        void INode<TThis>.Attach(TThis parent, object? argument) {
             this.Attach( parent, argument );
         }
-        void INodeBase<TThis>.Detach(ITreeMachine<TThis> machine, object? argument) {
+        void INode<TThis>.Detach(ITreeMachine<TThis> machine, object? argument) {
             this.Detach( machine, argument );
         }
-        void INodeBase<TThis>.Detach(TThis parent, object? argument) {
+        void INode<TThis>.Detach(TThis parent, object? argument) {
             this.Detach( parent, argument );
         }
 
-        void INodeBase<TThis>.OnAttach(object? argument) {
+        void INode<TThis>.OnAttach(object? argument) {
             this.OnAttach( argument );
         }
-        void INodeBase<TThis>.OnBeforeAttach(object? argument) {
+        void INode<TThis>.OnBeforeAttach(object? argument) {
             this.OnBeforeAttach( argument );
         }
-        void INodeBase<TThis>.OnAfterAttach(object? argument) {
+        void INode<TThis>.OnAfterAttach(object? argument) {
             this.OnAfterAttach( argument );
         }
 
-        void INodeBase<TThis>.OnDetach(object? argument) {
+        void INode<TThis>.OnDetach(object? argument) {
             this.OnDetach( argument );
         }
-        void INodeBase<TThis>.OnBeforeDetach(object? argument) {
+        void INode<TThis>.OnBeforeDetach(object? argument) {
             this.OnBeforeDetach( argument );
         }
-        void INodeBase<TThis>.OnAfterDetach(object? argument) {
+        void INode<TThis>.OnAfterDetach(object? argument) {
             this.OnAfterDetach( argument );
         }
 
     }
     public abstract partial class NodeBase<TThis> {
 
-        event Action<object?>? INodeBase<TThis>.OnBeforeActivateCallback {
+        event Action<object?>? INode<TThis>.OnBeforeActivateCallback {
             add {
                 this.OnBeforeActivateCallback += value;
             }
@@ -106,7 +106,7 @@ namespace System.TreeMachine.Pro {
                 this.OnBeforeActivateCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnAfterActivateCallback {
+        event Action<object?>? INode<TThis>.OnAfterActivateCallback {
             add {
                 this.OnAfterActivateCallback += value;
             }
@@ -114,7 +114,7 @@ namespace System.TreeMachine.Pro {
                 this.OnAfterActivateCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnBeforeDeactivateCallback {
+        event Action<object?>? INode<TThis>.OnBeforeDeactivateCallback {
             add {
                 this.OnBeforeDeactivateCallback += value;
             }
@@ -122,7 +122,7 @@ namespace System.TreeMachine.Pro {
                 this.OnBeforeDeactivateCallback -= value;
             }
         }
-        event Action<object?>? INodeBase<TThis>.OnAfterDeactivateCallback {
+        event Action<object?>? INode<TThis>.OnAfterDeactivateCallback {
             add {
                 this.OnAfterDeactivateCallback += value;
             }
@@ -131,55 +131,55 @@ namespace System.TreeMachine.Pro {
             }
         }
 
-        void INodeBase<TThis>.Activate(object? argument) {
+        void INode<TThis>.Activate(object? argument) {
             this.Activate( argument );
         }
-        void INodeBase<TThis>.Deactivate(object? argument) {
+        void INode<TThis>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
 
-        void INodeBase<TThis>.OnActivate(object? argument) {
+        void INode<TThis>.OnActivate(object? argument) {
             this.OnActivate( argument );
         }
-        void INodeBase<TThis>.OnBeforeActivate(object? argument) {
+        void INode<TThis>.OnBeforeActivate(object? argument) {
             this.OnBeforeActivate( argument );
         }
-        void INodeBase<TThis>.OnAfterActivate(object? argument) {
+        void INode<TThis>.OnAfterActivate(object? argument) {
             this.OnAfterActivate( argument );
         }
 
-        void INodeBase<TThis>.OnDeactivate(object? argument) {
+        void INode<TThis>.OnDeactivate(object? argument) {
             this.OnDeactivate( argument );
         }
-        void INodeBase<TThis>.OnBeforeDeactivate(object? argument) {
+        void INode<TThis>.OnBeforeDeactivate(object? argument) {
             this.OnBeforeDeactivate( argument );
         }
-        void INodeBase<TThis>.OnAfterDeactivate(object? argument) {
+        void INode<TThis>.OnAfterDeactivate(object? argument) {
             this.OnAfterDeactivate( argument );
         }
 
     }
     public abstract partial class NodeBase<TThis> {
 
-        void INodeBase<TThis>.AddChild(TThis child, object? argument) {
+        void INode<TThis>.AddChild(TThis child, object? argument) {
             this.AddChild( child, argument );
         }
-        void INodeBase<TThis>.AddChildren(TThis[] children, object? argument) {
+        void INode<TThis>.AddChildren(IEnumerable<TThis> children, object? argument) {
             this.AddChildren( children, argument );
         }
-        void INodeBase<TThis>.RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
+        void INode<TThis>.RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
             this.RemoveChild( child, argument, callback );
         }
-        bool INodeBase<TThis>.RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        bool INode<TThis>.RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChild( predicate, argument, callback );
         }
-        int INodeBase<TThis>.RemoveChildren(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        int INode<TThis>.RemoveChildren(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChildren( predicate, argument, callback );
         }
-        int INodeBase<TThis>.RemoveChildren(object? argument, Action<TThis, object?>? callback) {
+        int INode<TThis>.RemoveChildren(object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChildren( argument, callback );
         }
-        void INodeBase<TThis>.RemoveSelf(object? argument, Action<TThis, object?>? callback) {
+        void INode<TThis>.RemoveSelf(object? argument, Action<TThis, object?>? callback) {
             this.RemoveSelf( argument, callback );
         }
 
@@ -247,9 +247,11 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.Owner = machine;
+                this.OnBeforeAttachCallback?.Invoke( argument );
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
             }
             {
                 this.Activate( argument );
@@ -262,9 +264,11 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.Owner = parent;
+                this.OnBeforeAttachCallback?.Invoke( argument );
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
             }
             if (parent.Activity == Activity.Active) {
                 this.Activate( argument );
@@ -281,9 +285,11 @@ namespace System.TreeMachine.Pro {
                 this.Deactivate( argument );
             }
             {
+                this.OnBeforeDetachCallback?.Invoke( argument );
                 this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
                 this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
                 this.Owner = null;
             }
         }
@@ -297,9 +303,11 @@ namespace System.TreeMachine.Pro {
                 Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             }
             {
+                this.OnBeforeDetachCallback?.Invoke( argument );
                 this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
                 this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
                 this.Owner = null;
             }
         }
@@ -307,19 +315,15 @@ namespace System.TreeMachine.Pro {
         // OnAttach
         protected abstract void OnAttach(object? argument);
         protected virtual void OnBeforeAttach(object? argument) {
-            this.OnBeforeAttachCallback?.Invoke( argument );
         }
         protected virtual void OnAfterAttach(object? argument) {
-            this.OnAfterAttachCallback?.Invoke( argument );
         }
 
         // OnDetach
         protected abstract void OnDetach(object? argument);
         protected virtual void OnBeforeDetach(object? argument) {
-            this.OnBeforeDetachCallback?.Invoke( argument );
         }
         protected virtual void OnAfterDetach(object? argument) {
-            this.OnAfterDetachCallback?.Invoke( argument );
         }
 
     }
@@ -336,6 +340,7 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
+            this.OnBeforeActivateCallback?.Invoke( argument );
             this.OnBeforeActivate( argument );
             this.Activity = Activity.Activating;
             {
@@ -346,6 +351,7 @@ namespace System.TreeMachine.Pro {
             }
             this.Activity = Activity.Active;
             this.OnAfterActivate( argument );
+            this.OnAfterActivateCallback?.Invoke( argument );
         }
 
         // Deactivate
@@ -353,6 +359,7 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
             Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
+            this.OnBeforeDeactivateCallback?.Invoke( argument );
             this.OnBeforeDeactivate( argument );
             this.Activity = Activity.Deactivating;
             {
@@ -363,24 +370,21 @@ namespace System.TreeMachine.Pro {
             }
             this.Activity = Activity.Inactive;
             this.OnAfterDeactivate( argument );
+            this.OnAfterDeactivateCallback?.Invoke( argument );
         }
 
         // OnActivate
         protected abstract void OnActivate(object? argument);
         protected virtual void OnBeforeActivate(object? argument) {
-            this.OnBeforeActivateCallback?.Invoke( argument );
         }
         protected virtual void OnAfterActivate(object? argument) {
-            this.OnAfterActivateCallback?.Invoke( argument );
         }
 
         // OnDeactivate
         protected abstract void OnDeactivate(object? argument);
         protected virtual void OnBeforeDeactivate(object? argument) {
-            this.OnBeforeDeactivateCallback?.Invoke( argument );
         }
         protected virtual void OnAfterDeactivate(object? argument) {
-            this.OnAfterDeactivateCallback?.Invoke( argument );
         }
 
     }
@@ -397,7 +401,7 @@ namespace System.TreeMachine.Pro {
             this.Sort( this.children );
             child.Attach( (TThis) this, argument );
         }
-        protected void AddChildren(TThis[] children, object? argument) {
+        protected void AddChildren(IEnumerable<TThis> children, object? argument) {
             Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
             foreach (var child in children) {
                 this.AddChild( child, argument );

@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface ITreeMachine<T> where T : class, INodeBase<T> {
+    public interface ITreeMachine<T> where T : class, INode<T> {
 
         // Root
         protected T? Root { get; set; }
