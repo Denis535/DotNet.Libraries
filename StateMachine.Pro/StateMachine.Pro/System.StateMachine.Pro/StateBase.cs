@@ -6,53 +6,28 @@ namespace System.StateMachine.Pro {
 
     public abstract partial class StateBase<TThis> : IState<TThis> where TThis : notnull, StateBase<TThis> {
 
-        IStateMachine<TThis>? IState<TThis>.Owner => this.Owner;
+        IStateMachine<TThis>? IState<TThis>.Owner { get => this.Owner; set => this.Owner = value; }
 
-        IStateMachine<TThis>? IState<TThis>.Machine => this.Machine;
-
-        Activity IState<TThis>.Activity => this.Activity;
+        Activity IState<TThis>.Activity { get => this.Activity; set => this.Activity = value; }
 
     }
     public abstract partial class StateBase<TThis> {
 
-        event Action<object?>? IState<TThis>.OnBeforeAttachCallback {
-            add {
-                this.OnBeforeAttachCallback += value;
-            }
-            remove {
-                this.OnBeforeAttachCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnBeforeAttachCallback {
+            get => this.OnBeforeAttachCallback;
+            set => this.OnBeforeAttachCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnAfterAttachCallback {
-            add {
-                this.OnAfterAttachCallback += value;
-            }
-            remove {
-                this.OnAfterAttachCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnAfterAttachCallback {
+            get => this.OnAfterAttachCallback;
+            set => this.OnAfterAttachCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnBeforeDetachCallback {
-            add {
-                this.OnBeforeDetachCallback += value;
-            }
-            remove {
-                this.OnBeforeDetachCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnBeforeDetachCallback {
+            get => this.OnBeforeDetachCallback;
+            set => this.OnBeforeDetachCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnAfterDetachCallback {
-            add {
-                this.OnAfterDetachCallback += value;
-            }
-            remove {
-                this.OnAfterDetachCallback -= value;
-            }
-        }
-
-        void IState<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
-            this.Attach( machine, argument );
-        }
-        void IState<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
-            this.Detach( machine, argument );
+        Action<object?>? IState<TThis>.OnAfterDetachCallback {
+            get => this.OnAfterDetachCallback;
+            set => this.OnAfterDetachCallback = value;
         }
 
         void IState<TThis>.OnAttach(object? argument) {
@@ -78,44 +53,21 @@ namespace System.StateMachine.Pro {
     }
     public abstract partial class StateBase<TThis> {
 
-        event Action<object?>? IState<TThis>.OnBeforeActivateCallback {
-            add {
-                this.OnBeforeActivateCallback += value;
-            }
-            remove {
-                this.OnBeforeActivateCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnBeforeActivateCallback {
+            get => this.OnBeforeActivateCallback;
+            set => this.OnBeforeActivateCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnAfterActivateCallback {
-            add {
-                this.OnAfterActivateCallback += value;
-            }
-            remove {
-                this.OnAfterActivateCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnAfterActivateCallback {
+            get => this.OnAfterActivateCallback;
+            set => this.OnAfterActivateCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnBeforeDeactivateCallback {
-            add {
-                this.OnBeforeDeactivateCallback += value;
-            }
-            remove {
-                this.OnBeforeDeactivateCallback -= value;
-            }
+        Action<object?>? IState<TThis>.OnBeforeDeactivateCallback {
+            get => this.OnBeforeDeactivateCallback;
+            set => this.OnBeforeDeactivateCallback = value;
         }
-        event Action<object?>? IState<TThis>.OnAfterDeactivateCallback {
-            add {
-                this.OnAfterDeactivateCallback += value;
-            }
-            remove {
-                this.OnAfterDeactivateCallback -= value;
-            }
-        }
-
-        void IState<TThis>.Activate(object? argument) {
-            this.Activate( argument );
-        }
-        void IState<TThis>.Deactivate(object? argument) {
-            this.Deactivate( argument );
+        Action<object?>? IState<TThis>.OnAfterDeactivateCallback {
+            get => this.OnAfterDeactivateCallback;
+            set => this.OnAfterDeactivateCallback = value;
         }
 
         void IState<TThis>.OnActivate(object? argument) {
@@ -145,7 +97,7 @@ namespace System.StateMachine.Pro {
         private IStateMachine<TThis>? Owner { get; set; }
 
         // Machine
-        public IStateMachine<TThis>? Machine => this.Owner;
+        public IStateMachine<TThis>? Machine => ((IState<TThis>) this).Machine;
 
         // Activity
         public Activity Activity { get; private set; } = Activity.Inactive;
@@ -158,46 +110,10 @@ namespace System.StateMachine.Pro {
     public abstract partial class StateBase<TThis> {
 
         // OnAttach
-        public event Action<object?>? OnBeforeAttachCallback;
-        public event Action<object?>? OnAfterAttachCallback;
-        public event Action<object?>? OnBeforeDetachCallback;
-        public event Action<object?>? OnAfterDetachCallback;
-
-        // Attach
-        internal void Attach(IStateMachine<TThis> machine, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
-            Assert.Operation.Valid( $"State {this} must have no {this.Machine} machine", this.Machine == null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
-            {
-                this.Owner = machine;
-                this.OnBeforeAttachCallback?.Invoke( argument );
-                this.OnBeforeAttach( argument );
-                this.OnAttach( argument );
-                this.OnAfterAttach( argument );
-                this.OnAfterAttachCallback?.Invoke( argument );
-            }
-            {
-                this.Activate( argument );
-            }
-        }
-
-        // Detach
-        internal void Detach(IStateMachine<TThis> machine, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
-            Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine == machine );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
-            {
-                this.Deactivate( argument );
-            }
-            {
-                this.OnBeforeDetachCallback?.Invoke( argument );
-                this.OnBeforeDetach( argument );
-                this.OnDetach( argument );
-                this.OnAfterDetach( argument );
-                this.OnAfterDetachCallback?.Invoke( argument );
-                this.Owner = null;
-            }
-        }
+        public Action<object?>? OnBeforeAttachCallback { get; set; }
+        public Action<object?>? OnAfterAttachCallback { get; set; }
+        public Action<object?>? OnBeforeDetachCallback { get; set; }
+        public Action<object?>? OnAfterDetachCallback { get; set; }
 
         // OnAttach
         protected abstract void OnAttach(object? argument);
@@ -217,40 +133,10 @@ namespace System.StateMachine.Pro {
     public abstract partial class StateBase<TThis> {
 
         // OnActivate
-        public event Action<object?>? OnBeforeActivateCallback;
-        public event Action<object?>? OnAfterActivateCallback;
-        public event Action<object?>? OnBeforeDeactivateCallback;
-        public event Action<object?>? OnAfterDeactivateCallback;
-
-        // Activate
-        private void Activate(object? argument) {
-            Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
-            this.OnBeforeActivateCallback?.Invoke( argument );
-            this.OnBeforeActivate( argument );
-            this.Activity = Activity.Activating;
-            {
-                this.OnActivate( argument );
-            }
-            this.Activity = Activity.Active;
-            this.OnAfterActivate( argument );
-            this.OnAfterActivateCallback?.Invoke( argument );
-        }
-
-        // Deactivate
-        private void Deactivate(object? argument) {
-            Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
-            this.OnBeforeDeactivateCallback?.Invoke( argument );
-            this.OnBeforeDeactivate( argument );
-            this.Activity = Activity.Deactivating;
-            {
-                this.OnDeactivate( argument );
-            }
-            this.Activity = Activity.Inactive;
-            this.OnAfterDeactivate( argument );
-            this.OnAfterDeactivateCallback?.Invoke( argument );
-        }
+        public Action<object?>? OnBeforeActivateCallback { get; set; }
+        public Action<object?>? OnAfterActivateCallback { get; set; }
+        public Action<object?>? OnBeforeDeactivateCallback { get; set; }
+        public Action<object?>? OnAfterDeactivateCallback { get; set; }
 
         // OnActivate
         protected abstract void OnActivate(object? argument);
