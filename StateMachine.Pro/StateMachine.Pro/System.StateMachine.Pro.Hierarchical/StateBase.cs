@@ -65,8 +65,14 @@ namespace System.StateMachine.Pro.Hierarchical {
         void IStateBase<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
             this.Attach( machine, argument );
         }
+        void IStateBase<TThis>.Attach(TThis parent, object? argument) {
+            this.Attach( parent, argument );
+        }
         void IStateBase<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
             this.Detach( machine, argument );
+        }
+        void IStateBase<TThis>.Detach(TThis parent, object? argument) {
+            this.Detach( parent, argument );
         }
 
         void IStateBase<TThis>.OnAttach(object? argument) {

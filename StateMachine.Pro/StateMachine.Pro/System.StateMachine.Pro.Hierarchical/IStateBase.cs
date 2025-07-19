@@ -12,7 +12,7 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         // Machine
         public IStateMachine<TThis>? Machine { get; }
-        protected internal IStateMachine<TThis>? Machine_NoRecursive { get; }
+        protected IStateMachine<TThis>? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
@@ -42,9 +42,11 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         // Attach
         protected internal void Attach(IStateMachine<TThis> machine, object? argument);
+        protected void Attach(TThis parent, object? argument);
 
         // Detach
         protected internal void Detach(IStateMachine<TThis> machine, object? argument);
+        protected void Detach(TThis parent, object? argument);
 
         // OnAttach
         protected void OnAttach(object? argument);
