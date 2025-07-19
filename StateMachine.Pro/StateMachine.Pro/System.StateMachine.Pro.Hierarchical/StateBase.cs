@@ -10,12 +10,61 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         object? IStateBase<TThis>.Owner => this.Owner;
 
+        IStateMachine<TThis>? IStateBase<TThis>.Machine => this.Machine;
         IStateMachine<TThis>? IStateBase<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
+
+        bool IStateBase<TThis>.IsRoot => this.IsRoot;
+        TThis IStateBase<TThis>.Root => this.Root;
+
+        TThis? IStateBase<TThis>.Parent => this.Parent;
+        IEnumerable<TThis> IStateBase<TThis>.Ancestors => this.Ancestors;
+        IEnumerable<TThis> IStateBase<TThis>.AncestorsAndSelf => this.AncestorsAndSelf;
+
+        Activity IStateBase<TThis>.Activity => this.Activity;
+
+        TThis? IStateBase<TThis>.Child => this.Child;
+        IEnumerable<TThis> IStateBase<TThis>.Descendants => this.Descendants;
+        IEnumerable<TThis> IStateBase<TThis>.DescendantsAndSelf => this.DescendantsAndSelf;
+
+    }
+    public abstract partial class StateBase<TThis> {
+
+        event Action<object?>? IStateBase<TThis>.OnBeforeAttachCallback {
+            add {
+                this.OnBeforeAttachCallback += value;
+            }
+            remove {
+                this.OnBeforeAttachCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnAfterAttachCallback {
+            add {
+                this.OnAfterAttachCallback += value;
+            }
+            remove {
+                this.OnAfterAttachCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnBeforeDetachCallback {
+            add {
+                this.OnBeforeDetachCallback += value;
+            }
+            remove {
+                this.OnBeforeDetachCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnAfterDetachCallback {
+            add {
+                this.OnAfterDetachCallback += value;
+            }
+            remove {
+                this.OnAfterDetachCallback -= value;
+            }
+        }
 
         void IStateBase<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
             this.Attach( machine, argument );
         }
-
         void IStateBase<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
             this.Detach( machine, argument );
         }
@@ -40,10 +89,45 @@ namespace System.StateMachine.Pro.Hierarchical {
             this.OnAfterDetach( argument );
         }
 
+    }
+    public abstract partial class StateBase<TThis> {
+
+        event Action<object?>? IStateBase<TThis>.OnBeforeActivateCallback {
+            add {
+                this.OnBeforeActivateCallback += value;
+            }
+            remove {
+                this.OnBeforeActivateCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnAfterActivateCallback {
+            add {
+                this.OnAfterActivateCallback += value;
+            }
+            remove {
+                this.OnAfterActivateCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnBeforeDeactivateCallback {
+            add {
+                this.OnBeforeDeactivateCallback += value;
+            }
+            remove {
+                this.OnBeforeDeactivateCallback -= value;
+            }
+        }
+        event Action<object?>? IStateBase<TThis>.OnAfterDeactivateCallback {
+            add {
+                this.OnAfterDeactivateCallback += value;
+            }
+            remove {
+                this.OnAfterDeactivateCallback -= value;
+            }
+        }
+
         void IStateBase<TThis>.Activate(object? argument) {
             this.Activate( argument );
         }
-
         void IStateBase<TThis>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
@@ -66,6 +150,25 @@ namespace System.StateMachine.Pro.Hierarchical {
         }
         void IStateBase<TThis>.OnAfterDeactivate(object? argument) {
             this.OnAfterDeactivate( argument );
+        }
+
+    }
+    public abstract partial class StateBase<TThis> {
+
+        void IStateBase<TThis>.SetChild(TThis? child, object? argument, Action<TThis, object?>? callback) {
+            this.SetChild( child, argument, callback );
+        }
+        void IStateBase<TThis>.AddChild(TThis child, object? argument) {
+            this.AddChild( child, argument );
+        }
+        void IStateBase<TThis>.RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
+            this.RemoveChild( child, argument, callback );
+        }
+        void IStateBase<TThis>.RemoveChild(object? argument, Action<TThis, object?>? callback) {
+            this.RemoveChild( argument, callback );
+        }
+        void IStateBase<TThis>.RemoveSelf(object? argument, Action<TThis, object?>? callback) {
+            this.RemoveSelf( argument, callback );
         }
 
     }

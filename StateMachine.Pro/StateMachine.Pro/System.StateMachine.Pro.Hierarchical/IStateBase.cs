@@ -2,6 +2,7 @@
 namespace System.StateMachine.Pro.Hierarchical {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis> {
@@ -13,8 +14,22 @@ namespace System.StateMachine.Pro.Hierarchical {
         public IStateMachine<TThis>? Machine { get; }
         protected internal IStateMachine<TThis>? Machine_NoRecursive { get; }
 
+        // Root
+        [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
+        public TThis Root { get; }
+
+        // Parent
+        public TThis? Parent { get; }
+        public IEnumerable<TThis> Ancestors { get; }
+        public IEnumerable<TThis> AncestorsAndSelf { get; }
+
         // Activity
         public Activity Activity { get; }
+
+        // Children
+        public TThis? Child { get; }
+        public IEnumerable<TThis> Descendants { get; }
+        public IEnumerable<TThis> DescendantsAndSelf { get; }
 
     }
     public partial interface IStateBase<TThis> {
@@ -65,6 +80,22 @@ namespace System.StateMachine.Pro.Hierarchical {
         protected void OnDeactivate(object? argument);
         protected void OnBeforeDeactivate(object? argument);
         protected void OnAfterDeactivate(object? argument);
+
+    }
+    public partial interface IStateBase<TThis> {
+
+        // SetChild
+        protected void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback);
+
+        // AddChild
+        protected void AddChild(TThis child, object? argument);
+
+        // RemoveChild
+        protected void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback);
+        protected void RemoveChild(object? argument, Action<TThis, object?>? callback);
+
+        // RemoveSelf
+        protected void RemoveSelf(object? argument, Action<TThis, object?>? callback);
 
     }
 }
