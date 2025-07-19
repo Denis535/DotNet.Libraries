@@ -3,7 +3,6 @@ namespace System.TreeMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Text;
 
     public partial interface INode<TThis> where TThis : class, INode<TThis> {
@@ -110,36 +109,10 @@ namespace System.TreeMachine.Pro {
         public Action<TThis, object?>? OnAfterDescendantDetachCallback { get; set; }
 
         // OnDescendantAttach
-        protected void OnBeforeDescendantAttach(TThis descendant, object? argument);
-        protected void OnAfterDescendantAttach(TThis descendant, object? argument);
-        protected void OnBeforeDescendantDetach(TThis descendant, object? argument);
-        protected void OnAfterDescendantDetach(TThis descendant, object? argument);
-
-        // Helpers
-        protected static void OnBeforeAttach(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.Reverse().OfType<INode2<TThis>>()) {
-                ancestor.OnBeforeDescendantAttachCallback?.Invoke( node, argument );
-                ancestor.OnBeforeDescendantAttach( node, argument );
-            }
-        }
-        protected static void OnAfterAttach(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.OfType<INode2<TThis>>()) {
-                ancestor.OnAfterDescendantAttach( node, argument );
-                ancestor.OnAfterDescendantAttachCallback?.Invoke( node, argument );
-            }
-        }
-        protected static void OnBeforeDetach(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.Reverse().OfType<INode2<TThis>>()) {
-                ancestor.OnBeforeDescendantDetachCallback?.Invoke( node, argument );
-                ancestor.OnBeforeDescendantDetach( node, argument );
-            }
-        }
-        protected static void OnAfterDetach(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.OfType<INode2<TThis>>()) {
-                ancestor.OnAfterDescendantDetach( node, argument );
-                ancestor.OnAfterDescendantDetachCallback?.Invoke( node, argument );
-            }
-        }
+        protected internal void OnBeforeDescendantAttach(TThis descendant, object? argument);
+        protected internal void OnAfterDescendantAttach(TThis descendant, object? argument);
+        protected internal void OnBeforeDescendantDetach(TThis descendant, object? argument);
+        protected internal void OnAfterDescendantDetach(TThis descendant, object? argument);
 
     }
     public partial interface INode2<TThis> {
@@ -151,36 +124,10 @@ namespace System.TreeMachine.Pro {
         public Action<TThis, object?>? OnAfterDescendantDeactivateCallback { get; set; }
 
         // OnDescendantActivate
-        protected void OnBeforeDescendantActivate(TThis descendant, object? argument);
-        protected void OnAfterDescendantActivate(TThis descendant, object? argument);
-        protected void OnBeforeDescendantDeactivate(TThis descendant, object? argument);
-        protected void OnAfterDescendantDeactivate(TThis descendant, object? argument);
-
-        // Helpers
-        protected static void OnBeforeActivate(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.Reverse().OfType<INode2<TThis>>()) {
-                ancestor.OnBeforeDescendantActivateCallback?.Invoke( node, argument );
-                ancestor.OnBeforeDescendantActivate( node, argument );
-            }
-        }
-        protected static void OnAfterActivate(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.OfType<INode2<TThis>>()) {
-                ancestor.OnAfterDescendantActivate( node, argument );
-                ancestor.OnAfterDescendantActivateCallback?.Invoke( node, argument );
-            }
-        }
-        protected static void OnBeforeDeactivate(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.Reverse().OfType<INode2<TThis>>()) {
-                ancestor.OnBeforeDescendantDeactivateCallback?.Invoke( node, argument );
-                ancestor.OnBeforeDescendantDeactivate( node, argument );
-            }
-        }
-        protected static void OnAfterDeactivate(TThis node, object? argument) {
-            foreach (var ancestor in node.Ancestors.OfType<INode2<TThis>>()) {
-                ancestor.OnAfterDescendantDeactivate( node, argument );
-                ancestor.OnAfterDescendantDeactivateCallback?.Invoke( node, argument );
-            }
-        }
+        protected internal void OnBeforeDescendantActivate(TThis descendant, object? argument);
+        protected internal void OnAfterDescendantActivate(TThis descendant, object? argument);
+        protected internal void OnBeforeDescendantDeactivate(TThis descendant, object? argument);
+        protected internal void OnAfterDescendantDeactivate(TThis descendant, object? argument);
 
     }
 }

@@ -247,11 +247,23 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.Owner = machine;
-                this.OnBeforeAttachCallback?.Invoke( argument );
-                this.OnBeforeAttach( argument );
+                foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                    ancestor.OnBeforeDescendantAttachCallback?.Invoke( (TThis) this, argument );
+                    ancestor.OnBeforeDescendantAttach( (TThis) this, argument );
+                }
+                {
+                    this.OnBeforeAttachCallback?.Invoke( argument );
+                    this.OnBeforeAttach( argument );
+                }
                 this.OnAttach( argument );
-                this.OnAfterAttach( argument );
-                this.OnAfterAttachCallback?.Invoke( argument );
+                {
+                    this.OnAfterAttach( argument );
+                    this.OnAfterAttachCallback?.Invoke( argument );
+                }
+                foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                    ancestor.OnAfterDescendantAttach( (TThis) this, argument );
+                    ancestor.OnAfterDescendantAttachCallback?.Invoke( (TThis) this, argument );
+                }
             }
             {
                 this.Activate( argument );
@@ -264,11 +276,23 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.Owner = parent;
-                this.OnBeforeAttachCallback?.Invoke( argument );
-                this.OnBeforeAttach( argument );
+                foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                    ancestor.OnBeforeDescendantAttachCallback?.Invoke( (TThis) this, argument );
+                    ancestor.OnBeforeDescendantAttach( (TThis) this, argument );
+                }
+                {
+                    this.OnBeforeAttachCallback?.Invoke( argument );
+                    this.OnBeforeAttach( argument );
+                }
                 this.OnAttach( argument );
-                this.OnAfterAttach( argument );
-                this.OnAfterAttachCallback?.Invoke( argument );
+                {
+                    this.OnAfterAttach( argument );
+                    this.OnAfterAttachCallback?.Invoke( argument );
+                }
+                foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                    ancestor.OnAfterDescendantAttach( (TThis) this, argument );
+                    ancestor.OnAfterDescendantAttachCallback?.Invoke( (TThis) this, argument );
+                }
             }
             if (parent.Activity == Activity.Active) {
                 this.Activate( argument );
@@ -285,11 +309,23 @@ namespace System.TreeMachine.Pro {
                 this.Deactivate( argument );
             }
             {
-                this.OnBeforeDetachCallback?.Invoke( argument );
-                this.OnBeforeDetach( argument );
+                foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                    ancestor.OnBeforeDescendantDetachCallback?.Invoke( (TThis) this, argument );
+                    ancestor.OnBeforeDescendantDetach( (TThis) this, argument );
+                }
+                {
+                    this.OnBeforeDetachCallback?.Invoke( argument );
+                    this.OnBeforeDetach( argument );
+                }
                 this.OnDetach( argument );
-                this.OnAfterDetach( argument );
-                this.OnAfterDetachCallback?.Invoke( argument );
+                {
+                    this.OnAfterDetach( argument );
+                    this.OnAfterDetachCallback?.Invoke( argument );
+                }
+                foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                    ancestor.OnAfterDescendantDetach( (TThis) this, argument );
+                    ancestor.OnAfterDescendantDetachCallback?.Invoke( (TThis) this, argument );
+                }
                 this.Owner = null;
             }
         }
@@ -303,11 +339,23 @@ namespace System.TreeMachine.Pro {
                 Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             }
             {
-                this.OnBeforeDetachCallback?.Invoke( argument );
-                this.OnBeforeDetach( argument );
+                foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                    ancestor.OnBeforeDescendantDetachCallback?.Invoke( (TThis) this, argument );
+                    ancestor.OnBeforeDescendantDetach( (TThis) this, argument );
+                }
+                {
+                    this.OnBeforeDetachCallback?.Invoke( argument );
+                    this.OnBeforeDetach( argument );
+                }
                 this.OnDetach( argument );
-                this.OnAfterDetach( argument );
-                this.OnAfterDetachCallback?.Invoke( argument );
+                {
+                    this.OnAfterDetach( argument );
+                    this.OnAfterDetachCallback?.Invoke( argument );
+                }
+                foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                    ancestor.OnAfterDescendantDetach( (TThis) this, argument );
+                    ancestor.OnAfterDescendantDetachCallback?.Invoke( (TThis) this, argument );
+                }
                 this.Owner = null;
             }
         }
@@ -340,18 +388,30 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
             Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
-            this.OnBeforeActivateCallback?.Invoke( argument );
-            this.OnBeforeActivate( argument );
-            this.Activity = Activity.Activating;
+            foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                ancestor.OnBeforeDescendantActivateCallback?.Invoke( (TThis) this, argument );
+                ancestor.OnBeforeDescendantActivate( (TThis) this, argument );
+            }
             {
+                this.OnBeforeActivateCallback?.Invoke( argument );
+                this.OnBeforeActivate( argument );
+            }
+            {
+                this.Activity = Activity.Activating;
                 this.OnActivate( argument );
                 foreach (var child in this.Children) {
                     child.Activate( argument );
                 }
+                this.Activity = Activity.Active;
             }
-            this.Activity = Activity.Active;
-            this.OnAfterActivate( argument );
-            this.OnAfterActivateCallback?.Invoke( argument );
+            {
+                this.OnAfterActivate( argument );
+                this.OnAfterActivateCallback?.Invoke( argument );
+            }
+            foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                ancestor.OnAfterDescendantActivate( (TThis) this, argument );
+                ancestor.OnAfterDescendantActivateCallback?.Invoke( (TThis) this, argument );
+            }
         }
 
         // Deactivate
@@ -359,18 +419,30 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
             Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
-            this.OnBeforeDeactivateCallback?.Invoke( argument );
-            this.OnBeforeDeactivate( argument );
-            this.Activity = Activity.Deactivating;
+            foreach (var ancestor in this.Ancestors.Reverse().OfType<INode2<TThis>>()) {
+                ancestor.OnBeforeDescendantDeactivateCallback?.Invoke( (TThis) this, argument );
+                ancestor.OnBeforeDescendantDeactivate( (TThis) this, argument );
+            }
             {
+                this.OnBeforeDeactivateCallback?.Invoke( argument );
+                this.OnBeforeDeactivate( argument );
+            }
+            {
+                this.Activity = Activity.Deactivating;
                 foreach (var child in this.Children.Reverse()) {
                     child.Deactivate( argument );
                 }
                 this.OnDeactivate( argument );
+                this.Activity = Activity.Inactive;
             }
-            this.Activity = Activity.Inactive;
-            this.OnAfterDeactivate( argument );
-            this.OnAfterDeactivateCallback?.Invoke( argument );
+            {
+                this.OnAfterDeactivate( argument );
+                this.OnAfterDeactivateCallback?.Invoke( argument );
+            }
+            foreach (var ancestor in this.Ancestors.OfType<INode2<TThis>>()) {
+                ancestor.OnAfterDescendantDeactivate( (TThis) this, argument );
+                ancestor.OnAfterDescendantDeactivateCallback?.Invoke( (TThis) this, argument );
+            }
         }
 
         // OnActivate
