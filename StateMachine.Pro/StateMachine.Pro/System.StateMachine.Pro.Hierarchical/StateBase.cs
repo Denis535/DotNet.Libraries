@@ -6,16 +6,74 @@ namespace System.StateMachine.Pro.Hierarchical {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<TThis> {
-        public enum Activity_ {
-            Inactive,
-            Activating,
-            Active,
-            Deactivating,
+    public abstract partial class StateBase<TThis> : IStateBase<TThis> where TThis : notnull, StateBase<TThis> {
+
+        object? IStateBase<TThis>.Owner => this.Owner;
+
+        IStateMachine<TThis>? IStateBase<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
+
+        void IStateBase<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
+            this.Attach( machine, argument );
         }
+
+        void IStateBase<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
+            this.Detach( machine, argument );
+        }
+
+        void IStateBase<TThis>.OnAttach(object? argument) {
+            this.OnAttach( argument );
+        }
+        void IStateBase<TThis>.OnBeforeAttach(object? argument) {
+            this.OnBeforeAttach( argument );
+        }
+        void IStateBase<TThis>.OnAfterAttach(object? argument) {
+            this.OnAfterAttach( argument );
+        }
+
+        void IStateBase<TThis>.OnDetach(object? argument) {
+            this.OnDetach( argument );
+        }
+        void IStateBase<TThis>.OnBeforeDetach(object? argument) {
+            this.OnBeforeDetach( argument );
+        }
+        void IStateBase<TThis>.OnAfterDetach(object? argument) {
+            this.OnAfterDetach( argument );
+        }
+
+        void IStateBase<TThis>.Activate(object? argument) {
+            this.Activate( argument );
+        }
+
+        void IStateBase<TThis>.Deactivate(object? argument) {
+            this.Deactivate( argument );
+        }
+
+        void IStateBase<TThis>.OnActivate(object? argument) {
+            this.OnActivate( argument );
+        }
+        void IStateBase<TThis>.OnBeforeActivate(object? argument) {
+            this.OnBeforeActivate( argument );
+        }
+        void IStateBase<TThis>.OnAfterActivate(object? argument) {
+            this.OnAfterActivate( argument );
+        }
+
+        void IStateBase<TThis>.OnDeactivate(object? argument) {
+            this.OnDeactivate( argument );
+        }
+        void IStateBase<TThis>.OnBeforeDeactivate(object? argument) {
+            this.OnBeforeDeactivate( argument );
+        }
+        void IStateBase<TThis>.OnAfterDeactivate(object? argument) {
+            this.OnAfterDeactivate( argument );
+        }
+
+    }
+    public abstract partial class StateBase<TThis> {
 
         // Owner
         private object? Owner { get; set; }
+
         // Machine
         public IStateMachine<TThis>? Machine => (this.Owner as IStateMachine<TThis>) ?? (this.Owner as StateBase<TThis>)?.Machine;
         private IStateMachine<TThis>? Machine_NoRecursive => this.Owner as IStateMachine<TThis>;
@@ -37,7 +95,7 @@ namespace System.StateMachine.Pro.Hierarchical {
         public IEnumerable<TThis> AncestorsAndSelf => this.Ancestors.Prepend( (TThis) this );
 
         // Activity
-        public Activity_ Activity { get; private set; } = Activity_.Inactive;
+        public Activity Activity { get; private set; } = Activity.Inactive;
 
         // Child
         public TThis? Child { get; private set; }
@@ -69,7 +127,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
                 this.Owner = machine;
                 this.OnBeforeAttach( argument );
@@ -84,14 +142,14 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
                 this.Owner = parent;
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
             }
-            if (parent.Activity is Activity_.Active) {
+            if (parent.Activity is Activity.Active) {
                 this.Activate( argument );
             } else {
             }
@@ -101,7 +159,7 @@ namespace System.StateMachine.Pro.Hierarchical {
         internal void Detach(IStateMachine<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
             {
                 this.Deactivate( argument );
             }
@@ -115,11 +173,11 @@ namespace System.StateMachine.Pro.Hierarchical {
         internal void Detach(TThis parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.Valid( $"State {this} must have {parent} parent", this.Parent == parent );
-            if (parent.Activity is Activity_.Active) {
-                Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
+            if (parent.Activity is Activity.Active) {
+                Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
                 this.Deactivate( argument );
             } else {
-                Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
+                Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             }
             {
                 this.OnBeforeDetach( argument );
@@ -159,34 +217,34 @@ namespace System.StateMachine.Pro.Hierarchical {
         // Activate
         private void Activate(object? argument) {
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Activating );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity_.Inactive );
+            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             this.OnBeforeActivate( argument );
-            this.Activity = Activity_.Activating;
+            this.Activity = Activity.Activating;
             {
                 this.OnActivate( argument );
                 if (this.Child != null) {
                     this.Child.Activate( argument );
                 }
             }
-            this.Activity = Activity_.Active;
+            this.Activity = Activity.Active;
             this.OnAfterActivate( argument );
         }
 
         // Deactivate
         private void Deactivate(object? argument) {
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity_.Active or Activity_.Deactivating );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity_.Active );
+            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
             this.OnBeforeDeactivate( argument );
-            this.Activity = Activity_.Deactivating;
+            this.Activity = Activity.Deactivating;
             {
                 if (this.Child != null) {
                     this.Child.Deactivate( argument );
                 }
                 this.OnDeactivate( argument );
             }
-            this.Activity = Activity_.Inactive;
+            this.Activity = Activity.Inactive;
             this.OnAfterDeactivate( argument );
         }
 
@@ -226,7 +284,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity_.Inactive );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             Assert.Operation.Valid( $"State {this} must have no {this.Child} child", this.Child == null );
             this.Child = child;
             this.Child.Attach( (TThis) this, argument );
@@ -236,10 +294,10 @@ namespace System.StateMachine.Pro.Hierarchical {
         protected virtual void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
-            if (this.Activity == Activity_.Active) {
-                Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity_.Active );
+            if (this.Activity == Activity.Active) {
+                Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity.Active );
             } else {
-                Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity_.Inactive );
+                Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             }
             Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
             this.Child.Detach( (TThis) this, argument );

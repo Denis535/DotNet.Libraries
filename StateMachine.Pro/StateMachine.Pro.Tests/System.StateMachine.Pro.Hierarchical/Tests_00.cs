@@ -23,7 +23,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( a.Parent, Is.Null );
                 Assert.That( a.Ancestors.Count(), Is.Zero );
                 Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( a.Child, Is.Null );
                 Assert.That( a.Descendants.Count(), Is.Zero );
                 Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -38,7 +38,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( a.Parent, Is.Null );
                 Assert.That( a.Ancestors.Count(), Is.Zero );
                 Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+                Assert.That( a.Activity, Is.EqualTo( Activity.Inactive ) );
                 Assert.That( a.Child, Is.Null );
                 Assert.That( a.Descendants.Count(), Is.Zero );
                 Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -53,7 +53,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( b.Parent, Is.Null );
                 Assert.That( b.Ancestors.Count(), Is.Zero );
                 Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( b.Child, Is.Null );
                 Assert.That( b.Descendants.Count(), Is.Zero );
                 Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -68,7 +68,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( b.Parent, Is.Null );
                 Assert.That( b.Ancestors.Count(), Is.Zero );
                 Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Inactive ) );
+                Assert.That( b.Activity, Is.EqualTo( Activity.Inactive ) );
                 Assert.That( b.Child, Is.Null );
                 Assert.That( b.Descendants.Count(), Is.Zero );
                 Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -100,7 +100,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( a.Parent, Is.Null );
                 Assert.That( a.Ancestors.Count(), Is.Zero );
                 Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( a.Child, Is.Null );
                 Assert.That( a.Descendants.Count(), Is.Zero );
                 Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -115,7 +115,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( a.Parent, Is.Null );
                 Assert.That( a.Ancestors.Count(), Is.Zero );
                 Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( a.Child, Is.Null );
                 Assert.That( a.Descendants.Count(), Is.Zero );
                 Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -130,7 +130,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( b.Parent, Is.Null );
                 Assert.That( b.Ancestors.Count(), Is.Zero );
                 Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( b.Child, Is.Null );
                 Assert.That( b.Descendants.Count(), Is.Zero );
                 Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
@@ -145,7 +145,7 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.That( b.Parent, Is.Null );
                 Assert.That( b.Ancestors.Count(), Is.Zero );
                 Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( State.Activity_.Active ) );
+                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
                 Assert.That( b.Child, Is.Null );
                 Assert.That( b.Descendants.Count(), Is.Zero );
                 Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
