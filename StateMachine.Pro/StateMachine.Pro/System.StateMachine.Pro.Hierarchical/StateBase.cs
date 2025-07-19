@@ -239,9 +239,11 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
                 this.Owner = machine;
+                this.OnBeforeAttachCallback?.Invoke( argument );
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
             }
             {
                 this.Activate( argument );
@@ -254,9 +256,11 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
                 this.Owner = parent;
+                this.OnBeforeAttachCallback?.Invoke( argument );
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
             }
             if (parent.Activity is Activity.Active) {
                 this.Activate( argument );
@@ -273,9 +277,11 @@ namespace System.StateMachine.Pro.Hierarchical {
                 this.Deactivate( argument );
             }
             {
+                this.OnBeforeDetachCallback?.Invoke( argument );
                 this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
                 this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
                 this.Owner = null;
             }
         }
@@ -289,9 +295,11 @@ namespace System.StateMachine.Pro.Hierarchical {
                 Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             }
             {
+                this.OnBeforeDetachCallback?.Invoke( argument );
                 this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
                 this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
                 this.Owner = null;
             }
         }
@@ -299,19 +307,15 @@ namespace System.StateMachine.Pro.Hierarchical {
         // OnAttach
         protected abstract void OnAttach(object? argument);
         protected virtual void OnBeforeAttach(object? argument) {
-            this.OnBeforeAttachCallback?.Invoke( argument );
         }
         protected virtual void OnAfterAttach(object? argument) {
-            this.OnAfterAttachCallback?.Invoke( argument );
         }
 
         // OnDetach
         protected abstract void OnDetach(object? argument);
         protected virtual void OnBeforeDetach(object? argument) {
-            this.OnBeforeDetachCallback?.Invoke( argument );
         }
         protected virtual void OnAfterDetach(object? argument) {
-            this.OnAfterDetachCallback?.Invoke( argument );
         }
 
     }
@@ -328,6 +332,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            this.OnBeforeActivateCallback?.Invoke( argument );
             this.OnBeforeActivate( argument );
             this.Activity = Activity.Activating;
             {
@@ -338,6 +343,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             }
             this.Activity = Activity.Active;
             this.OnAfterActivate( argument );
+            this.OnAfterActivateCallback?.Invoke( argument );
         }
 
         // Deactivate
@@ -345,6 +351,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+            this.OnBeforeDeactivateCallback?.Invoke( argument );
             this.OnBeforeDeactivate( argument );
             this.Activity = Activity.Deactivating;
             {
@@ -355,24 +362,21 @@ namespace System.StateMachine.Pro.Hierarchical {
             }
             this.Activity = Activity.Inactive;
             this.OnAfterDeactivate( argument );
+            this.OnAfterDeactivateCallback?.Invoke( argument );
         }
 
         // OnActivate
         protected abstract void OnActivate(object? argument);
         protected virtual void OnBeforeActivate(object? argument) {
-            this.OnBeforeActivateCallback?.Invoke( argument );
         }
         protected virtual void OnAfterActivate(object? argument) {
-            this.OnAfterActivateCallback?.Invoke( argument );
         }
 
         // OnDeactivate
         protected abstract void OnDeactivate(object? argument);
         protected virtual void OnBeforeDeactivate(object? argument) {
-            this.OnBeforeDeactivateCallback?.Invoke( argument );
         }
         protected virtual void OnAfterDeactivate(object? argument) {
-            this.OnAfterDeactivateCallback?.Invoke( argument );
         }
 
     }
