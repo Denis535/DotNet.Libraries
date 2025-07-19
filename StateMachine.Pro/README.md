@@ -79,7 +79,7 @@ public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis
     protected object? Owner { get; }
 
     public IStateMachine<TThis>? Machine { get; }
-    protected IStateMachine<TThis>? Machine_NoRecursive { get; }
+    protected internal IStateMachine<TThis>? Machine_NoRecursive { get; }
 
     [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
     public TThis Root { get; }

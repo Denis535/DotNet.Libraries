@@ -12,7 +12,7 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         // Machine
         public IStateMachine<TThis>? Machine { get; }
-        protected IStateMachine<TThis>? Machine_NoRecursive { get; }
+        protected internal IStateMachine<TThis>? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }

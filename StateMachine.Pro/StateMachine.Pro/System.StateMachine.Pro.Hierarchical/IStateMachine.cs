@@ -29,7 +29,8 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have no {machine.State} state", machine.State == null );
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
-            Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine} machine", state.Machine == null );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine_NoRecursive} machine", state.Machine_NoRecursive == null );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Parent} parent", state.Parent == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == Activity.Inactive );
             machine.State = state;
             machine.State.Attach( machine, argument );
@@ -38,7 +39,8 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have {state} state", machine.State == state );
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
-            Assert.Argument.Valid( $"Argument 'state' ({state}) must have {machine} machine", state.Machine == machine );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must have {machine} machine", state.Machine_NoRecursive == machine );
+            Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Parent} parent", state.Parent == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == Activity.Active );
             machine.State.Detach( machine, argument );
             machine.State = null;
