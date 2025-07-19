@@ -4,17 +4,10 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class TreeMachineBase<T> : ITreeMachine<T> where T : class, INode<T> {
+    public abstract partial class TreeMachineBase<T> : ITreeMachine<T> where T : class, INode<T> {
 
         // Root
         T? ITreeMachine<T>.Root { get => this.Root; set => this.Root = value; }
-
-        // Root
-        protected T? Root { get; private set; }
-
-        // Constructor
-        public TreeMachineBase() {
-        }
 
         // AddRoot
         void ITreeMachine<T>.AddRoot(T root, object? argument) {
@@ -25,6 +18,16 @@ namespace System.TreeMachine.Pro {
         }
         void ITreeMachine<T>.RemoveRoot(object? argument, Action<T, object?>? callback) {
             this.RemoveRoot( argument, callback );
+        }
+
+    }
+    public abstract partial class TreeMachineBase<T> {
+
+        // Root
+        protected T? Root { get; private set; }
+
+        // Constructor
+        public TreeMachineBase() {
         }
 
         // AddRoot

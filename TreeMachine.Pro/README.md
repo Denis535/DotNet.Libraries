@@ -36,15 +36,15 @@ public partial interface INode<TThis> where TThis : class, INode<TThis> {
 }
 public partial interface INode<TThis> {
 
-    public event Action<object?>? OnBeforeAttachCallback;
-    public event Action<object?>? OnAfterAttachCallback;
-    public event Action<object?>? OnBeforeDetachCallback;
-    public event Action<object?>? OnAfterDetachCallback;
+    public Action<object?>? OnBeforeAttachCallback { get; set; }
+    public Action<object?>? OnAfterAttachCallback { get; set; }
+    public Action<object?>? OnBeforeDetachCallback { get; set; }
+    public Action<object?>? OnAfterDetachCallback { get; set; }
 
     protected internal void Attach(ITreeMachine<TThis> machine, object? argument);
-    protected void Attach(TThis parent, object? argument);
+    protected internal void Attach(TThis parent, object? argument);
     protected internal void Detach(ITreeMachine<TThis> machine, object? argument);
-    protected void Detach(TThis parent, object? argument);
+    protected internal void Detach(TThis parent, object? argument);
 
     protected void OnAttach(object? argument);
     protected void OnBeforeAttach(object? argument);
@@ -57,10 +57,10 @@ public partial interface INode<TThis> {
 }
 public partial interface INode<TThis> {
 
-    public event Action<object?>? OnBeforeActivateCallback;
-    public event Action<object?>? OnAfterActivateCallback;
-    public event Action<object?>? OnBeforeDeactivateCallback;
-    public event Action<object?>? OnAfterDeactivateCallback;
+    public Action<object?>? OnBeforeActivateCallback { get; set; }
+    public Action<object?>? OnAfterActivateCallback { get; set; }
+    public Action<object?>? OnBeforeDeactivateCallback { get; set; }
+    public Action<object?>? OnAfterDeactivateCallback { get; set; }
 
     protected void Activate(object? argument);
     protected void Deactivate(object? argument);
@@ -85,6 +85,8 @@ public partial interface INode<TThis> {
     protected int RemoveChildren(object? argument, Action<TThis, object?>? callback);
 
     protected void RemoveSelf(object? argument, Action<TThis, object?>? callback);
+
+    protected void Sort(List<TThis> children);
 
 }
 public enum Activity {
