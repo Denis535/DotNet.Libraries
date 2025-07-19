@@ -61,6 +61,12 @@ public partial interface IState<TThis> {
     protected void OnAfterDeactivate(object? argument);
 
 }
+public enum Activity {
+    Inactive,
+    Activating,
+    Active,
+    Deactivating,
+}
 ```
 ```
 namespace System.StateMachine.Pro.Hierarchical;
@@ -143,6 +149,12 @@ public partial interface IState<TThis> {
     protected void RemoveChild(object? argument, Action<TThis, object?>? callback);
     protected void RemoveSelf(object? argument, Action<TThis, object?>? callback);
 
+}
+public enum Activity {
+    Inactive,
+    Activating,
+    Active,
+    Deactivating,
 }
 ```
 
