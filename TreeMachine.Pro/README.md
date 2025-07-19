@@ -43,7 +43,6 @@ public partial interface INodeBase<TThis> {
 
     protected internal void Attach(ITreeMachine<TThis> machine, object? argument);
     protected void Attach(TThis parent, object? argument);
-
     protected internal void Detach(ITreeMachine<TThis> machine, object? argument);
     protected void Detach(TThis parent, object? argument);
 
@@ -64,7 +63,6 @@ public partial interface INodeBase<TThis> {
     public event Action<object?>? OnAfterDeactivateCallback;
 
     protected void Activate(object? argument);
-
     protected void Deactivate(object? argument);
 
     protected void OnActivate(object? argument);

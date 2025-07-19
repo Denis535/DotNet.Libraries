@@ -10,7 +10,57 @@ namespace System.TreeMachine.Pro {
 
         object? INodeBase<TThis>.Owner => this.Owner;
 
+        ITreeMachine<TThis>? INodeBase<TThis>.Machine => this.Machine;
         ITreeMachine<TThis>? INodeBase<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
+
+        bool INodeBase<TThis>.IsRoot => this.IsRoot;
+        TThis INodeBase<TThis>.Root => this.Root;
+
+        TThis? INodeBase<TThis>.Parent => this.Parent;
+        IEnumerable<TThis> INodeBase<TThis>.Ancestors => this.Ancestors;
+        IEnumerable<TThis> INodeBase<TThis>.AncestorsAndSelf => this.AncestorsAndSelf;
+
+        Activity INodeBase<TThis>.Activity => this.Activity;
+
+        IReadOnlyList<TThis> INodeBase<TThis>.Children => this.Children;
+        IEnumerable<TThis> INodeBase<TThis>.Descendants => this.Descendants;
+        IEnumerable<TThis> INodeBase<TThis>.DescendantsAndSelf => this.DescendantsAndSelf;
+
+    }
+    public abstract partial class NodeBase<TThis> {
+
+        event Action<object?>? INodeBase<TThis>.OnBeforeAttachCallback {
+            add {
+                this.OnBeforeAttachCallback += value;
+            }
+            remove {
+                this.OnBeforeAttachCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnAfterAttachCallback {
+            add {
+                this.OnAfterAttachCallback += value;
+            }
+            remove {
+                this.OnAfterAttachCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnBeforeDetachCallback {
+            add {
+                this.OnBeforeDetachCallback += value;
+            }
+            remove {
+                this.OnBeforeDetachCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnAfterDetachCallback {
+            add {
+                this.OnAfterDetachCallback += value;
+            }
+            remove {
+                this.OnAfterDetachCallback -= value;
+            }
+        }
 
         void INodeBase<TThis>.Attach(ITreeMachine<TThis> machine, object? argument) {
             this.Attach( machine, argument );
@@ -18,7 +68,6 @@ namespace System.TreeMachine.Pro {
         void INodeBase<TThis>.Attach(TThis parent, object? argument) {
             this.Attach( parent, argument );
         }
-
         void INodeBase<TThis>.Detach(ITreeMachine<TThis> machine, object? argument) {
             this.Detach( machine, argument );
         }
@@ -46,10 +95,45 @@ namespace System.TreeMachine.Pro {
             this.OnAfterDetach( argument );
         }
 
+    }
+    public abstract partial class NodeBase<TThis> {
+
+        event Action<object?>? INodeBase<TThis>.OnBeforeActivateCallback {
+            add {
+                this.OnBeforeActivateCallback += value;
+            }
+            remove {
+                this.OnBeforeActivateCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnAfterActivateCallback {
+            add {
+                this.OnAfterActivateCallback += value;
+            }
+            remove {
+                this.OnAfterActivateCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnBeforeDeactivateCallback {
+            add {
+                this.OnBeforeDeactivateCallback += value;
+            }
+            remove {
+                this.OnBeforeDeactivateCallback -= value;
+            }
+        }
+        event Action<object?>? INodeBase<TThis>.OnAfterDeactivateCallback {
+            add {
+                this.OnAfterDeactivateCallback += value;
+            }
+            remove {
+                this.OnAfterDeactivateCallback -= value;
+            }
+        }
+
         void INodeBase<TThis>.Activate(object? argument) {
             this.Activate( argument );
         }
-
         void INodeBase<TThis>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
@@ -74,27 +158,27 @@ namespace System.TreeMachine.Pro {
             this.OnAfterDeactivate( argument );
         }
 
+    }
+    public abstract partial class NodeBase<TThis> {
+
         void INodeBase<TThis>.AddChild(TThis child, object? argument) {
             this.AddChild( child, argument );
         }
         void INodeBase<TThis>.AddChildren(TThis[] children, object? argument) {
             this.AddChildren( children, argument );
         }
-
         void INodeBase<TThis>.RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
             this.RemoveChild( child, argument, callback );
         }
         bool INodeBase<TThis>.RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChild( predicate, argument, callback );
         }
-
         int INodeBase<TThis>.RemoveChildren(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChildren( predicate, argument, callback );
         }
         int INodeBase<TThis>.RemoveChildren(object? argument, Action<TThis, object?>? callback) {
             return this.RemoveChildren( argument, callback );
         }
-
         void INodeBase<TThis>.RemoveSelf(object? argument, Action<TThis, object?>? callback) {
             this.RemoveSelf( argument, callback );
         }

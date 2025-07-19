@@ -19,8 +19,8 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have no {machine.Root} root", machine.Root == null );
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no machine", root.Machine_NoRecursive == null );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no parent", root.Parent == null );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
             machine.Root = root;
             machine.Root.Attach( machine, argument );
@@ -30,7 +30,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.Valid( $"Argument 'machine' ({machine}) must have {root} root", machine.Root == root );
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {machine} machine", root.Machine_NoRecursive == machine );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no parent", root.Parent == null );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );
             machine.Root.Detach( machine, argument );
             machine.Root = null;
