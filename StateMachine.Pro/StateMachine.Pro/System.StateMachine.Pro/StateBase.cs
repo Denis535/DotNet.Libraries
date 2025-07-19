@@ -4,18 +4,18 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract partial class StateBase<TThis> : IStateBase<TThis> where TThis : notnull, StateBase<TThis> {
+    public abstract partial class StateBase<TThis> : IState<TThis> where TThis : notnull, StateBase<TThis> {
 
-        IStateMachine<TThis>? IStateBase<TThis>.Owner => this.Owner;
+        IStateMachine<TThis>? IState<TThis>.Owner => this.Owner;
 
-        IStateMachine<TThis>? IStateBase<TThis>.Machine => this.Machine;
+        IStateMachine<TThis>? IState<TThis>.Machine => this.Machine;
 
-        Activity IStateBase<TThis>.Activity => this.Activity;
+        Activity IState<TThis>.Activity => this.Activity;
 
     }
     public abstract partial class StateBase<TThis> {
 
-        event Action<object?>? IStateBase<TThis>.OnBeforeAttachCallback {
+        event Action<object?>? IState<TThis>.OnBeforeAttachCallback {
             add {
                 this.OnBeforeAttachCallback += value;
             }
@@ -23,7 +23,7 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeAttachCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnAfterAttachCallback {
+        event Action<object?>? IState<TThis>.OnAfterAttachCallback {
             add {
                 this.OnAfterAttachCallback += value;
             }
@@ -31,7 +31,7 @@ namespace System.StateMachine.Pro {
                 this.OnAfterAttachCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnBeforeDetachCallback {
+        event Action<object?>? IState<TThis>.OnBeforeDetachCallback {
             add {
                 this.OnBeforeDetachCallback += value;
             }
@@ -39,7 +39,7 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeDetachCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnAfterDetachCallback {
+        event Action<object?>? IState<TThis>.OnAfterDetachCallback {
             add {
                 this.OnAfterDetachCallback += value;
             }
@@ -48,37 +48,37 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        void IStateBase<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
+        void IState<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
             this.Attach( machine, argument );
         }
-        void IStateBase<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
+        void IState<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
             this.Detach( machine, argument );
         }
 
-        void IStateBase<TThis>.OnAttach(object? argument) {
+        void IState<TThis>.OnAttach(object? argument) {
             this.OnAttach( argument );
         }
-        void IStateBase<TThis>.OnBeforeAttach(object? argument) {
+        void IState<TThis>.OnBeforeAttach(object? argument) {
             this.OnBeforeAttach( argument );
         }
-        void IStateBase<TThis>.OnAfterAttach(object? argument) {
+        void IState<TThis>.OnAfterAttach(object? argument) {
             this.OnAfterAttach( argument );
         }
 
-        void IStateBase<TThis>.OnDetach(object? argument) {
+        void IState<TThis>.OnDetach(object? argument) {
             this.OnDetach( argument );
         }
-        void IStateBase<TThis>.OnBeforeDetach(object? argument) {
+        void IState<TThis>.OnBeforeDetach(object? argument) {
             this.OnBeforeDetach( argument );
         }
-        void IStateBase<TThis>.OnAfterDetach(object? argument) {
+        void IState<TThis>.OnAfterDetach(object? argument) {
             this.OnAfterDetach( argument );
         }
 
     }
     public abstract partial class StateBase<TThis> {
 
-        event Action<object?>? IStateBase<TThis>.OnBeforeActivateCallback {
+        event Action<object?>? IState<TThis>.OnBeforeActivateCallback {
             add {
                 this.OnBeforeActivateCallback += value;
             }
@@ -86,7 +86,7 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeActivateCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnAfterActivateCallback {
+        event Action<object?>? IState<TThis>.OnAfterActivateCallback {
             add {
                 this.OnAfterActivateCallback += value;
             }
@@ -94,7 +94,7 @@ namespace System.StateMachine.Pro {
                 this.OnAfterActivateCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnBeforeDeactivateCallback {
+        event Action<object?>? IState<TThis>.OnBeforeDeactivateCallback {
             add {
                 this.OnBeforeDeactivateCallback += value;
             }
@@ -102,7 +102,7 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeDeactivateCallback -= value;
             }
         }
-        event Action<object?>? IStateBase<TThis>.OnAfterDeactivateCallback {
+        event Action<object?>? IState<TThis>.OnAfterDeactivateCallback {
             add {
                 this.OnAfterDeactivateCallback += value;
             }
@@ -111,30 +111,30 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        void IStateBase<TThis>.Activate(object? argument) {
+        void IState<TThis>.Activate(object? argument) {
             this.Activate( argument );
         }
-        void IStateBase<TThis>.Deactivate(object? argument) {
+        void IState<TThis>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
 
-        void IStateBase<TThis>.OnActivate(object? argument) {
+        void IState<TThis>.OnActivate(object? argument) {
             this.OnActivate( argument );
         }
-        void IStateBase<TThis>.OnBeforeActivate(object? argument) {
+        void IState<TThis>.OnBeforeActivate(object? argument) {
             this.OnBeforeActivate( argument );
         }
-        void IStateBase<TThis>.OnAfterActivate(object? argument) {
+        void IState<TThis>.OnAfterActivate(object? argument) {
             this.OnAfterActivate( argument );
         }
 
-        void IStateBase<TThis>.OnDeactivate(object? argument) {
+        void IState<TThis>.OnDeactivate(object? argument) {
             this.OnDeactivate( argument );
         }
-        void IStateBase<TThis>.OnBeforeDeactivate(object? argument) {
+        void IState<TThis>.OnBeforeDeactivate(object? argument) {
             this.OnBeforeDeactivate( argument );
         }
-        void IStateBase<TThis>.OnAfterDeactivate(object? argument) {
+        void IState<TThis>.OnAfterDeactivate(object? argument) {
             this.OnAfterDeactivate( argument );
         }
 

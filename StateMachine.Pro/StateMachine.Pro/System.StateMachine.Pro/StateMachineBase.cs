@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class StateMachineBase<T> : IStateMachine<T> where T : class, IStateBase<T> {
+    public abstract class StateMachineBase<T> : IStateMachine<T> where T : class, IState<T> {
 
         // State
         T? IStateMachine<T>.State { get => this.State; set => this.State = value; }

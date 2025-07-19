@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro.Hierarchical {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IStateMachine<T> where T : class, IStateBase<T> {
+    public interface IStateMachine<T> where T : class, IState<T> {
 
         // State
         protected T? State { get; set; }

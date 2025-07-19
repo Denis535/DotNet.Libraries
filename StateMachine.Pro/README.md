@@ -4,7 +4,7 @@ The library that allows you to easily implement a stateful object.
 # Reference
 ```
 namespace System.StateMachine.Pro;
-public interface IStateMachine<T> where T : class, IStateBase<T> {
+public interface IStateMachine<T> where T : class, IState<T> {
 
     protected T? State { get; set; }
 
@@ -14,7 +14,7 @@ public interface IStateMachine<T> where T : class, IStateBase<T> {
     protected void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
-public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis> {
+public partial interface IState<TThis> where TThis : class, IState<TThis> {
 
     protected IStateMachine<TThis>? Owner { get; }
 
@@ -23,7 +23,7 @@ public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis
     public Activity Activity { get; }
 
 }
-public partial interface IStateBase<TThis> {
+public partial interface IState<TThis> {
 
     public event Action<object?>? OnBeforeAttachCallback;
     public event Action<object?>? OnAfterAttachCallback;
@@ -42,7 +42,7 @@ public partial interface IStateBase<TThis> {
     protected void OnAfterDetach(object? argument);
 
 }
-public partial interface IStateBase<TThis> {
+public partial interface IState<TThis> {
 
     public event Action<object?>? OnBeforeActivateCallback;
     public event Action<object?>? OnAfterActivateCallback;
@@ -64,7 +64,7 @@ public partial interface IStateBase<TThis> {
 ```
 ```
 namespace System.StateMachine.Pro.Hierarchical;
-public interface IStateMachine<T> where T : class, IStateBase<T> {
+public interface IStateMachine<T> where T : class, IState<T> {
 
     protected T? State { get; set; }
 
@@ -74,7 +74,7 @@ public interface IStateMachine<T> where T : class, IStateBase<T> {
     protected void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
-public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis> {
+public partial interface IState<TThis> where TThis : class, IState<TThis> {
 
     protected object? Owner { get; }
 
@@ -95,7 +95,7 @@ public partial interface IStateBase<TThis> where TThis : class, IStateBase<TThis
     public IEnumerable<TThis> DescendantsAndSelf { get; }
 
 }
-public partial interface IStateBase<TThis> {
+public partial interface IState<TThis> {
 
     public event Action<object?>? OnBeforeAttachCallback;
     public event Action<object?>? OnAfterAttachCallback;
@@ -116,7 +116,7 @@ public partial interface IStateBase<TThis> {
     protected void OnAfterDetach(object? argument);
 
 }
-public partial interface IStateBase<TThis> {
+public partial interface IState<TThis> {
 
     public event Action<object?>? OnBeforeActivateCallback;
     public event Action<object?>? OnAfterActivateCallback;
@@ -135,7 +135,7 @@ public partial interface IStateBase<TThis> {
     protected void OnAfterDeactivate(object? argument);
 
 }
-public partial interface IStateBase<TThis> {
+public partial interface IState<TThis> {
 
     protected void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback);
     protected void AddChild(TThis child, object? argument);
