@@ -89,12 +89,16 @@
             }
 
             protected override void Sort(List<Node_> children) {
-                //this.Widget.Sort( children );
+                if (this.Owner.Comparer != null) {
+                    children.Sort( (a, b) => this.Owner.Comparer.Compare( a.Owner, b.Owner ) );
+                }
             }
 
         }
 
         internal Node_ Node { get; }
+
+        protected IComparer<WidgetBase>? Comparer { get; init; }
 
         public WidgetBase() {
             this.Node = new Node_( this );
@@ -157,9 +161,6 @@
         protected virtual void RemoveSelf(object? argument, Action<WidgetBase, object?>? callback) {
             this.Node.RemoveSelf( argument, (self, arg) => callback?.Invoke( self.Owner, arg ) );
         }
-
-        //protected void Sort(IList<WidgetBase> children) {
-        //}
 
     }
     public abstract class ViewableWidgetBase : WidgetBase {
