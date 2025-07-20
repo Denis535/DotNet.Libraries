@@ -9,6 +9,9 @@ namespace System.StateMachine.Pro.Hierarchical {
         // UserData
         public TUserData UserData { get; private set; }
 
+        // State
+        public new T? State => base.State;
+
         // Constructor
         public StateMachine(TUserData userData) {
             this.UserData = userData;
