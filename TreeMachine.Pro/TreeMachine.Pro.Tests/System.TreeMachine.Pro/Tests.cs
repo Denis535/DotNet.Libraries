@@ -10,7 +10,7 @@
 
         [OneTimeSetUp]
         public void OneTimeSetUp() {
-            Trace.Listeners.Add( new ConsoleTraceListener() );
+            _ = Trace.Listeners.Add( new ConsoleTraceListener() );
         }
 
         [OneTimeTearDown]

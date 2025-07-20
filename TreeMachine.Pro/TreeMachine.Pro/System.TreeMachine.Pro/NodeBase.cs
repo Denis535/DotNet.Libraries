@@ -215,7 +215,7 @@ namespace System.TreeMachine.Pro {
             }
             Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
             child.Detach( (TThis) this, argument );
-            this.Children_Mutable.Remove( child );
+            _ = this.Children_Mutable.Remove( child );
             callback?.Invoke( child, argument );
         }
         protected bool RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {

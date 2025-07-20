@@ -62,7 +62,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.RemoveChildren a, b
-                machine.Root.RemoveChildren( null, null );
+                _ = machine.Root.RemoveChildren( null, null );
                 Assert.That( machine.Root, Is.EqualTo( root ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -170,7 +170,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // root.RemoveChildren a, b
-                root.RemoveChildren( null, null );
+                _ = root.RemoveChildren( null, null );
                 Assert.That( root.Machine, Is.Null );
                 Assert.That( root.Machine_NoRecursive, Is.Null );
                 Assert.That( root.IsRoot, Is.True );
