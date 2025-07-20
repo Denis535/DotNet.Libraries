@@ -9,6 +9,9 @@ namespace System.TreeMachine.Pro {
         // UserData
         public TUserData UserData { get; private set; }
 
+        // Root
+        public new T? Root => base.Root;
+
         // Constructor
         public TreeMachine(TUserData userData) {
             this.UserData = userData;
