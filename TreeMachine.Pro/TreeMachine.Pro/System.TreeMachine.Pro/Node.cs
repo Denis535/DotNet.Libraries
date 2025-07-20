@@ -3,8 +3,8 @@ namespace System.TreeMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    
-    public sealed class Node<TThis, TUserData> : NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
+
+    public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
         // UserData
         public TUserData UserData { get; private set; }
@@ -27,49 +27,49 @@ namespace System.TreeMachine.Pro {
         }
 
         // AddChild
-        public new void AddChild(TThis child, object? argument) {
+        public new void AddChild(Node<TUserData> child, object? argument) {
             base.AddChild( child, argument );
         }
-        public new void AddChildren(IEnumerable<TThis> children, object? argument) {
+        public new void AddChildren(IEnumerable<Node<TUserData>> children, object? argument) {
             base.AddChildren( children, argument );
         }
 
         // RemoveChild
-        public new void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveChild(Node<TUserData> child, object? argument, Action<Node<TUserData>, object?>? callback) {
             base.RemoveChild( child, argument, callback );
         }
-        public new bool RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        public new bool RemoveChild(Func<Node<TUserData>, bool> predicate, object? argument, Action<Node<TUserData>, object?>? callback) {
             return base.RemoveChild( predicate, argument, callback );
         }
-        public new int RemoveChildren(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        public new int RemoveChildren(Func<Node<TUserData>, bool> predicate, object? argument, Action<Node<TUserData>, object?>? callback) {
             return base.RemoveChildren( predicate, argument, callback );
         }
-        public new int RemoveChildren(object? argument, Action<TThis, object?>? callback) {
+        public new int RemoveChildren(object? argument, Action<Node<TUserData>, object?>? callback) {
             return base.RemoveChildren( argument, callback );
         }
 
         // RemoveSelf
-        public new void RemoveSelf(object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveSelf(object? argument, Action<Node<TUserData>, object?>? callback) {
             base.RemoveSelf( argument, callback );
         }
 
     }
-    public sealed class Node2<TThis, TUserData> : NodeBase<TThis>, IDescendantNodeListener<TThis> where TThis : notnull, NodeBase<TThis> {
+    public sealed class Node2<TUserData> : NodeBase<Node2<TUserData>>, IDescendantNodeListener<Node2<TUserData>> {
 
         // UserData
         public TUserData UserData { get; private set; }
 
         // OnDescendantAttach
-        public Action<TThis, object?>? OnBeforeDescendantAttachCallback { get; set; }
-        public Action<TThis, object?>? OnAfterDescendantAttachCallback { get; set; }
-        public Action<TThis, object?>? OnBeforeDescendantDetachCallback { get; set; }
-        public Action<TThis, object?>? OnAfterDescendantDetachCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback { get; set; }
 
         // OnDescendantActivate
-        public Action<TThis, object?>? OnBeforeDescendantActivateCallback { get; set; }
-        public Action<TThis, object?>? OnAfterDescendantActivateCallback { get; set; }
-        public Action<TThis, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-        public Action<TThis, object?>? OnAfterDescendantDeactivateCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
+        public Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback { get; set; }
 
         // Constructor
         public Node2(TUserData userData) {
@@ -89,50 +89,50 @@ namespace System.TreeMachine.Pro {
         }
 
         // AddChild
-        public new void AddChild(TThis child, object? argument) {
+        public new void AddChild(Node2<TUserData> child, object? argument) {
             base.AddChild( child, argument );
         }
-        public new void AddChildren(IEnumerable<TThis> children, object? argument) {
+        public new void AddChildren(IEnumerable<Node2<TUserData>> children, object? argument) {
             base.AddChildren( children, argument );
         }
 
         // RemoveChild
-        public new void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveChild(Node2<TUserData> child, object? argument, Action<Node2<TUserData>, object?>? callback) {
             base.RemoveChild( child, argument, callback );
         }
-        public new bool RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        public new bool RemoveChild(Func<Node2<TUserData>, bool> predicate, object? argument, Action<Node2<TUserData>, object?>? callback) {
             return base.RemoveChild( predicate, argument, callback );
         }
-        public new int RemoveChildren(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
+        public new int RemoveChildren(Func<Node2<TUserData>, bool> predicate, object? argument, Action<Node2<TUserData>, object?>? callback) {
             return base.RemoveChildren( predicate, argument, callback );
         }
-        public new int RemoveChildren(object? argument, Action<TThis, object?>? callback) {
+        public new int RemoveChildren(object? argument, Action<Node2<TUserData>, object?>? callback) {
             return base.RemoveChildren( argument, callback );
         }
 
         // RemoveSelf
-        public new void RemoveSelf(object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveSelf(object? argument, Action<Node2<TUserData>, object?>? callback) {
             base.RemoveSelf( argument, callback );
         }
 
         // OnDescendantAttach
-        void IDescendantNodeListener<TThis>.OnBeforeDescendantAttach(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantAttach(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnAfterDescendantAttach(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantAttach(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnBeforeDescendantDetach(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantDetach(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnAfterDescendantDetach(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantDetach(Node2<TUserData> descendant, object? argument) {
         }
 
         // OnDescendantActivate
-        void IDescendantNodeListener<TThis>.OnBeforeDescendantActivate(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantActivate(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnAfterDescendantActivate(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantActivate(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnBeforeDescendantDeactivate(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
         }
-        void IDescendantNodeListener<TThis>.OnAfterDescendantDeactivate(TThis descendant, object? argument) {
+        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
         }
 
     }
