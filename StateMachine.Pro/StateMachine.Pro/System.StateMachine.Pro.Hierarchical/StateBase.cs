@@ -3,34 +3,76 @@ namespace System.StateMachine.Pro.Hierarchical {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Text;
 
     public abstract partial class StateBase<TThis> : IState<TThis> where TThis : notnull, StateBase<TThis> {
 
-        object? IState<TThis>.Owner { get => this.Owner; set => this.Owner = value; }
+        object? IState<TThis>.Owner => this.Owner;
 
-        Activity IState<TThis>.Activity { get => this.Activity; set => this.Activity = value; }
+        IStateMachine<TThis>? IState<TThis>.Machine => this.Machine;
+        IStateMachine<TThis>? IState<TThis>.Machine_NoRecursive => this.Machine_NoRecursive;
 
-        TThis? IState<TThis>.Child { get => this.Child; set => this.Child = value; }
+        bool IState<TThis>.IsRoot => this.IsRoot;
+        TThis IState<TThis>.Root => this.Root;
+
+        TThis? IState<TThis>.Parent => this.Parent;
+        IEnumerable<TThis> IState<TThis>.Ancestors => this.Ancestors;
+        IEnumerable<TThis> IState<TThis>.AncestorsAndSelf => this.AncestorsAndSelf;
+
+        Activity IState<TThis>.Activity => this.Activity;
+
+        TThis? IState<TThis>.Child => this.Child;
+        IEnumerable<TThis> IState<TThis>.Descendants => this.Descendants;
+        IEnumerable<TThis> IState<TThis>.DescendantsAndSelf => this.DescendantsAndSelf;
 
     }
     public abstract partial class StateBase<TThis> {
 
-        Action<object?>? IState<TThis>.OnBeforeAttachCallback {
-            get => this.OnBeforeAttachCallback;
-            set => this.OnBeforeAttachCallback = value;
+        event Action<object?>? IState<TThis>.OnBeforeAttachCallback {
+            add {
+                this.OnBeforeAttachCallback += value;
+            }
+            remove {
+                this.OnBeforeAttachCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnAfterAttachCallback {
-            get => this.OnAfterAttachCallback;
-            set => this.OnAfterAttachCallback = value;
+        event Action<object?>? IState<TThis>.OnAfterAttachCallback {
+            add {
+                this.OnAfterAttachCallback += value;
+            }
+            remove {
+                this.OnAfterAttachCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnBeforeDetachCallback {
-            get => this.OnBeforeDetachCallback;
-            set => this.OnBeforeDetachCallback = value;
+        event Action<object?>? IState<TThis>.OnBeforeDetachCallback {
+            add {
+                this.OnBeforeDetachCallback += value;
+            }
+            remove {
+                this.OnBeforeDetachCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnAfterDetachCallback {
-            get => this.OnAfterDetachCallback;
-            set => this.OnAfterDetachCallback = value;
+        event Action<object?>? IState<TThis>.OnAfterDetachCallback {
+            add {
+                this.OnAfterDetachCallback += value;
+            }
+            remove {
+                this.OnAfterDetachCallback -= value;
+            }
+        }
+
+        void IState<TThis>.Attach(IStateMachine<TThis> machine, object? argument) {
+            this.Attach( machine, argument );
+        }
+        void IState<TThis>.Attach(TThis parent, object? argument) {
+            this.Attach( parent, argument );
+        }
+        void IState<TThis>.Detach(IStateMachine<TThis> machine, object? argument) {
+            this.Detach( machine, argument );
+        }
+        void IState<TThis>.Detach(TThis parent, object? argument) {
+            this.Detach( parent, argument );
         }
 
         void IState<TThis>.OnAttach(object? argument) {
@@ -56,21 +98,44 @@ namespace System.StateMachine.Pro.Hierarchical {
     }
     public abstract partial class StateBase<TThis> {
 
-        Action<object?>? IState<TThis>.OnBeforeActivateCallback {
-            get => this.OnBeforeActivateCallback;
-            set => this.OnBeforeActivateCallback = value;
+        event Action<object?>? IState<TThis>.OnBeforeActivateCallback {
+            add {
+                this.OnBeforeActivateCallback += value;
+            }
+            remove {
+                this.OnBeforeActivateCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnAfterActivateCallback {
-            get => this.OnAfterActivateCallback;
-            set => this.OnAfterActivateCallback = value;
+        event Action<object?>? IState<TThis>.OnAfterActivateCallback {
+            add {
+                this.OnAfterActivateCallback += value;
+            }
+            remove {
+                this.OnAfterActivateCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnBeforeDeactivateCallback {
-            get => this.OnBeforeDeactivateCallback;
-            set => this.OnBeforeDeactivateCallback = value;
+        event Action<object?>? IState<TThis>.OnBeforeDeactivateCallback {
+            add {
+                this.OnBeforeDeactivateCallback += value;
+            }
+            remove {
+                this.OnBeforeDeactivateCallback -= value;
+            }
         }
-        Action<object?>? IState<TThis>.OnAfterDeactivateCallback {
-            get => this.OnAfterDeactivateCallback;
-            set => this.OnAfterDeactivateCallback = value;
+        event Action<object?>? IState<TThis>.OnAfterDeactivateCallback {
+            add {
+                this.OnAfterDeactivateCallback += value;
+            }
+            remove {
+                this.OnAfterDeactivateCallback -= value;
+            }
+        }
+
+        void IState<TThis>.Activate(object? argument) {
+            this.Activate( argument );
+        }
+        void IState<TThis>.Deactivate(object? argument) {
+            this.Deactivate( argument );
         }
 
         void IState<TThis>.OnActivate(object? argument) {
@@ -119,25 +184,39 @@ namespace System.StateMachine.Pro.Hierarchical {
         private object? Owner { get; set; }
 
         // Machine
-        public IStateMachine<TThis>? Machine => ((IState<TThis>) this).Machine;
-        private IStateMachine<TThis>? Machine_NoRecursive => ((IState<TThis>) this).Machine_NoRecursive;
+        public IStateMachine<TThis>? Machine => (this.Owner as IStateMachine<TThis>) ?? (this.Owner as StateBase<TThis>)?.Machine;
+        private IStateMachine<TThis>? Machine_NoRecursive => this.Owner as IStateMachine<TThis>;
 
         // Root
-        [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => ((IState<TThis>) this).IsRoot;
-        public TThis Root => ((IState<TThis>) this).Root;
+        [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Parent == null;
+        public TThis Root => this.Parent?.Root ?? (TThis) this;
 
         // Parent
-        public TThis? Parent => ((IState<TThis>) this).Parent;
-        public IEnumerable<TThis> Ancestors => ((IState<TThis>) this).Ancestors;
-        public IEnumerable<TThis> AncestorsAndSelf => ((IState<TThis>) this).AncestorsAndSelf;
+        public TThis? Parent => this.Owner as TThis;
+        public IEnumerable<TThis> Ancestors {
+            get {
+                if (this.Parent != null) {
+                    yield return this.Parent;
+                    foreach (var i in this.Parent.Ancestors) yield return i;
+                }
+            }
+        }
+        public IEnumerable<TThis> AncestorsAndSelf => this.Ancestors.Prepend( (TThis) this );
 
         // Activity
         public Activity Activity { get; private set; } = Activity.Inactive;
 
         // Child
         public TThis? Child { get; private set; }
-        public IEnumerable<TThis> Descendants => ((IState<TThis>) this).Descendants;
-        public IEnumerable<TThis> DescendantsAndSelf => ((IState<TThis>) this).DescendantsAndSelf;
+        public IEnumerable<TThis> Descendants {
+            get {
+                if (this.Child != null) {
+                    yield return this.Child;
+                    foreach (var i in this.Child.Descendants) yield return i;
+                }
+            }
+        }
+        public IEnumerable<TThis> DescendantsAndSelf => this.Descendants.Prepend( (TThis) this );
 
         // Constructor
         public StateBase() {
@@ -151,6 +230,79 @@ namespace System.StateMachine.Pro.Hierarchical {
         public event Action<object?>? OnAfterAttachCallback;
         public event Action<object?>? OnBeforeDetachCallback;
         public event Action<object?>? OnAfterDetachCallback;
+
+        // Attach
+        internal void Attach(IStateMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
+            Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            {
+                this.Owner = machine;
+                this.OnBeforeAttachCallback?.Invoke( argument );
+                this.OnBeforeAttach( argument );
+                this.OnAttach( argument );
+                this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
+            }
+            {
+                this.Activate( argument );
+            }
+        }
+        internal void Attach(TThis parent, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
+            Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
+            Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            {
+                this.Owner = parent;
+                this.OnBeforeAttachCallback?.Invoke( argument );
+                this.OnBeforeAttach( argument );
+                this.OnAttach( argument );
+                this.OnAfterAttach( argument );
+                this.OnAfterAttachCallback?.Invoke( argument );
+            }
+            if (parent.Activity is Activity.Active) {
+                this.Activate( argument );
+            } else {
+            }
+        }
+
+        // Detach
+        internal void Detach(IStateMachine<TThis> machine, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+            {
+                this.Deactivate( argument );
+            }
+            {
+                this.OnBeforeDetachCallback?.Invoke( argument );
+                this.OnBeforeDetach( argument );
+                this.OnDetach( argument );
+                this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
+                this.Owner = null;
+            }
+        }
+        internal void Detach(TThis parent, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
+            Assert.Operation.Valid( $"State {this} must have {parent} parent", this.Parent == parent );
+            if (parent.Activity is Activity.Active) {
+                Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+                this.Deactivate( argument );
+            } else {
+                Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            }
+            {
+                this.OnBeforeDetachCallback?.Invoke( argument );
+                this.OnBeforeDetach( argument );
+                this.OnDetach( argument );
+                this.OnAfterDetach( argument );
+                this.OnAfterDetachCallback?.Invoke( argument );
+                this.Owner = null;
+            }
+        }
 
         // OnAttach
         protected abstract void OnAttach(object? argument);
@@ -175,6 +327,44 @@ namespace System.StateMachine.Pro.Hierarchical {
         public event Action<object?>? OnBeforeDeactivateCallback;
         public event Action<object?>? OnAfterDeactivateCallback;
 
+        // Activate
+        private void Activate(object? argument) {
+            Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
+            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            this.OnBeforeActivateCallback?.Invoke( argument );
+            this.OnBeforeActivate( argument );
+            this.Activity = Activity.Activating;
+            {
+                this.OnActivate( argument );
+                if (this.Child != null) {
+                    this.Child.Activate( argument );
+                }
+            }
+            this.Activity = Activity.Active;
+            this.OnAfterActivate( argument );
+            this.OnAfterActivateCallback?.Invoke( argument );
+        }
+
+        // Deactivate
+        private void Deactivate(object? argument) {
+            Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
+            Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+            this.OnBeforeDeactivateCallback?.Invoke( argument );
+            this.OnBeforeDeactivate( argument );
+            this.Activity = Activity.Deactivating;
+            {
+                if (this.Child != null) {
+                    this.Child.Deactivate( argument );
+                }
+                this.OnDeactivate( argument );
+            }
+            this.Activity = Activity.Inactive;
+            this.OnAfterDeactivate( argument );
+            this.OnAfterDeactivateCallback?.Invoke( argument );
+        }
+
         // OnActivate
         protected abstract void OnActivate(object? argument);
         protected virtual void OnBeforeActivate(object? argument) {
@@ -194,25 +384,52 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         // SetChild
         protected virtual void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback) {
-            IState<TThis>.SetChild( (TThis) this, child, argument, callback );
+            if (this.Child != null) {
+                this.RemoveChild( this.Child, argument, callback );
+            }
+            if (child != null) {
+                this.AddChild( child, argument );
+            }
         }
 
         // AddChild
         protected virtual void AddChild(TThis child, object? argument) {
-            IState<TThis>.AddChild( (TThis) this, child, argument );
+            Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"State {this} must have no {this.Child} child", this.Child == null );
+            this.Child = child;
+            this.Child.Attach( (TThis) this, argument );
         }
 
         // RemoveChild
         protected virtual void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
-            IState<TThis>.RemoveChild( (TThis) this, child, argument, callback );
+            Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
+            if (this.Activity == Activity.Active) {
+                Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity.Active );
+            } else {
+                Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
+            }
+            Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
+            this.Child.Detach( (TThis) this, argument );
+            this.Child = null;
+            callback?.Invoke( child, argument );
         }
         protected void RemoveChild(object? argument, Action<TThis, object?>? callback) {
-            IState<TThis>.RemoveChild_( (TThis) this, argument, callback );
+            Assert.Operation.Valid( $"State {this} must have child", this.Child != null );
+            this.RemoveChild( this.Child, argument, callback );
         }
 
         // RemoveSelf
         protected void RemoveSelf(object? argument, Action<TThis, object?>? callback) {
-            IState<TThis>.RemoveSelf( (TThis) this, argument, callback );
+            if (this.Parent != null) {
+                this.Parent.RemoveChild( (TThis) this, argument, callback );
+            } else {
+                Assert.Operation.Valid( $"State {this} must have machine", this.Machine_NoRecursive != null );
+                this.Machine_NoRecursive.RemoveState( (TThis) this, argument, callback );
+            }
         }
 
     }

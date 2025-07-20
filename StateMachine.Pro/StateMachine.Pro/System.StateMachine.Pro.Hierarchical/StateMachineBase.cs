@@ -4,10 +4,17 @@ namespace System.StateMachine.Pro.Hierarchical {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract partial class StateMachineBase<T> : IStateMachine<T> where T : class, IState<T> {
+    public abstract class StateMachineBase<T> : IStateMachine<T> where T : class, IState<T> {
 
         // State
         T? IStateMachine<T>.State { get => this.State; set => this.State = value; }
+
+        // State
+        protected T? State { get; private set; }
+
+        // Constructor
+        public StateMachineBase() {
+        }
 
         // SetState
         void IStateMachine<T>.SetState(T? state, object? argument, Action<T, object?>? callback) {
@@ -21,16 +28,6 @@ namespace System.StateMachine.Pro.Hierarchical {
         }
         void IStateMachine<T>.RemoveState(object? argument, Action<T, object?>? callback) {
             this.RemoveState( argument, callback );
-        }
-
-    }
-    public abstract partial class StateMachineBase<T> : IStateMachine<T> where T : class, IState<T> {
-
-        // State
-        protected T? State { get; private set; }
-
-        // Constructor
-        public StateMachineBase() {
         }
 
         // SetState
