@@ -120,16 +120,16 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         protected abstract void OnAttach(object? argument);
-        private protected virtual void OnBeforeAttach(object? argument) {
+        protected virtual void OnBeforeAttach(object? argument) {
         }
-        private protected virtual void OnAfterAttach(object? argument) {
+        protected virtual void OnAfterAttach(object? argument) {
         }
 
         // OnDetach
         protected abstract void OnDetach(object? argument);
-        private protected virtual void OnBeforeDetach(object? argument) {
+        protected virtual void OnBeforeDetach(object? argument) {
         }
-        private protected virtual void OnAfterDetach(object? argument) {
+        protected virtual void OnAfterDetach(object? argument) {
         }
 
     }
@@ -171,16 +171,16 @@ namespace System.TreeMachine.Pro {
 
         // OnActivate
         protected abstract void OnActivate(object? argument);
-        private protected virtual void OnBeforeActivate(object? argument) {
+        protected virtual void OnBeforeActivate(object? argument) {
         }
-        private protected virtual void OnAfterActivate(object? argument) {
+        protected virtual void OnAfterActivate(object? argument) {
         }
 
         // OnDeactivate
         protected abstract void OnDeactivate(object? argument);
-        private protected virtual void OnBeforeDeactivate(object? argument) {
+        protected virtual void OnBeforeDeactivate(object? argument) {
         }
-        private protected virtual void OnAfterDeactivate(object? argument) {
+        protected virtual void OnAfterDeactivate(object? argument) {
         }
 
     }
@@ -260,13 +260,13 @@ namespace System.TreeMachine.Pro {
     public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : notnull, NodeBase2<TThis> {
 
         // OnAttach
-        private protected override void OnBeforeAttach(object? argument) {
+        protected override void OnBeforeAttach(object? argument) {
             foreach (var ancestor in this.Ancestors.Reverse()) {
                 ancestor.OnBeforeDescendantAttach( (TThis) this, argument );
             }
             base.OnBeforeAttach( argument );
         }
-        private protected override void OnAfterAttach(object? argument) {
+        protected override void OnAfterAttach(object? argument) {
             base.OnAfterAttach( argument );
             foreach (var ancestor in this.Ancestors) {
                 ancestor.OnAfterDescendantAttach( (TThis) this, argument );
@@ -274,13 +274,13 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnDetach
-        private protected override void OnBeforeDetach(object? argument) {
+        protected override void OnBeforeDetach(object? argument) {
             foreach (var ancestor in this.Ancestors.Reverse()) {
                 ancestor.OnBeforeDescendantDetach( (TThis) this, argument );
             }
             base.OnBeforeDetach( argument );
         }
-        private protected override void OnAfterDetach(object? argument) {
+        protected override void OnAfterDetach(object? argument) {
             base.OnAfterDetach( argument );
             foreach (var ancestor in this.Ancestors) {
                 ancestor.OnAfterDescendantDetach( (TThis) this, argument );
@@ -297,13 +297,13 @@ namespace System.TreeMachine.Pro {
     public abstract partial class NodeBase2<TThis> {
 
         // OnActivate
-        private protected override void OnBeforeActivate(object? argument) {
+        protected override void OnBeforeActivate(object? argument) {
             foreach (var ancestor in this.Ancestors.Reverse()) {
                 ancestor.OnBeforeDescendantActivate( (TThis) this, argument );
             }
             base.OnBeforeActivate( argument );
         }
-        private protected override void OnAfterActivate(object? argument) {
+        protected override void OnAfterActivate(object? argument) {
             base.OnAfterActivate( argument );
             foreach (var ancestor in this.Ancestors) {
                 ancestor.OnAfterDescendantActivate( (TThis) this, argument );
@@ -311,13 +311,13 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnDeactivate
-        private protected override void OnBeforeDeactivate(object? argument) {
+        protected override void OnBeforeDeactivate(object? argument) {
             foreach (var ancestor in this.Ancestors.Reverse()) {
                 ancestor.OnBeforeDescendantDeactivate( (TThis) this, argument );
             }
             base.OnBeforeDeactivate( argument );
         }
-        private protected override void OnAfterDeactivate(object? argument) {
+        protected override void OnAfterDeactivate(object? argument) {
             base.OnAfterDeactivate( argument );
             foreach (var ancestor in this.Ancestors) {
                 ancestor.OnAfterDescendantDeactivate( (TThis) this, argument );

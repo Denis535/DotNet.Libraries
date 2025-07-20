@@ -47,12 +47,12 @@ public abstract partial class NodeBase<TThis> {
     private void Detach(TThis parent, object? argument);
 
     protected abstract void OnAttach(object? argument);
-    private protected virtual void OnBeforeAttach(object? argument);
-    private protected virtual void OnAfterAttach(object? argument);
+    protected virtual void OnBeforeAttach(object? argument);
+    protected virtual void OnAfterAttach(object? argument);
 
     protected abstract void OnDetach(object? argument);
-    private protected virtual void OnBeforeDetach(object? argument);
-    private protected virtual void OnAfterDetach(object? argument);
+    protected virtual void OnBeforeDetach(object? argument);
+    protected virtual void OnAfterDetach(object? argument);
 
 }
 public abstract partial class NodeBase<TThis> {
@@ -61,12 +61,12 @@ public abstract partial class NodeBase<TThis> {
     private void Deactivate(object? argument);
 
     protected abstract void OnActivate(object? argument);
-    private protected virtual void OnBeforeActivate(object? argument);
-    private protected virtual void OnAfterActivate(object? argument);
+    protected virtual void OnBeforeActivate(object? argument);
+    protected virtual void OnAfterActivate(object? argument);
 
     protected abstract void OnDeactivate(object? argument);
-    private protected virtual void OnBeforeDeactivate(object? argument)l
-    private protected virtual void OnAfterDeactivate(object? argument)l
+    protected virtual void OnBeforeDeactivate(object? argument)l
+    protected virtual void OnAfterDeactivate(object? argument)l
 
 }
 public abstract partial class NodeBase<TThis> {
@@ -84,11 +84,11 @@ public abstract partial class NodeBase<TThis> {
 }
 public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : notnull, NodeBase2<TThis> {
 
-    private protected override void OnBeforeAttach(object? argument);
-    private protected override void OnAfterAttach(object? argument);
+    protected override void OnBeforeAttach(object? argument);
+    protected override void OnAfterAttach(object? argument);
 
-    private protected override void OnBeforeDetach(object? argument);
-    private protected override void OnAfterDetach(object? argument);
+    protected override void OnBeforeDetach(object? argument);
+    protected override void OnAfterDetach(object? argument);
 
     protected abstract void OnBeforeDescendantAttach(TThis descendant, object? argument);
     protected abstract void OnAfterDescendantAttach(TThis descendant, object? argument);
@@ -98,11 +98,11 @@ public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : n
 }
 public abstract partial class NodeBase2<TThis> {
 
-    private protected override void OnBeforeActivate(object? argument);
-    private protected override void OnAfterActivate(object? argument);
+    protected override void OnBeforeActivate(object? argument);
+    protected override void OnAfterActivate(object? argument);
 
-    private protected override void OnBeforeDeactivate(object? argument);
-    private protected override void OnAfterDeactivate(object? argument);
+    protected override void OnBeforeDeactivate(object? argument);
+    protected override void OnAfterDeactivate(object? argument);
 
     protected abstract void OnBeforeDescendantActivate(TThis descendant, object? argument);
     protected abstract void OnAfterDescendantActivate(TThis descendant, object? argument);
