@@ -4,21 +4,9 @@
     using System.Diagnostics;
     using System.Text;
 
-    public abstract class Node : NodeBase<Node>, IDescendantNodeListener<Node> {
+    public abstract class Node : NodeBase<Node> {
 
         //public bool IsDisposed { get; private set; }
-
-        // OnDescendantAttach
-        public Action<Node, object?>? OnBeforeDescendantAttachCallback { get; set; }
-        public Action<Node, object?>? OnAfterDescendantAttachCallback { get; set; }
-        public Action<Node, object?>? OnBeforeDescendantDetachCallback { get; set; }
-        public Action<Node, object?>? OnAfterDescendantDetachCallback { get; set; }
-
-        // OnDescendantActivate
-        public Action<Node, object?>? OnBeforeDescendantActivateCallback { get; set; }
-        public Action<Node, object?>? OnAfterDescendantActivateCallback { get; set; }
-        public Action<Node, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-        public Action<Node, object?>? OnAfterDescendantDeactivateCallback { get; set; }
 
         public Node() {
         }
@@ -48,16 +36,6 @@
             //}
         }
 
-        // OnDescendantAttach
-        void IDescendantNodeListener<Node>.OnBeforeDescendantAttach(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnAfterDescendantAttach(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnBeforeDescendantDetach(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnAfterDescendantDetach(Node descendant, object? argument) {
-        }
-
         // OnActivate
         protected override void OnActivate(object? argument) {
             if (argument != null) {
@@ -72,16 +50,6 @@
             } else {
                 Trace.WriteLine( "OnDeactivate: " + this.GetType().Name );
             }
-        }
-
-        // OnDescendantActivate
-        void IDescendantNodeListener<Node>.OnBeforeDescendantActivate(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnAfterDescendantActivate(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnBeforeDescendantDeactivate(Node descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node>.OnAfterDescendantDeactivate(Node descendant, object? argument) {
         }
 
         // AddChild

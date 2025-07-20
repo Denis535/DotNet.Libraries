@@ -6,6 +6,12 @@ namespace System.TreeMachine.Pro {
 
     public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // UserData
         public TUserData UserData { get; private set; }
 
@@ -16,14 +22,18 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         protected override void OnAttach(object? argument) {
+            this.OnAttachCallback?.Invoke( argument );
         }
         protected override void OnDetach(object? argument) {
+            this.OnDetachCallback?.Invoke( argument );
         }
 
         // OnActivate
         protected override void OnActivate(object? argument) {
+            this.OnActivateCallback?.Invoke( argument );
         }
         protected override void OnDeactivate(object? argument) {
+            this.OnDeactivateCallback?.Invoke( argument );
         }
 
         // AddChild
@@ -54,22 +64,28 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed class Node2<TUserData> : NodeBase<Node2<TUserData>>, IDescendantNodeListener<Node2<TUserData>> {
+    public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
+
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
+        public event Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback;
+        public event Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback;
+
+        public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback;
+        public event Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback;
+
+        public event Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback;
+        public event Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback;
+
+        public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback;
+        public event Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback;
 
         // UserData
         public TUserData UserData { get; private set; }
-
-        // OnDescendantAttach
-        public Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback { get; set; }
-
-        // OnDescendantActivate
-        public Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-        public Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback { get; set; }
 
         // Constructor
         public Node2(TUserData userData) {
@@ -78,14 +94,46 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         protected override void OnAttach(object? argument) {
+            this.OnAttachCallback?.Invoke( argument );
         }
         protected override void OnDetach(object? argument) {
+            this.OnDetachCallback?.Invoke( argument );
         }
 
         // OnActivate
         protected override void OnActivate(object? argument) {
+            this.OnActivateCallback?.Invoke( argument );
         }
         protected override void OnDeactivate(object? argument) {
+            this.OnDeactivateCallback?.Invoke( argument );
+        }
+
+        // OnDescendantAttach
+        protected override void OnBeforeDescendantAttach(Node2<TUserData> descendant, object? argument) {
+            this.OnBeforeDescendantAttachCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnAfterDescendantAttach(Node2<TUserData> descendant, object? argument) {
+            this.OnAfterDescendantAttachCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnBeforeDescendantDetach(Node2<TUserData> descendant, object? argument) {
+            this.OnBeforeDescendantDetachCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnAfterDescendantDetach(Node2<TUserData> descendant, object? argument) {
+            this.OnAfterDescendantDetachCallback?.Invoke( descendant, argument );
+        }
+
+        // OnDescendantActivate
+        protected override void OnBeforeDescendantActivate(Node2<TUserData> descendant, object? argument) {
+            this.OnBeforeDescendantActivateCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnAfterDescendantActivate(Node2<TUserData> descendant, object? argument) {
+            this.OnAfterDescendantActivateCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnBeforeDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
+            this.OnBeforeDescendantDeactivateCallback?.Invoke( descendant, argument );
+        }
+        protected override void OnAfterDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
+            this.OnAfterDescendantDeactivateCallback?.Invoke( descendant, argument );
         }
 
         // AddChild
@@ -113,26 +161,6 @@ namespace System.TreeMachine.Pro {
         // RemoveSelf
         public new void RemoveSelf(object? argument, Action<Node2<TUserData>, object?>? callback) {
             base.RemoveSelf( argument, callback );
-        }
-
-        // OnDescendantAttach
-        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantAttach(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantAttach(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantDetach(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantDetach(Node2<TUserData> descendant, object? argument) {
-        }
-
-        // OnDescendantActivate
-        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantActivate(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantActivate(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnBeforeDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
-        }
-        void IDescendantNodeListener<Node2<TUserData>>.OnAfterDescendantDeactivate(Node2<TUserData> descendant, object? argument) {
         }
 
     }

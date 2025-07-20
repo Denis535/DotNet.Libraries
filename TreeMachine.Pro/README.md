@@ -41,42 +41,32 @@ public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TT
 }
 public abstract partial class NodeBase<TThis> {
 
-    public event Action<object?>? OnBeforeAttachCallback;
-    public event Action<object?>? OnAfterAttachCallback;
-    public event Action<object?>? OnBeforeDetachCallback;
-    public event Action<object?>? OnAfterDetachCallback;
-
     internal void Attach(TreeMachineBase<TThis> machine, object? argument);
     private void Attach(TThis parent, object? argument);
     internal void Detach(TreeMachineBase<TThis> machine, object? argument);
     private void Detach(TThis parent, object? argument);
 
     protected abstract void OnAttach(object? argument);
-    protected virtual void OnBeforeAttach(object? argument);
-    protected virtual void OnAfterAttach(object? argument);
+    private protected virtual void OnBeforeAttach(object? argument);
+    private protected virtual void OnAfterAttach(object? argument);
 
     protected abstract void OnDetach(object? argument);
-    protected virtual void OnBeforeDetach(object? argument);
-    protected virtual void OnAfterDetach(object? argument);
+    private protected virtual void OnBeforeDetach(object? argument);
+    private protected virtual void OnAfterDetach(object? argument);
 
 }
 public abstract partial class NodeBase<TThis> {
-
-    public event Action<object?>? OnBeforeActivateCallback;
-    public event Action<object?>? OnAfterActivateCallback;
-    public event Action<object?>? OnBeforeDeactivateCallback;
-    public event Action<object?>? OnAfterDeactivateCallback;
 
     private void Activate(object? argument);
     private void Deactivate(object? argument);
 
     protected abstract void OnActivate(object? argument);
-    protected virtual void OnBeforeActivate(object? argument);
-    protected virtual void OnAfterActivate(object? argument);
+    private protected virtual void OnBeforeActivate(object? argument);
+    private protected virtual void OnAfterActivate(object? argument);
 
     protected abstract void OnDeactivate(object? argument);
-    protected virtual void OnBeforeDeactivate(object? argument);
-    protected virtual void OnAfterDeactivate(object? argument);
+    private protected virtual void OnBeforeDeactivate(object? argument)l
+    private protected virtual void OnAfterDeactivate(object? argument)l
 
 }
 public abstract partial class NodeBase<TThis> {
@@ -92,30 +82,32 @@ public abstract partial class NodeBase<TThis> {
     protected virtual void Sort(List<TThis> children);
 
 }
-public partial interface IDescendantNodeListener<TThis> where TThis : notnull, NodeBase<TThis> {
+public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : notnull, NodeBase2<TThis> {
 
-    public Action<TThis, object?>? OnBeforeDescendantAttachCallback { get; }
-    public Action<TThis, object?>? OnAfterDescendantAttachCallback { get; }
-    public Action<TThis, object?>? OnBeforeDescendantDetachCallback { get; }
-    public Action<TThis, object?>? OnAfterDescendantDetachCallback { get; }
+    private protected override void OnBeforeAttach(object? argument);
+    private protected override void OnAfterAttach(object? argument);
 
-    protected internal void OnBeforeDescendantAttach(TThis descendant, object? argument);
-    protected internal void OnAfterDescendantAttach(TThis descendant, object? argument);
-    protected internal void OnBeforeDescendantDetach(TThis descendant, object? argument);
-    protected internal void OnAfterDescendantDetach(TThis descendant, object? argument);
+    private protected override void OnBeforeDetach(object? argument);
+    private protected override void OnAfterDetach(object? argument);
+
+    protected abstract void OnBeforeDescendantAttach(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantAttach(TThis descendant, object? argument);
+    protected abstract void OnBeforeDescendantDetach(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantDetach(TThis descendant, object? argument);
 
 }
-public partial interface IDescendantNodeListener<TThis> {
+public abstract partial class NodeBase2<TThis> {
 
-    public Action<TThis, object?>? OnBeforeDescendantActivateCallback { get; }
-    public Action<TThis, object?>? OnAfterDescendantActivateCallback { get; }
-    public Action<TThis, object?>? OnBeforeDescendantDeactivateCallback { get; }
-    public Action<TThis, object?>? OnAfterDescendantDeactivateCallback { get; }
+    private protected override void OnBeforeActivate(object? argument);
+    private protected override void OnAfterActivate(object? argument);
 
-    protected internal void OnBeforeDescendantActivate(TThis descendant, object? argument);
-    protected internal void OnAfterDescendantActivate(TThis descendant, object? argument);
-    protected internal void OnBeforeDescendantDeactivate(TThis descendant, object? argument);
-    protected internal void OnAfterDescendantDeactivate(TThis descendant, object? argument);
+    private protected override void OnBeforeDeactivate(object? argument);
+    private protected override void OnAfterDeactivate(object? argument);
+
+    protected abstract void OnBeforeDescendantActivate(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantActivate(TThis descendant, object? argument);
+    protected abstract void OnBeforeDescendantDeactivate(TThis descendant, object? argument);
+    protected abstract void OnAfterDescendantDeactivate(TThis descendant, object? argument);
 
 }
 public enum Activity {
