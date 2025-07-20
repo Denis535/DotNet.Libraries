@@ -3,32 +3,49 @@
     using System.Collections.Generic;
     using System.StateMachine.Pro;
     using System.Text;
-    using System.Threading;
 
-    public abstract class PlayListBase : StateBase<PlayListBase>, IDisposable {
+    public abstract class PlayListBase : DisposableBase {
+        internal sealed class State_ : StateBase<State_> {
 
-        private CancellationTokenSource? disposeCancellationTokenSource;
+            internal PlayListBase PlayList { get; }
 
-        public bool IsDisposed { get; private set; }
-        public CancellationToken DisposeCancellationToken {
-            get {
-                if (this.disposeCancellationTokenSource == null) {
-                    this.disposeCancellationTokenSource = new CancellationTokenSource();
-                    if (this.IsDisposed) this.disposeCancellationTokenSource.Cancel();
-                }
-                return this.disposeCancellationTokenSource.Token;
+            public State_(PlayListBase playList) {
+                this.PlayList = playList;
             }
+
+            protected override void OnAttach(object? argument) {
+                this.PlayList.OnAttach( argument );
+            }
+            protected override void OnDetach(object? argument) {
+                this.PlayList.OnDetach( argument );
+            }
+
+            protected override void OnActivate(object? argument) {
+                this.PlayList.OnActivate( argument );
+            }
+            protected override void OnDeactivate(object? argument) {
+                this.PlayList.OnDeactivate( argument );
+            }
+
         }
+
+        internal State_ State { get; }
 
         public PlayListBase() {
+            this.State = new State_( this );
         }
-        ~PlayListBase() {
-            Assert.Operation.Valid( $"Disposable '{this}' must be disposed", this.IsDisposed );
+        public override void Dispose() {
+            base.Dispose();
         }
-        public virtual void Dispose() {
-            Assert.Operation.NotDisposed( $"Disposable {this} must be non-disposed", !this.IsDisposed );
-            this.disposeCancellationTokenSource?.Cancel();
-            this.IsDisposed = true;
+
+        protected virtual void OnAttach(object? argument) {
+        }
+        protected virtual void OnDetach(object? argument) {
+        }
+
+        protected virtual void OnActivate(object? argument) {
+        }
+        protected virtual void OnDeactivate(object? argument) {
         }
 
     }

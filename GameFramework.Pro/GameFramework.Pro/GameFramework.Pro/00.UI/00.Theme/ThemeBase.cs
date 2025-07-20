@@ -4,43 +4,55 @@
     using System.StateMachine.Pro;
     using System.Text;
 
-    public abstract class ThemeBase : DisposableBase, IStateMachine<PlayListBase> {
+    public abstract class ThemeBase : DisposableBase {
+        private sealed class StateMachine_ : StateMachineBase<PlayListBase.State_>, IDisposable {
 
-        PlayListBase? IStateMachine<PlayListBase>.State { get => this.State; set => this.State = value; }
+            public new PlayListBase? State => base.State?.PlayList;
 
-        protected PlayListBase? State { get; private set; }
+            public StateMachine_() {
+            }
+            public void Dispose() {
+                Assert.Operation.Valid( $"StateMachine {this} must have no {this.State} state", this.State == null );
+            }
+
+            public void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
+                base.SetState( state?.State, argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            }
+            public void AddState(PlayListBase state, object? argument) {
+                base.AddState( state.State, argument );
+            }
+            public void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
+                base.RemoveState( state.State, argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            }
+            public void RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
+                base.RemoveState( argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            }
+
+        }
+
+        private StateMachine_ StateMachine { get; }
+
+        protected PlayListBase? State => this.StateMachine.State;
 
         public ThemeBase() {
+            this.StateMachine = new StateMachine_();
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Theme {this} must have no {this.State} state", this.State == null );
+            this.StateMachine.Dispose();
             base.Dispose();
         }
 
-        void IStateMachine<PlayListBase>.SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
-            this.SetState( state, argument, callback );
+        protected virtual void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
+            this.StateMachine.SetState( state, argument, callback );
         }
-        void IStateMachine<PlayListBase>.AddState(PlayListBase state, object? argument) {
-            this.AddState( state, argument );
+        protected virtual void AddState(PlayListBase state, object? argument) {
+            this.StateMachine.AddState( state, argument );
         }
-        void IStateMachine<PlayListBase>.RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
-            this.RemoveState( state, argument, callback );
+        protected virtual void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
+            this.StateMachine.RemoveState( state, argument, callback );
         }
-        void IStateMachine<PlayListBase>.RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
-            this.RemoveState( argument, callback );
-        }
-
-        protected void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
-            IStateMachine<PlayListBase>.SetState( this, state, argument, callback );
-        }
-        protected void AddState(PlayListBase state, object? argument) {
-            IStateMachine<PlayListBase>.AddState( this, state, argument );
-        }
-        protected void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
-            IStateMachine<PlayListBase>.RemoveState( this, state, argument, callback );
-        }
-        protected void RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
-            IStateMachine<PlayListBase>.SetState( this, null, argument, callback );
+        protected virtual void RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
+            this.StateMachine.RemoveState( argument, callback );
         }
 
     }
