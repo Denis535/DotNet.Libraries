@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class State<TThis, TUserData> : StateBase<TThis> where TThis : notnull, StateBase<TThis> {
+    public sealed class State<TUserData> : StateBase<State<TUserData>> {
 
         // UserData
         public TUserData UserData { get; private set; }

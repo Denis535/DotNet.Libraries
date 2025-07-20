@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro.Hierarchical {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class State<TThis, TUserData> : StateBase<TThis> where TThis : notnull, StateBase<TThis> {
+    public sealed class State<TUserData> : StateBase<State<TUserData>> {
 
         // UserData
         public TUserData UserData { get; private set; }
@@ -27,25 +27,25 @@ namespace System.StateMachine.Pro.Hierarchical {
         }
 
         // SetChild
-        public new void SetChild(TThis? child, object? argument, Action<TThis, object?>? callback) {
+        public new void SetChild(State<TUserData>? child, object? argument, Action<State<TUserData>, object?>? callback) {
             base.SetChild( child, argument, callback );
         }
 
         // AddChild
-        public new void AddChild(TThis child, object? argument) {
+        public new void AddChild(State<TUserData> child, object? argument) {
             base.AddChild( child, argument );
         }
 
         // RemoveChild
-        public new void RemoveChild(TThis child, object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveChild(State<TUserData> child, object? argument, Action<State<TUserData>, object?>? callback) {
             base.RemoveChild( child, argument, callback );
         }
-        public new void RemoveChild(object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveChild(object? argument, Action<State<TUserData>, object?>? callback) {
             base.RemoveChild( argument, callback );
         }
 
         // RemoveSelf
-        public new void RemoveSelf(object? argument, Action<TThis, object?>? callback) {
+        public new void RemoveSelf(object? argument, Action<State<TUserData>, object?>? callback) {
             base.RemoveSelf( argument, callback );
         }
 
