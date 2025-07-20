@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using System.Text;
 
-    public abstract class Node : NodeBase<Node>, INode2<Node> {
+    public abstract class Node : NodeBase<Node>, IDescendantNodeListener<Node> {
 
         //public bool IsDisposed { get; private set; }
 
@@ -49,13 +49,13 @@
         }
 
         // OnDescendantAttach
-        void INode2<Node>.OnBeforeDescendantAttach(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnBeforeDescendantAttach(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnAfterDescendantAttach(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnAfterDescendantAttach(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnBeforeDescendantDetach(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnBeforeDescendantDetach(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnAfterDescendantDetach(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnAfterDescendantDetach(Node descendant, object? argument) {
         }
 
         // OnActivate
@@ -75,13 +75,13 @@
         }
 
         // OnDescendantActivate
-        void INode2<Node>.OnBeforeDescendantActivate(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnBeforeDescendantActivate(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnAfterDescendantActivate(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnAfterDescendantActivate(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnBeforeDescendantDeactivate(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnBeforeDescendantDeactivate(Node descendant, object? argument) {
         }
-        void INode2<Node>.OnAfterDescendantDeactivate(Node descendant, object? argument) {
+        void IDescendantNodeListener<Node>.OnAfterDescendantDeactivate(Node descendant, object? argument) {
         }
 
         // AddChild

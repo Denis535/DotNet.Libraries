@@ -31,6 +31,7 @@ public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TT
 
     public Activity Activity { get; private set; }
 
+    private List<TThis> Children_Mutable { get; }
     public IReadOnlyList<TThis> Children { get; }
     public IEnumerable<TThis> Descendants { get; }
     public IEnumerable<TThis> DescendantsAndSelf { get; }
@@ -91,12 +92,12 @@ public abstract partial class NodeBase<TThis> {
     protected virtual void Sort(List<TThis> children);
 
 }
-public partial interface INode2<TThis> where TThis : notnull, NodeBase<TThis> {
+public partial interface IDescendantNodeListener<TThis> where TThis : notnull, NodeBase<TThis> {
 
-    public Action<TThis, object?>? OnBeforeDescendantAttachCallback { get; set; }
-    public Action<TThis, object?>? OnAfterDescendantAttachCallback { get; set; }
-    public Action<TThis, object?>? OnBeforeDescendantDetachCallback { get; set; }
-    public Action<TThis, object?>? OnAfterDescendantDetachCallback { get; set; }
+    public Action<TThis, object?>? OnBeforeDescendantAttachCallback { get; }
+    public Action<TThis, object?>? OnAfterDescendantAttachCallback { get; }
+    public Action<TThis, object?>? OnBeforeDescendantDetachCallback { get; }
+    public Action<TThis, object?>? OnAfterDescendantDetachCallback { get; }
 
     protected internal void OnBeforeDescendantAttach(TThis descendant, object? argument);
     protected internal void OnAfterDescendantAttach(TThis descendant, object? argument);
@@ -104,12 +105,12 @@ public partial interface INode2<TThis> where TThis : notnull, NodeBase<TThis> {
     protected internal void OnAfterDescendantDetach(TThis descendant, object? argument);
 
 }
-public partial interface INode2<TThis> {
+public partial interface IDescendantNodeListener<TThis> {
 
-    public Action<TThis, object?>? OnBeforeDescendantActivateCallback { get; set; }
-    public Action<TThis, object?>? OnAfterDescendantActivateCallback { get; set; }
-    public Action<TThis, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-    public Action<TThis, object?>? OnAfterDescendantDeactivateCallback { get; set; }
+    public Action<TThis, object?>? OnBeforeDescendantActivateCallback { get; }
+    public Action<TThis, object?>? OnAfterDescendantActivateCallback { get; }
+    public Action<TThis, object?>? OnBeforeDescendantDeactivateCallback { get; }
+    public Action<TThis, object?>? OnAfterDescendantDeactivateCallback { get; }
 
     protected internal void OnBeforeDescendantActivate(TThis descendant, object? argument);
     protected internal void OnAfterDescendantActivate(TThis descendant, object? argument);
