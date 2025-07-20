@@ -7,24 +7,24 @@
     public abstract class PlayListBase : DisposableBase {
         internal sealed class State_ : StateBase<State_> {
 
-            internal PlayListBase PlayList { get; }
+            internal PlayListBase Owner { get; }
 
-            public State_(PlayListBase playList) {
-                this.PlayList = playList;
+            public State_(PlayListBase owner) {
+                this.Owner = owner;
             }
 
             protected override void OnAttach(object? argument) {
-                this.PlayList.OnAttach( argument );
+                this.Owner.OnAttach( argument );
             }
             protected override void OnDetach(object? argument) {
-                this.PlayList.OnDetach( argument );
+                this.Owner.OnDetach( argument );
             }
 
             protected override void OnActivate(object? argument) {
-                this.PlayList.OnActivate( argument );
+                this.Owner.OnActivate( argument );
             }
             protected override void OnDeactivate(object? argument) {
-                this.PlayList.OnDeactivate( argument );
+                this.Owner.OnDeactivate( argument );
             }
 
         }

@@ -7,7 +7,7 @@
     public abstract class ThemeBase : DisposableBase {
         private sealed class StateMachine : StateMachineBase<PlayListBase.State_>, IDisposable {
 
-            public new PlayListBase? State => base.State?.PlayList;
+            public new PlayListBase.State_? State => base.State;
 
             public StateMachine() {
             }
@@ -15,24 +15,24 @@
                 Assert.Operation.Valid( $"StateMachine {this} must have no {this.State} state", this.State == null );
             }
 
-            public void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
-                base.SetState( state?.State, argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            public new void SetState(PlayListBase.State_? state, object? argument, Action<PlayListBase.State_, object?>? callback) {
+                base.SetState( state, argument, callback );
             }
-            public void AddState(PlayListBase state, object? argument) {
-                base.AddState( state.State, argument );
+            public new void AddState(PlayListBase.State_ state, object? argument) {
+                base.AddState( state, argument );
             }
-            public void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
-                base.RemoveState( state.State, argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            public new void RemoveState(PlayListBase.State_ state, object? argument, Action<PlayListBase.State_, object?>? callback) {
+                base.RemoveState( state, argument, callback );
             }
-            public void RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
-                base.RemoveState( argument, (state, arg) => callback?.Invoke( state.PlayList, arg ) );
+            public new void RemoveState(object? argument, Action<PlayListBase.State_, object?>? callback) {
+                base.RemoveState( argument, callback );
             }
 
         }
 
         private StateMachine Machine { get; }
 
-        protected PlayListBase? State => this.Machine.State;
+        protected PlayListBase? State => this.Machine.State?.Owner;
 
         public ThemeBase() {
             this.Machine = new StateMachine();
@@ -43,16 +43,16 @@
         }
 
         protected virtual void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback) {
-            this.Machine.SetState( state, argument, callback );
+            this.Machine.SetState( state?.State, argument, (state, arg) => callback?.Invoke( state.Owner, arg ) );
         }
         protected virtual void AddState(PlayListBase state, object? argument) {
-            this.Machine.AddState( state, argument );
+            this.Machine.AddState( state.State, argument );
         }
         protected virtual void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback) {
-            this.Machine.RemoveState( state, argument, callback );
+            this.Machine.RemoveState( state.State, argument, (state, arg) => callback?.Invoke( state.Owner, arg ) );
         }
         protected virtual void RemoveState(object? argument, Action<PlayListBase, object?>? callback) {
-            this.Machine.RemoveState( argument, callback );
+            this.Machine.RemoveState( argument, (state, arg) => callback?.Invoke( state.Owner, arg ) );
         }
 
     }

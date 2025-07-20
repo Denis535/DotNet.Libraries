@@ -7,7 +7,7 @@
     public abstract class ScreenBase : DisposableBase {
         private sealed class TreeMachine : TreeMachineBase<WidgetBase.Node_>, IDisposable {
 
-            public new WidgetBase? Root => base.Root?.Widget;
+            public new WidgetBase.Node_? Root => base.Root;
 
             public TreeMachine() {
             }
@@ -15,21 +15,21 @@
                 Assert.Operation.Valid( $"TreeMachine {this} must have no {this.Root} root", this.Root == null );
             }
 
-            public void AddRoot(WidgetBase root, object? argument) {
-                base.AddRoot( root.Node, argument );
+            public new void AddRoot(WidgetBase.Node_ root, object? argument) {
+                base.AddRoot( root, argument );
             }
-            public void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
-                base.RemoveRoot( root.Node, argument, (root, arg) => callback?.Invoke( root.Widget, arg ) );
+            public new void RemoveRoot(WidgetBase.Node_ root, object? argument, Action<WidgetBase.Node_, object?>? callback) {
+                base.RemoveRoot( root, argument, callback );
             }
-            public void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
-                base.RemoveRoot( argument, (root, arg) => callback?.Invoke( root.Widget, arg ) );
+            public new void RemoveRoot(object? argument, Action<WidgetBase.Node_, object?>? callback) {
+                base.RemoveRoot( argument, callback );
             }
 
         }
 
         private TreeMachine Machine { get; }
 
-        protected WidgetBase? Root => this.Machine.Root;
+        protected WidgetBase? Root => this.Machine.Root?.Owner;
 
         public ScreenBase() {
             this.Machine = new TreeMachine();
@@ -40,13 +40,13 @@
         }
 
         protected virtual void AddRoot(WidgetBase root, object? argument) {
-            this.Machine.AddRoot( root, argument );
+            this.Machine.AddRoot( root.Node, argument );
         }
         protected virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
-            this.Machine.RemoveRoot( root, argument, callback );
+            this.Machine.RemoveRoot( root.Node, argument, (root, arg) => callback?.Invoke( root.Owner, arg ) );
         }
         protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
-            this.Machine.RemoveRoot( argument, callback );
+            this.Machine.RemoveRoot( argument, (root, arg) => callback?.Invoke( root.Owner, arg ) );
         }
 
     }
