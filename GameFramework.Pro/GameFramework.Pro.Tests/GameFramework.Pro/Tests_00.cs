@@ -1,3 +1,4 @@
+#pragma warning disable CA2000 // Dispose objects before losing scope
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;

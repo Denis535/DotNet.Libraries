@@ -1,85 +1,119 @@
 ﻿namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
-    using System.Threading;
     using System.TreeMachine.Pro;
 
-    public abstract class WidgetBase : NodeBase<WidgetBase>, INode2<WidgetBase>, IDisposable {
+    public abstract class WidgetBase : DisposableBase {
+        internal sealed class Node_ : NodeBase<Node_>, IDescendantNodeListener<Node_> {
 
-        private CancellationTokenSource? disposeCancellationTokenSource;
+            internal WidgetBase Widget { get; }
 
-        public bool IsDisposed { get; private set; }
-        public CancellationToken DisposeCancellationToken {
-            get {
-                if (this.disposeCancellationTokenSource == null) {
-                    this.disposeCancellationTokenSource = new CancellationTokenSource();
-                    if (this.IsDisposed) this.disposeCancellationTokenSource.Cancel();
-                }
-                return this.disposeCancellationTokenSource.Token;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantAttachCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantAttachCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantDetachCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantDetachCallback => null;
+
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantActivateCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantActivateCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantDeactivateCallback => null;
+            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantDeactivateCallback => null;
+
+            public Node_(WidgetBase widget) {
+                this.Widget = widget;
             }
+
+            protected override void OnAttach(object? argument) {
+                this.Widget.OnAttach( argument );
+            }
+            protected override void OnDetach(object? argument) {
+                this.Widget.OnDetach( argument );
+            }
+
+            protected override void OnActivate(object? argument) {
+                this.Widget.OnActivate( argument );
+            }
+            protected override void OnDeactivate(object? argument) {
+                this.Widget.OnDeactivate( argument );
+            }
+
+            void IDescendantNodeListener<Node_>.OnBeforeDescendantAttach(Node_ descendant, object? argument) {
+                this.Widget.OnBeforeDescendantAttach( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnAfterDescendantAttach(Node_ descendant, object? argument) {
+                this.Widget.OnAfterDescendantAttach( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnBeforeDescendantDetach(Node_ descendant, object? argument) {
+                this.Widget.OnBeforeDescendantDetach( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnAfterDescendantDetach(Node_ descendant, object? argument) {
+                this.Widget.OnAfterDescendantDetach( descendant.Widget, argument );
+            }
+
+            void IDescendantNodeListener<Node_>.OnBeforeDescendantActivate(Node_ descendant, object? argument) {
+                this.Widget.OnBeforeDescendantActivate( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnAfterDescendantActivate(Node_ descendant, object? argument) {
+                this.Widget.OnAfterDescendantActivate( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnBeforeDescendantDeactivate(Node_ descendant, object? argument) {
+                this.Widget.OnBeforeDescendantDeactivate( descendant.Widget, argument );
+            }
+            void IDescendantNodeListener<Node_>.OnAfterDescendantDeactivate(Node_ descendant, object? argument) {
+                this.Widget.OnAfterDescendantDeactivate( descendant.Widget, argument );
+            }
+
+            public void AddChild(WidgetBase child, object? argument) {
+                base.AddChild( child.Node, argument );
+            }
+            public void AddChildren(IEnumerable<WidgetBase> children, object? argument) {
+                base.AddChildren( children.Select( i => i.Node ), argument );
+            }
+
+            public void RemoveChild(WidgetBase child, object? argument, Action<WidgetBase, object?>? callback) {
+                base.RemoveChild( child.Node, argument, (node, arg) => callback?.Invoke( node.Widget, arg ) );
+            }
+            public bool RemoveChild(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback) {
+                return base.RemoveChild( (node) => predicate.Invoke( node.Widget ), argument, (node, arg) => callback?.Invoke( node.Widget, arg ) );
+            }
+            public int RemoveChildren(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback) {
+                return base.RemoveChildren( (node) => predicate.Invoke( node.Widget ), argument, (node, arg) => callback?.Invoke( node.Widget, arg ) );
+            }
+            public int RemoveChildren(object? argument, Action<WidgetBase, object?>? callback) {
+                return base.RemoveChildren( argument, (node, arg) => callback?.Invoke( node.Widget, arg ) );
+            }
+
+            public void RemoveSelf(object? argument, Action<WidgetBase, object?>? callback) {
+                base.RemoveSelf( argument, (node, arg) => callback?.Invoke( node.Widget, arg ) );
+            }
+
+            protected override void Sort(List<Node_> children) {
+                //this.Widget.Sort( children );
+            }
+
         }
 
-        public ScreenBase? Screen => (ScreenBase?) base.Machine;
-
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnBeforeDescendantAttachCallback { get => this.OnBeforeDescendantAttachCallback; set => this.OnBeforeDescendantAttachCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnAfterDescendantAttachCallback { get => this.OnAfterDescendantAttachCallback; set => this.OnAfterDescendantAttachCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnBeforeDescendantDetachCallback { get => this.OnBeforeDescendantDetachCallback; set => this.OnBeforeDescendantDetachCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnAfterDescendantDetachCallback { get => this.OnAfterDescendantDetachCallback; set => this.OnAfterDescendantDetachCallback = value; }
-
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnBeforeDescendantActivateCallback { get => this.OnBeforeDescendantActivateCallback; set => this.OnBeforeDescendantActivateCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnAfterDescendantActivateCallback { get => this.OnAfterDescendantActivateCallback; set => this.OnAfterDescendantActivateCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnBeforeDescendantDeactivateCallback { get => this.OnBeforeDescendantDeactivateCallback; set => this.OnBeforeDescendantDeactivateCallback = value; }
-        Action<WidgetBase, object?>? INode2<WidgetBase>.OnAfterDescendantDeactivateCallback { get => this.OnAfterDescendantDeactivateCallback; set => this.OnAfterDescendantDeactivateCallback = value; }
-
-        public Action<WidgetBase, object?>? OnBeforeDescendantAttachCallback { get; set; }
-        public Action<WidgetBase, object?>? OnAfterDescendantAttachCallback { get; set; }
-        public Action<WidgetBase, object?>? OnBeforeDescendantDetachCallback { get; set; }
-        public Action<WidgetBase, object?>? OnAfterDescendantDetachCallback { get; set; }
-
-        public Action<WidgetBase, object?>? OnBeforeDescendantActivateCallback { get; set; }
-        public Action<WidgetBase, object?>? OnAfterDescendantActivateCallback { get; set; }
-        public Action<WidgetBase, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-        public Action<WidgetBase, object?>? OnAfterDescendantDeactivateCallback { get; set; }
+        internal Node_ Node { get; }
 
         public WidgetBase() {
+            this.Node = new Node_( this );
         }
-        ~WidgetBase() {
-            Assert.Operation.Valid( $"Disposable '{this}' must be disposed", this.IsDisposed );
-        }
-        public virtual void Dispose() {
-            foreach (var child in base.Children) {
-                Assert.Operation.Valid( $"Child {child} must be disposed", child.IsDisposed );
+        public override void Dispose() {
+            foreach (var child in this.Node.Children) {
+                Assert.Operation.Valid( $"Child {child} must be disposed", child.Widget.IsDisposed );
             }
-            Assert.Operation.NotDisposed( $"Disposable {this} must be non-disposed", !this.IsDisposed );
-            this.disposeCancellationTokenSource?.Cancel();
-            this.IsDisposed = true;
+            base.Dispose();
         }
 
-        void INode2<WidgetBase>.OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
-            this.OnBeforeDescendantAttach( descendant, argument );
+        protected virtual void OnAttach(object? argument) {
         }
-        void INode2<WidgetBase>.OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
-            this.OnAfterDescendantAttach( descendant, argument );
-        }
-        void INode2<WidgetBase>.OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
-            this.OnBeforeDescendantDetach( descendant, argument );
-        }
-        void INode2<WidgetBase>.OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
-            this.OnAfterDescendantDetach( descendant, argument );
+        protected virtual void OnDetach(object? argument) {
         }
 
-        void INode2<WidgetBase>.OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
-            this.OnBeforeDescendantActivate( descendant, argument );
+        protected virtual void OnActivate(object? argument) {
         }
-        void INode2<WidgetBase>.OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
-            this.OnAfterDescendantActivate( descendant, argument );
-        }
-        void INode2<WidgetBase>.OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
-            this.OnBeforeDescendantDeactivate( descendant, argument );
-        }
-        void INode2<WidgetBase>.OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
-            this.OnAfterDescendantDeactivate( descendant, argument );
+        protected virtual void OnDeactivate(object? argument) {
         }
 
         protected virtual void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
@@ -99,6 +133,33 @@
         }
         protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
         }
+
+        protected virtual void AddChild(WidgetBase child, object? argument) {
+            this.Node.AddChild( child, argument );
+        }
+        protected virtual void AddChildren(IEnumerable<WidgetBase> children, object? argument) {
+            this.Node.AddChildren( children, argument );
+        }
+
+        protected virtual void RemoveChild(WidgetBase child, object? argument, Action<WidgetBase, object?>? callback) {
+            this.Node.RemoveChild( child, argument, callback );
+        }
+        protected virtual bool RemoveChild(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback) {
+            return this.Node.RemoveChild( predicate, argument, callback );
+        }
+        protected virtual int RemoveChildren(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback) {
+            return this.Node.RemoveChildren( predicate, argument, callback );
+        }
+        protected virtual int RemoveChildren(object? argument, Action<WidgetBase, object?>? callback) {
+            return this.Node.RemoveChildren( argument, callback );
+        }
+
+        protected virtual void RemoveSelf(object? argument, Action<WidgetBase, object?>? callback) {
+            this.Node.RemoveSelf( argument, callback );
+        }
+
+        //protected void Sort(IList<WidgetBase> children) {
+        //}
 
     }
     public abstract class ViewableWidgetBase : WidgetBase {

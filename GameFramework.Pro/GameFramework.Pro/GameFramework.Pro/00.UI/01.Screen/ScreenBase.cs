@@ -4,37 +4,49 @@
     using System.Text;
     using System.TreeMachine.Pro;
 
-    public abstract class ScreenBase : DisposableBase, ITreeMachine<WidgetBase> {
+    public abstract class ScreenBase : DisposableBase {
+        private sealed class TreeMachine : TreeMachineBase<WidgetBase.Node_>, IDisposable {
 
-        WidgetBase? ITreeMachine<WidgetBase>.Root { get => this.Root; set => this.Root = value; }
+            public new WidgetBase? Root => base.Root?.Widget;
 
-        protected WidgetBase? Root { get; private set; }
+            public TreeMachine() {
+            }
+            public void Dispose() {
+                Assert.Operation.Valid( $"TreeMachine {this} must have no {this.Root} root", this.Root == null );
+            }
+
+            public void AddRoot(WidgetBase root, object? argument) {
+                base.AddRoot( root.Node, argument );
+            }
+            public void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
+                base.RemoveRoot( root.Node, argument, (root, arg) => callback?.Invoke( root.Widget, arg ) );
+            }
+            public void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
+                base.RemoveRoot( argument, (root, arg) => callback?.Invoke( root.Widget, arg ) );
+            }
+
+        }
+
+        private TreeMachine Machine { get; }
+
+        protected WidgetBase? Root => this.Machine.Root;
 
         public ScreenBase() {
+            this.Machine = new TreeMachine();
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Screen {this} must have no {this.Root} root", this.Root == null );
+            this.Machine.Dispose();
             base.Dispose();
         }
 
-        void ITreeMachine<WidgetBase>.AddRoot(WidgetBase root, object? argument) {
-            this.AddRoot( root, argument );
+        protected virtual void AddRoot(WidgetBase root, object? argument) {
+            this.Machine.AddRoot( root, argument );
         }
-        void ITreeMachine<WidgetBase>.RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
-            this.RemoveRoot( root, argument, callback );
+        protected virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
+            this.Machine.RemoveRoot( root, argument, callback );
         }
-        void ITreeMachine<WidgetBase>.RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
-            this.RemoveRoot( argument, callback );
-        }
-
-        public void AddRoot(WidgetBase root, object? argument) {
-            ITreeMachine<WidgetBase>.AddRoot( this, root, argument );
-        }
-        public void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback) {
-            ITreeMachine<WidgetBase>.RemoveRoot( this, root, argument, callback );
-        }
-        public void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
-            ITreeMachine<WidgetBase>.RemoveRoot( this, argument, callback );
+        protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback) {
+            this.Machine.RemoveRoot( argument, callback );
         }
 
     }
