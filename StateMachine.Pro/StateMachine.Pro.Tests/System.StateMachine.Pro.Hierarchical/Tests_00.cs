@@ -10,9 +10,9 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         [Test]
         public void Test_00() {
-            var machine = new StateMachine();
-            var a = new A();
-            var b = new B();
+            var machine = new StateMachine<State<string>, object?>( null );
+            var a = new State<string>( "a" );
+            var b = new State<string>( "b" );
             {
                 // AddState a
                 machine.AddState( a, null );
@@ -77,9 +77,9 @@ namespace System.StateMachine.Pro.Hierarchical {
 
         [Test]
         public void Test_01() {
-            var machine = new StateMachine();
-            var a = new A();
-            var b = new B();
+            var machine = new StateMachine<State<string>, object?>( null );
+            var a = new State<string>( "a" );
+            var b = new State<string>( "b" );
             {
                 // SetState null
                 machine.SetState( null, null, null );
