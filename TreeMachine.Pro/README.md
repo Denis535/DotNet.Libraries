@@ -117,6 +117,92 @@ public enum Activity {
     Deactivating,
 }
 ```
+```
+namespace System.TreeMachine.Pro;
+public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
+
+    public TUserData UserData { get; private set; }
+
+    public new T? Root { get; }
+
+    public TreeMachine(TUserData userData);
+
+    public new void AddRoot(T root, object? argument);
+    public new void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
+    public new void RemoveRoot(object? argument, Action<T, object?>? callback);
+
+}
+public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
+
+    public TUserData UserData { get; private set; }
+
+    public event Action<object?>? OnAttachCallback;
+    public event Action<object?>? OnDetachCallback;
+    public event Action<object?>? OnActivateCallback;
+    public event Action<object?>? OnDeactivateCallback;
+
+    public Node(TUserData userData);
+
+    protected override void OnAttach(object? argument);
+    protected override void OnDetach(object? argument);
+    protected override void OnActivate(object? argument);
+    protected override void OnDeactivate(object? argument);
+
+    public new void AddChild(Node<TUserData> child, object? argument);
+    public new void AddChildren(IEnumerable<Node<TUserData>> children, object? argument);
+    public new void RemoveChild(Node<TUserData> child, object? argument, Action<Node<TUserData>, object?>? callback);
+    public new bool RemoveChild(Func<Node<TUserData>, bool> predicate, object? argument, Action<Node<TUserData>, object?>? callback);
+    public new int RemoveChildren(Func<Node<TUserData>, bool> predicate, object? argument, Action<Node<TUserData>, object?>? callback);
+    public new int RemoveChildren(object? argument, Action<Node<TUserData>, object?>? callback);
+    public new void RemoveSelf(object? argument, Action<Node<TUserData>, object?>? callback);
+
+}
+public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
+
+    public TUserData UserData { get; private set; }
+
+    public event Action<object?>? OnAttachCallback;
+    public event Action<object?>? OnDetachCallback;
+    public event Action<object?>? OnActivateCallback;
+    public event Action<object?>? OnDeactivateCallback;
+
+    public event Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback;
+    public event Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback;
+    public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback;
+    public event Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback;
+
+    public event Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback;
+    public event Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback;
+    public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback;
+    public event Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback;
+
+    public Node2(TUserData userData);
+
+    protected override void OnAttach(object? argument);
+    protected override void OnDetach(object? argument);
+    protected override void OnActivate(object? argument);
+    protected override void OnDeactivate(object? argument);
+
+    protected override void OnBeforeDescendantAttach(Node2<TUserData> descendant, object? argument);
+    protected override void OnAfterDescendantAttach(Node2<TUserData> descendant, object? argument);
+    protected override void OnBeforeDescendantDetach(Node2<TUserData> descendant, object? argument);
+    protected override void OnAfterDescendantDetach(Node2<TUserData> descendant, object? argument);
+
+    protected override void OnBeforeDescendantActivate(Node2<TUserData> descendant, object? argument);
+    protected override void OnAfterDescendantActivate(Node2<TUserData> descendant, object? argument);
+    protected override void OnBeforeDescendantDeactivate(Node2<TUserData> descendant, object? argument);
+    protected override void OnAfterDescendantDeactivate(Node2<TUserData> descendant, object? argument);
+
+    public new void AddChild(Node2<TUserData> child, object? argument);
+    public new void AddChildren(IEnumerable<Node2<TUserData>> children, object? argument);
+    public new void RemoveChild(Node2<TUserData> child, object? argument, Action<Node2<TUserData>, object?>? callback);
+    public new bool RemoveChild(Func<Node2<TUserData>, bool> predicate, object? argument, Action<Node2<TUserData>, object?>? callback);
+    public new int RemoveChildren(Func<Node2<TUserData>, bool> predicate, object? argument, Action<Node2<TUserData>, object?>? callback);
+    public new int RemoveChildren(object? argument, Action<Node2<TUserData>, object?>? callback);
+    public new void RemoveSelf(object? argument, Action<Node2<TUserData>, object?>? callback);
+
+}
+```
 
 # Link
 - https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro
