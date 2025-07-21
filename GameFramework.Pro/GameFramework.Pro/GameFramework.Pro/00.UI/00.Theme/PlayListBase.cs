@@ -35,6 +35,7 @@
             this.State = new State_( this );
         }
         public override void Dispose() {
+            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.State.Activity == Activity.Inactive );
             base.Dispose();
         }
 

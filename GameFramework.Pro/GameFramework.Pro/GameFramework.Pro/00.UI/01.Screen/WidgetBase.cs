@@ -95,8 +95,9 @@
         }
         public override void Dispose() {
             foreach (var child in this.Node.Children) {
-                Assert.Operation.Valid( $"Child {child} must be disposed", child.Owner.IsDisposed );
+                Assert.Operation.Valid( $"Disposable {child} must be disposed", child.Owner.IsDisposed );
             }
+            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.Node.Activity == Activity.Inactive );
             base.Dispose();
         }
 
@@ -161,7 +162,7 @@
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"View {this.View} must be non-null", this.View != null );
-            Assert.Operation.Valid( $"View {this.View} must be disposed", this.View.IsDisposed );
+            Assert.Operation.Valid( $"Disposable {this.View} must be disposed", this.View.IsDisposed );
             base.Dispose();
         }
 
