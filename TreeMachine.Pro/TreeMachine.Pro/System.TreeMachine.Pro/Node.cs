@@ -6,6 +6,9 @@ namespace System.TreeMachine.Pro {
 
     public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
+        // UserData
+        public TUserData UserData { get; private set; }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -13,9 +16,6 @@ namespace System.TreeMachine.Pro {
         // OnActivate
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
-
-        // UserData
-        public TUserData UserData { get; private set; }
 
         // Constructor
         public Node(TUserData userData) {
@@ -68,6 +68,9 @@ namespace System.TreeMachine.Pro {
     }
     public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
+        // UserData
+        public TUserData UserData { get; private set; }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -89,9 +92,6 @@ namespace System.TreeMachine.Pro {
 
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback;
-
-        // UserData
-        public TUserData UserData { get; private set; }
 
         // Constructor
         public Node2(TUserData userData) {
