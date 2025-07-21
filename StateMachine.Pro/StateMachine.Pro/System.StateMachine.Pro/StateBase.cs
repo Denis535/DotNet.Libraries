@@ -26,7 +26,7 @@ namespace System.StateMachine.Pro {
         internal void Attach(StateMachineBase<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine} machine", this.Machine == null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.Owner = machine;
                 this.OnBeforeAttach( argument );
@@ -42,7 +42,7 @@ namespace System.StateMachine.Pro {
         internal void Detach(StateMachineBase<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine == machine );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity == Activity.Active );
             {
                 this.Deactivate( argument );
             }
@@ -74,7 +74,7 @@ namespace System.StateMachine.Pro {
         // Activate
         private void Activate(object? argument) {
             Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
             {
                 this.OnBeforeActivate( argument );
                 this.Activity = Activity.Activating;
@@ -87,7 +87,7 @@ namespace System.StateMachine.Pro {
         // Deactivate
         private void Deactivate(object? argument) {
             Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
-            Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
+            Assert.Operation.Valid( $"State {this} must be active", this.Activity == Activity.Active );
             {
                 this.OnBeforeDeactivate( argument );
                 this.Activity = Activity.Deactivating;
