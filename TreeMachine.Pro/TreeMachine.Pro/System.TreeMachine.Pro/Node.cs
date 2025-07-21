@@ -6,9 +6,11 @@ namespace System.TreeMachine.Pro {
 
     public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
+        // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
 
+        // OnActivate
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
@@ -66,18 +68,22 @@ namespace System.TreeMachine.Pro {
     }
     public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
+        // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
 
+        // OnActivate
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
+        // OnDescendantAttach
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback;
 
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback;
 
+        // OnDescendantActivate
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback;
 
