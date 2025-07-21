@@ -63,6 +63,40 @@ public enum Activity {
 }
 ```
 ```
+namespace System.StateMachine.Pro;
+public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
+
+    public TUserData UserData { get; private set; }
+
+    public new T? State { get; }
+
+    public StateMachine(TUserData userData);
+
+    public new void SetState(T? state, object? argument, Action<T, object?>? callback);
+    public new void AddState(T state, object? argument);
+    public new void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    public new void RemoveState(object? argument, Action<T, object?>? callback);
+
+}
+public sealed class State<TUserData> : StateBase<State<TUserData>> {
+
+    public TUserData UserData { get; private set; }
+
+    public event Action<object?>? OnAttachCallback;
+    public event Action<object?>? OnDetachCallback;
+    public event Action<object?>? OnActivateCallback;
+    public event Action<object?>? OnDeactivateCallback;
+
+    public State(TUserData userData);
+
+    protected override void OnAttach(object? argument);
+    protected override void OnDetach(object? argument);
+    protected override void OnActivate(object? argument);
+    protected override void OnDeactivate(object? argument);
+
+}
+```
+```
 namespace System.StateMachine.Pro.Hierarchical;
 public abstract class StateMachineBase<T> where T : notnull, StateBase<T> {
 
@@ -143,6 +177,46 @@ public enum Activity {
     Activating,
     Active,
     Deactivating,
+}
+```
+```
+namespace System.StateMachine.Pro.Hierarchical;
+public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
+
+    public TUserData UserData { get; private set; }
+
+    public new T? State { get; }
+
+    public StateMachine(TUserData userData);
+
+    public new void SetState(T? state, object? argument, Action<T, object?>? callback);
+    public new void AddState(T state, object? argument);
+    public new void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    public new void RemoveState(object? argument, Action<T, object?>? callback);
+
+}
+public sealed class State<TUserData> : StateBase<State<TUserData>> {
+
+    public TUserData UserData { get; private set; }
+
+    public event Action<object?>? OnAttachCallback;
+    public event Action<object?>? OnDetachCallback;
+    public event Action<object?>? OnActivateCallback;
+    public event Action<object?>? OnDeactivateCallback;
+
+    public State(TUserData userData);
+
+    protected override void OnAttach(object? argument);
+    protected override void OnDetach(object? argument);
+    protected override void OnActivate(object? argument);
+    protected override void OnDeactivate(object? argument);
+
+    public new void SetChild(State<TUserData>? child, object? argument, Action<State<TUserData>, object?>? callback);
+    public new void AddChild(State<TUserData> child, object? argument);
+    public new void RemoveChild(State<TUserData> child, object? argument, Action<State<TUserData>, object?>? callback);
+    public new void RemoveChild(object? argument, Action<State<TUserData>, object?>? callback);
+    public new void RemoveSelf(object? argument, Action<State<TUserData>, object?>? callback);
+
 }
 ```
 
