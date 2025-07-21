@@ -32,60 +32,56 @@ public abstract class ProgramBase : DisposableBase {
 }
 
 // UI
-public abstract class ThemeBase : DisposableBase, IStateMachine<PlayListBase> {
+public abstract class ThemeBase : DisposableBase {
 
     protected PlayListBase? State { get; }
 
     public ThemeBase();
     public override void Dispose();
 
-    protected void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback);
-    protected void AddState(PlayListBase state, object? argument);
-    protected void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback);
-    protected void RemoveState(object? argument, Action<PlayListBase, object?>? callback);
+    protected virtual void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback);
+    protected virtual void AddState(PlayListBase state, object? argument);
+    protected virtual void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback);
+    protected virtual void RemoveState(object? argument, Action<PlayListBase, object?>? callback);
 
 }
-public abstract class PlayListBase : StateBase<PlayListBase>, IDisposable {
-
-    public bool IsDisposed { get; }
-    public CancellationToken DisposeCancellationToken { get; }
+public abstract class PlayListBase : DisposableBase {
 
     public PlayListBase();
-    public virtual void Dispose();
+    public override void Dispose();
+
+	protected virtual void OnAttach(object? argument);
+	protected virtual void OnDetach(object? argument);
+
+	protected virtual void OnActivate(object? argument);
+	protected virtual void OnDeactivate(object? argument);
 
 }
 
-public abstract class ScreenBase : DisposableBase, ITreeMachine<WidgetBase> {
+public abstract class ScreenBase : DisposableBase {
 
     protected WidgetBase? Root { get; }
 
     public ScreenBase();
     public override void Dispose();
 
-    public void AddRoot(WidgetBase root, object? argument);
-    public void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback);
-    public void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
+    public virtual void AddRoot(WidgetBase root, object? argument);
+    public virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback);
+    public virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
 
 }
-public abstract class WidgetBase : NodeBase2<WidgetBase>, IDisposable {
+public abstract class WidgetBase : DisposableBase {
 
-    public bool IsDisposed { get; }
-    public CancellationToken DisposeCancellationToken { get; }
-
-    public ScreenBase? Screen { get; }
-
-    public Action<WidgetBase, object?>? OnBeforeDescendantAttachCallback { get; set; }
-    public Action<WidgetBase, object?>? OnAfterDescendantAttachCallback { get; set; }
-    public Action<WidgetBase, object?>? OnBeforeDescendantDetachCallback { get; set; }
-    public Action<WidgetBase, object?>? OnAfterDescendantDetachCallback { get; set; }
-    
-    public Action<WidgetBase, object?>? OnBeforeDescendantActivateCallback { get; set; }
-    public Action<WidgetBase, object?>? OnAfterDescendantActivateCallback { get; set; }
-    public Action<WidgetBase, object?>? OnBeforeDescendantDeactivateCallback { get; set; }
-    public Action<WidgetBase, object?>? OnAfterDescendantDeactivateCallback { get; set; }
+	protected IComparer<WidgetBase>? Comparer { get; init; }
 
     public WidgetBase();
-    public virtual void Dispose();
+    public override void Dispose();
+
+	protected virtual void OnAttach(object? argument);
+    protected virtual void OnDetach(object? argument);
+
+    protected virtual void OnActivate(object? argument);
+    protected virtual void OnDeactivate(object? argument);
 
     protected virtual void OnBeforeDescendantAttach(WidgetBase descendant, object? argument);
     protected virtual void OnAfterDescendantAttach(WidgetBase descendant, object? argument);
@@ -96,6 +92,14 @@ public abstract class WidgetBase : NodeBase2<WidgetBase>, IDisposable {
     protected virtual void OnAfterDescendantActivate(WidgetBase descendant, object? argument);
     protected virtual void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument);
     protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument);
+
+	protected virtual void AddChild(WidgetBase child, object? argument);
+    protected virtual void AddChildren(IEnumerable<WidgetBase> children, object? argument);
+    protected virtual void RemoveChild(WidgetBase child, object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual bool RemoveChild(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual int RemoveChildren(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual int RemoveChildren(object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual void RemoveSelf(object? argument, Action<WidgetBase, object?>? callback);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
@@ -114,13 +118,10 @@ public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView
     public override void Dispose();
 
 }
-public abstract class ViewBase : IDisposable {
-
-    public bool IsDisposed { get; }
-    public CancellationToken DisposeCancellationToken { get; }
+public abstract class ViewBase : DisposableBase {
 
     public ViewBase();
-    public virtual void Dispose();
+    public override void Dispose();
 
 }
 
@@ -163,3 +164,4 @@ public abstract class EntityBase : DisposableBase {
 # Links
 
 - https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro
+- https://www.nuget.org/packages/GameFramework.Pro

@@ -106,7 +106,7 @@ namespace GameFramework.Pro {
             base.AddChild( new GameWidget(), null );
         }
         public override void Dispose() {
-            base.RemoveChildren( null, (child, arg) => child.Dispose() );
+            _ = base.RemoveChildren( null, (child, arg) => child.Dispose() );
             base.Dispose();
         }
 

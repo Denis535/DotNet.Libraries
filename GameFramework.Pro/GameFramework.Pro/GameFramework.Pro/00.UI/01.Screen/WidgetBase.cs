@@ -6,19 +6,9 @@
     using System.TreeMachine.Pro;
 
     public abstract class WidgetBase : DisposableBase {
-        internal sealed class Node_ : NodeBase<Node_>, IDescendantNodeListener<Node_> {
+        internal sealed class Node_ : NodeBase2<Node_> {
 
             internal WidgetBase Owner { get; }
-
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantAttachCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantAttachCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantDetachCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantDetachCallback => null;
-
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantActivateCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantActivateCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnBeforeDescendantDeactivateCallback => null;
-            Action<Node_, object?>? IDescendantNodeListener<Node_>.OnAfterDescendantDeactivateCallback => null;
 
             public Node_(WidgetBase owner) {
                 this.Owner = owner;
@@ -38,29 +28,29 @@
                 this.Owner.OnDeactivate( argument );
             }
 
-            void IDescendantNodeListener<Node_>.OnBeforeDescendantAttach(Node_ descendant, object? argument) {
+            protected override void OnBeforeDescendantAttach(Node_ descendant, object? argument) {
                 this.Owner.OnBeforeDescendantAttach( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnAfterDescendantAttach(Node_ descendant, object? argument) {
+            protected override void OnAfterDescendantAttach(Node_ descendant, object? argument) {
                 this.Owner.OnAfterDescendantAttach( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnBeforeDescendantDetach(Node_ descendant, object? argument) {
+            protected override void OnBeforeDescendantDetach(Node_ descendant, object? argument) {
                 this.Owner.OnBeforeDescendantDetach( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnAfterDescendantDetach(Node_ descendant, object? argument) {
+            protected override void OnAfterDescendantDetach(Node_ descendant, object? argument) {
                 this.Owner.OnAfterDescendantDetach( descendant.Owner, argument );
             }
 
-            void IDescendantNodeListener<Node_>.OnBeforeDescendantActivate(Node_ descendant, object? argument) {
+            protected override void OnBeforeDescendantActivate(Node_ descendant, object? argument) {
                 this.Owner.OnBeforeDescendantActivate( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnAfterDescendantActivate(Node_ descendant, object? argument) {
+            protected override void OnAfterDescendantActivate(Node_ descendant, object? argument) {
                 this.Owner.OnAfterDescendantActivate( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnBeforeDescendantDeactivate(Node_ descendant, object? argument) {
+            protected override void OnBeforeDescendantDeactivate(Node_ descendant, object? argument) {
                 this.Owner.OnBeforeDescendantDeactivate( descendant.Owner, argument );
             }
-            void IDescendantNodeListener<Node_>.OnAfterDescendantDeactivate(Node_ descendant, object? argument) {
+            protected override void OnAfterDescendantDeactivate(Node_ descendant, object? argument) {
                 this.Owner.OnAfterDescendantDeactivate( descendant.Owner, argument );
             }
 
