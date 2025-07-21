@@ -177,6 +177,9 @@
         public ViewableWidgetBase() {
         }
         public override void Dispose() {
+            if (this.View is DisposableBase disposable) {
+                Assert.Operation.Valid( $"Disposable {disposable} must be disposed", disposable.IsDisposed );
+            }
             base.Dispose();
         }
 
