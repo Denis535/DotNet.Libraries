@@ -65,9 +65,9 @@ public abstract class ScreenBase : DisposableBase {
     public ScreenBase();
     public override void Dispose();
 
-    public virtual void AddRoot(WidgetBase root, object? argument);
-    public virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback);
-    public virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual void AddRoot(WidgetBase root, object? argument);
+    protected virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
 
 }
 public abstract class WidgetBase : DisposableBase {
