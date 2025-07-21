@@ -89,22 +89,17 @@
 
         internal Node_ Node { get; }
 
-        // Machine
         internal TreeMachineBase<Node_>? Machine => this.Node.Machine;
 
-        // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Node.IsRoot;
         public WidgetBase Root => this.Node.Root.Owner;
 
-        // Parent
         public WidgetBase? Parent => this.Node.Parent?.Owner;
         public IEnumerable<WidgetBase> Ancestors => this.Node.Ancestors.Select( i => i.Owner );
         public IEnumerable<WidgetBase> AncestorsAndSelf => this.Node.AncestorsAndSelf.Select( i => i.Owner );
 
-        // Activity
         public Activity Activity => this.Node.Activity;
 
-        // Children
         public IEnumerable<WidgetBase> Children => this.Node.Children.Select( i => i.Owner );
         public IEnumerable<WidgetBase> Descendants => this.Node.Descendants.Select( i => i.Owner );
         public IEnumerable<WidgetBase> DescendantsAndSelf => this.Node.DescendantsAndSelf.Select( i => i.Owner );
@@ -177,18 +172,16 @@
     }
     public abstract class ViewableWidgetBase : WidgetBase {
 
-        protected ViewBase View { get; init; } = default!;
+        protected IView View { get; init; } = default!;
 
         public ViewableWidgetBase() {
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"View {this.View} must be non-null", this.View != null );
-            Assert.Operation.Valid( $"Disposable {this.View} must be disposed", this.View.IsDisposed );
             base.Dispose();
         }
 
     }
-    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : ViewBase {
+    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull, IView {
 
         protected new TView View { get => (TView) base.View; init => base.View = value; }
 
@@ -198,5 +191,7 @@
             base.Dispose();
         }
 
+    }
+    public interface IView {
     }
 }

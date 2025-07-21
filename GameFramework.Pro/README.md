@@ -125,7 +125,7 @@ public abstract class ViewableWidgetBase : WidgetBase {
     public override void Dispose();
 
 }
-public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : ViewBase {
+public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull, IView {
 
     protected new TView View { get; init; }
 
@@ -133,7 +133,7 @@ public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView
     public override void Dispose();
 
 }
-public abstract class ViewBase : DisposableBase {
+public abstract class ViewBase : DisposableBase, IView {
 
     public ViewBase();
     public override void Dispose();

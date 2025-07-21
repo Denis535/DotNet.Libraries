@@ -4,7 +4,7 @@
     using System.Text;
     using System.Threading;
 
-    public abstract class ViewBase : DisposableBase {
+    public abstract class ViewBase : DisposableBase, IView {
 
         public ViewBase() {
         }
