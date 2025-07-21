@@ -119,7 +119,7 @@ public abstract class WidgetBase : DisposableBase {
 }
 public abstract class ViewableWidgetBase : WidgetBase {
 
-    protected ViewBase View { get; init; }
+    protected IView View { get; init; }
 
     public ViewableWidgetBase();
     public override void Dispose();
