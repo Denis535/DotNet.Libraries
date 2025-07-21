@@ -21,7 +21,6 @@ public static class DisposableExtensions {
 
 }
 ```
-
 ```
 namespace GameFramework.Pro;
 public abstract class ProgramBase : DisposableBase {
@@ -30,8 +29,9 @@ public abstract class ProgramBase : DisposableBase {
     public override void Dispose();
 
 }
-
-// UI
+```
+```
+namespace GameFramework.Pro;
 public abstract class ThemeBase : DisposableBase {
 
     protected PlayListBase? State { get; }
@@ -57,7 +57,6 @@ public abstract class ScreenBase : DisposableBase {
     protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
 
 }
-
 public abstract class PlayListBase : DisposableBase {
 
     public Activity Activity { get; }
@@ -139,23 +138,24 @@ public abstract class ViewBase : DisposableBase, IView {
     public override void Dispose();
 
 }
-
 public abstract class RouterBase : DisposableBase {
 
     public RouterBase();
     public override void Dispose();
 
 }
-
-// App
+```
+```
+namespace GameFramework.Pro;
 public abstract class ApplicationBase : DisposableBase {
 
     public ApplicationBase();
     public override void Dispose();
 
 }
-
-// Domain (business)
+```
+```
+namespace GameFramework.Pro;
 public abstract class GameBase : DisposableBase {
 
     public GameBase();
@@ -171,6 +171,53 @@ public abstract class PlayerBase : DisposableBase {
 public abstract class EntityBase : DisposableBase {
 
     public EntityBase();
+    public override void Dispose();
+
+}
+```
+```
+namespace GameFramework.Pro.Extensions;
+public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase where TTheme : ThemeBase where TScreen : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
+
+    protected TTheme Theme { get; init; }
+    protected TScreen Screen { get; init; }
+    protected TRouter Router { get; init; }
+    protected TApplication Application { get; init; }
+
+    public ProgramBase2();
+    public override void Dispose();
+
+}
+```
+```
+namespace GameFramework.Pro.Extensions;
+public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
+
+    protected TRouter Router { get; init; }
+    protected TApplication Application { get; init; }
+
+    public ThemeBase2();
+    public override void Dispose();
+
+}
+public abstract class ScreenBase2<TRouter, TApplication> : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
+
+    protected TRouter Router { get; init; }
+    protected TApplication Application { get; init; }
+
+    public ScreenBase2();
+    public override void Dispose();
+
+}
+public abstract class RouterBase2<TTheme, TScreen, TApplication> : RouterBase where TTheme : ThemeBase where TScreen : ScreenBase where TApplication : ApplicationBase {
+
+    protected TTheme Theme { get; }
+    protected Func<TTheme> Theme_ { init; }
+    protected TScreen Screen { get; }
+    protected Func<TScreen> Screen_ { init; }
+    protected TApplication Application { get; init; }
+
+    public RouterBase2();
     public override void Dispose();
 
 }
