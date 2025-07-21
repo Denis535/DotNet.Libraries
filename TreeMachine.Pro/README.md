@@ -65,8 +65,8 @@ public abstract partial class NodeBase<TThis> {
     protected virtual void OnAfterActivate(object? argument);
 
     protected abstract void OnDeactivate(object? argument);
-    protected virtual void OnBeforeDeactivate(object? argument)l
-    protected virtual void OnAfterDeactivate(object? argument)l
+    protected virtual void OnBeforeDeactivate(object? argument);
+    protected virtual void OnAfterDeactivate(object? argument);
 
 }
 public abstract partial class NodeBase<TThis> {
