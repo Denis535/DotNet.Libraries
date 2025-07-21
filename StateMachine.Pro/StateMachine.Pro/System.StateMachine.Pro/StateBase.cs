@@ -22,12 +22,6 @@ namespace System.StateMachine.Pro {
     }
     public abstract partial class StateBase<TThis> {
 
-        // OnAttach
-        public event Action<object?>? OnBeforeAttachCallback;
-        public event Action<object?>? OnAfterAttachCallback;
-        public event Action<object?>? OnBeforeDetachCallback;
-        public event Action<object?>? OnAfterDetachCallback;
-
         // Attach
         internal void Attach(StateMachineBase<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
@@ -35,15 +29,9 @@ namespace System.StateMachine.Pro {
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
                 this.Owner = machine;
-                {
-                    this.OnBeforeAttachCallback?.Invoke( argument );
-                    this.OnBeforeAttach( argument );
-                }
+                this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
-                {
-                    this.OnAfterAttach( argument );
-                    this.OnAfterAttachCallback?.Invoke( argument );
-                }
+                this.OnAfterAttach( argument );
             }
             {
                 this.Activate( argument );
@@ -59,15 +47,9 @@ namespace System.StateMachine.Pro {
                 this.Deactivate( argument );
             }
             {
-                {
-                    this.OnBeforeDetachCallback?.Invoke( argument );
-                    this.OnBeforeDetach( argument );
-                }
+                this.OnBeforeDetach( argument );
                 this.OnDetach( argument );
-                {
-                    this.OnAfterDetach( argument );
-                    this.OnAfterDetachCallback?.Invoke( argument );
-                }
+                this.OnAfterDetach( argument );
                 this.Owner = null;
             }
         }
@@ -89,28 +71,16 @@ namespace System.StateMachine.Pro {
     }
     public abstract partial class StateBase<TThis> {
 
-        // OnActivate
-        public event Action<object?>? OnBeforeActivateCallback;
-        public event Action<object?>? OnAfterActivateCallback;
-        public event Action<object?>? OnBeforeDeactivateCallback;
-        public event Action<object?>? OnAfterDeactivateCallback;
-
         // Activate
         private void Activate(object? argument) {
             Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity is Activity.Inactive );
             {
-                this.OnBeforeActivateCallback?.Invoke( argument );
                 this.OnBeforeActivate( argument );
-            }
-            {
                 this.Activity = Activity.Activating;
                 this.OnActivate( argument );
                 this.Activity = Activity.Active;
-            }
-            {
                 this.OnAfterActivate( argument );
-                this.OnAfterActivateCallback?.Invoke( argument );
             }
         }
 
@@ -119,17 +89,11 @@ namespace System.StateMachine.Pro {
             Assert.Operation.Valid( $"State {this} must have machine", this.Machine != null );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity is Activity.Active );
             {
-                this.OnBeforeDeactivateCallback?.Invoke( argument );
                 this.OnBeforeDeactivate( argument );
-            }
-            {
                 this.Activity = Activity.Deactivating;
                 this.OnDeactivate( argument );
                 this.Activity = Activity.Inactive;
-            }
-            {
                 this.OnAfterDeactivate( argument );
-                this.OnAfterDeactivateCallback?.Invoke( argument );
             }
         }
 

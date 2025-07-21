@@ -29,11 +29,6 @@ public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<
 }
 public abstract partial class StateBase<TThis> {
 
-    public event Action<object?>? OnBeforeAttachCallback;
-    public event Action<object?>? OnAfterAttachCallback;
-    public event Action<object?>? OnBeforeDetachCallback;
-    public event Action<object?>? OnAfterDetachCallback;
-
     internal void Attach(StateMachineBase<TThis> machine, object? argument);
     internal void Detach(StateMachineBase<TThis> machine, object? argument);
 
@@ -47,11 +42,6 @@ public abstract partial class StateBase<TThis> {
 
 }
 public abstract partial class StateBase<TThis> {
-
-    public event Action<object?>? OnBeforeActivateCallback;
-    public event Action<object?>? OnAfterActivateCallback;
-    public event Action<object?>? OnBeforeDeactivateCallback;
-    public event Action<object?>? OnAfterDeactivateCallback;
 
     private void Activate(object? argument);
     private void Deactivate(object? argument);
@@ -111,11 +101,6 @@ public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<
 }
 public abstract partial class StateBase<TThis> {
 
-    public event Action<object?>? OnBeforeAttachCallback;
-    public event Action<object?>? OnAfterAttachCallback;
-    public event Action<object?>? OnBeforeDetachCallback;
-    public event Action<object?>? OnAfterDetachCallback;
-
     internal void Attach(StateMachineBase<TThis> machine, object? argument);
     private void Attach(TThis parent, object? argument);
     internal void Detach(StateMachineBase<TThis> machine, object? argument);
@@ -131,11 +116,6 @@ public abstract partial class StateBase<TThis> {
 
 }
 public abstract partial class StateBase<TThis> {
-
-    public event Action<object?>? OnBeforeActivateCallback;
-    public event Action<object?>? OnAfterActivateCallback;
-    public event Action<object?>? OnBeforeDeactivateCallback;
-    public event Action<object?>? OnAfterDeactivateCallback;
 
     private void Activate(object? argument);
     private void Deactivate(object? argument);
