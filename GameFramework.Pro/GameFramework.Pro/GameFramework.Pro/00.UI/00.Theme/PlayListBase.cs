@@ -31,11 +31,15 @@
 
         internal State_ State { get; }
 
+        internal StateMachineBase<State_>? Machine => this.State.Machine;
+
+        public Activity Activity => this.State.Activity;
+
         public PlayListBase() {
             this.State = new State_( this );
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.State.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.Activity == Activity.Inactive );
             base.Dispose();
         }
 

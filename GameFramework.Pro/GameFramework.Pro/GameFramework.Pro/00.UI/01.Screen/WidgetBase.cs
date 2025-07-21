@@ -1,6 +1,7 @@
 ﻿namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.TreeMachine.Pro;
@@ -88,6 +89,26 @@
 
         internal Node_ Node { get; }
 
+        // Machine
+        internal TreeMachineBase<Node_>? Machine => this.Node.Machine;
+
+        // Root
+        [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Node.IsRoot;
+        public WidgetBase Root => this.Node.Root.Owner;
+
+        // Parent
+        public WidgetBase? Parent => this.Node.Parent?.Owner;
+        public IEnumerable<WidgetBase> Ancestors => this.Node.Ancestors.Select( i => i.Owner );
+        public IEnumerable<WidgetBase> AncestorsAndSelf => this.Node.AncestorsAndSelf.Select( i => i.Owner );
+
+        // Activity
+        public Activity Activity => this.Node.Activity;
+
+        // Children
+        public IEnumerable<WidgetBase> Children => this.Node.Children.Select( i => i.Owner );
+        public IEnumerable<WidgetBase> Descendants => this.Node.Descendants.Select( i => i.Owner );
+        public IEnumerable<WidgetBase> DescendantsAndSelf => this.Node.DescendantsAndSelf.Select( i => i.Owner );
+
         protected IComparer<WidgetBase>? Comparer { get; init; }
 
         public WidgetBase() {
@@ -97,7 +118,7 @@
             foreach (var child in this.Node.Children) {
                 Assert.Operation.Valid( $"Disposable {child} must be disposed", child.Owner.IsDisposed );
             }
-            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.Node.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.Activity == Activity.Inactive );
             base.Dispose();
         }
 

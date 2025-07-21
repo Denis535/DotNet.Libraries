@@ -45,19 +45,6 @@ public abstract class ThemeBase : DisposableBase {
     protected virtual void RemoveState(object? argument, Action<PlayListBase, object?>? callback);
 
 }
-public abstract class PlayListBase : DisposableBase {
-
-    public PlayListBase();
-    public override void Dispose();
-
-    protected virtual void OnAttach(object? argument);
-    protected virtual void OnDetach(object? argument);
-
-    protected virtual void OnActivate(object? argument);
-    protected virtual void OnDeactivate(object? argument);
-
-}
-
 public abstract class ScreenBase : DisposableBase {
 
     protected WidgetBase? Root { get; }
@@ -70,7 +57,35 @@ public abstract class ScreenBase : DisposableBase {
     protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
 
 }
+
+public abstract class PlayListBase : DisposableBase {
+
+    public Activity Activity { get; }
+
+    public PlayListBase();
+    public override void Dispose();
+
+    protected virtual void OnAttach(object? argument);
+    protected virtual void OnDetach(object? argument);
+
+    protected virtual void OnActivate(object? argument);
+    protected virtual void OnDeactivate(object? argument);
+
+}
 public abstract class WidgetBase : DisposableBase {
+
+    [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
+    public WidgetBase Root { get; }
+
+    public WidgetBase? Parent { get; }
+    public IEnumerable<WidgetBase> Ancestors { get; }
+    public IEnumerable<WidgetBase> AncestorsAndSelf { get; }
+
+    public Activity Activity { get; }
+
+    public IEnumerable<WidgetBase> Children { get; }
+    public IEnumerable<WidgetBase> Descendants { get; }
+    public IEnumerable<WidgetBase> DescendantsAndSelf { get; }
 
     protected IComparer<WidgetBase>? Comparer { get; init; }
 
