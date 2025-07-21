@@ -50,11 +50,11 @@ public abstract class PlayListBase : DisposableBase {
     public PlayListBase();
     public override void Dispose();
 
-	protected virtual void OnAttach(object? argument);
-	protected virtual void OnDetach(object? argument);
+    protected virtual void OnAttach(object? argument);
+    protected virtual void OnDetach(object? argument);
 
-	protected virtual void OnActivate(object? argument);
-	protected virtual void OnDeactivate(object? argument);
+    protected virtual void OnActivate(object? argument);
+    protected virtual void OnDeactivate(object? argument);
 
 }
 
@@ -72,12 +72,12 @@ public abstract class ScreenBase : DisposableBase {
 }
 public abstract class WidgetBase : DisposableBase {
 
-	protected IComparer<WidgetBase>? Comparer { get; init; }
+    protected IComparer<WidgetBase>? Comparer { get; init; }
 
     public WidgetBase();
     public override void Dispose();
 
-	protected virtual void OnAttach(object? argument);
+    protected virtual void OnAttach(object? argument);
     protected virtual void OnDetach(object? argument);
 
     protected virtual void OnActivate(object? argument);
@@ -93,7 +93,7 @@ public abstract class WidgetBase : DisposableBase {
     protected virtual void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument);
     protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument);
 
-	protected virtual void AddChild(WidgetBase child, object? argument);
+    protected virtual void AddChild(WidgetBase child, object? argument);
     protected virtual void AddChildren(IEnumerable<WidgetBase> children, object? argument);
     protected virtual void RemoveChild(WidgetBase child, object? argument, Action<WidgetBase, object?>? callback);
     protected virtual bool RemoveChild(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback);
