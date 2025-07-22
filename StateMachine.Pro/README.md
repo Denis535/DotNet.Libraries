@@ -2,6 +2,9 @@
 The library that allows you to easily implement a stateful object.
 
 # Reference
+
+###### System.StateMachine.Pro
+
 ```
 namespace System.StateMachine.Pro;
 public abstract class StateMachineBase<T> where T : notnull, StateBase<T> {
@@ -61,9 +64,6 @@ public enum Activity {
     Active,
     Deactivating,
 }
-```
-```
-namespace System.StateMachine.Pro;
 public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
 
     public TUserData UserData { get; private set; }
@@ -96,6 +96,9 @@ public sealed class State<TUserData> : StateBase<State<TUserData>> {
 
 }
 ```
+
+###### System.StateMachine.Pro.Hierarchical
+
 ```
 namespace System.StateMachine.Pro.Hierarchical;
 public abstract class StateMachineBase<T> where T : notnull, StateBase<T> {
@@ -178,9 +181,6 @@ public enum Activity {
     Active,
     Deactivating,
 }
-```
-```
-namespace System.StateMachine.Pro.Hierarchical;
 public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
 
     public TUserData UserData { get; private set; }
@@ -223,3 +223,4 @@ public sealed class State<TUserData> : StateBase<State<TUserData>> {
 # Link
 - https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro
 - https://www.nuget.org/packages/StateMachine.Pro
+- https://youtu.be/1T3O5YpGdAY
