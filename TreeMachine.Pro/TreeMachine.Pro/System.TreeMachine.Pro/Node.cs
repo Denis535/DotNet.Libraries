@@ -82,14 +82,12 @@ namespace System.TreeMachine.Pro {
         // OnDescendantAttach
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantAttachCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantAttachCallback;
-
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDetachCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantDetachCallback;
 
         // OnDescendantActivate
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantActivateCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantActivateCallback;
-
         public event Action<Node2<TUserData>, object?>? OnBeforeDescendantDeactivateCallback;
         public event Action<Node2<TUserData>, object?>? OnAfterDescendantDeactivateCallback;
 

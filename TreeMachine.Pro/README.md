@@ -2,6 +2,9 @@
 The library that allows you to easily implement a hierarchical object.
 
 # Reference
+
+###### System.TreeMachine.Pro
+
 ```
 namespace System.TreeMachine.Pro;
 public abstract class TreeMachineBase<T> where T : notnull, NodeBase<T> {
@@ -86,7 +89,6 @@ public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : n
 
     protected override void OnBeforeAttach(object? argument);
     protected override void OnAfterAttach(object? argument);
-
     protected override void OnBeforeDetach(object? argument);
     protected override void OnAfterDetach(object? argument);
 
@@ -100,7 +102,6 @@ public abstract partial class NodeBase2<TThis> {
 
     protected override void OnBeforeActivate(object? argument);
     protected override void OnAfterActivate(object? argument);
-
     protected override void OnBeforeDeactivate(object? argument);
     protected override void OnAfterDeactivate(object? argument);
 
@@ -116,9 +117,6 @@ public enum Activity {
     Active,
     Deactivating,
 }
-```
-```
-namespace System.TreeMachine.Pro;
 public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
 
     public TUserData UserData { get; private set; }
@@ -205,5 +203,7 @@ public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 ```
 
 # Link
+
 - https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro
-- https://www.nuget.org/packages/TreeMachine.Pro
+- https://nuget.org/packages/TreeMachine.Pro
+- https://youtu.be/4LgjHrkxymA
