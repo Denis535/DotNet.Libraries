@@ -1,4 +1,5 @@
-﻿namespace GameFramework.Pro {
+﻿#nullable enable
+namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.StateMachine.Pro;

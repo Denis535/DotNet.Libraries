@@ -1,4 +1,5 @@
-﻿namespace GameFramework.Pro.Extensions {
+﻿#nullable enable
+namespace GameFramework.Pro.Extensions {
     using System;
     using System.Collections.Generic;
     using System.Text;
