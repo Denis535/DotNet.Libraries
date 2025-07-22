@@ -4,6 +4,8 @@ The framework that allows you to design high-quality architecture of your game p
 
 # Reference
 
+###### System
+
 ```
 namespace System;
 public abstract class DisposableBase : IDisposable {
@@ -21,6 +23,9 @@ public static class DisposableExtensions {
 
 }
 ```
+
+###### GameFramework.Pro
+
 ```
 namespace GameFramework.Pro;
 public abstract class ProgramBase : DisposableBase {
@@ -29,9 +34,8 @@ public abstract class ProgramBase : DisposableBase {
     public override void Dispose();
 
 }
-```
-```
-namespace GameFramework.Pro;
+
+// UI
 public abstract class ThemeBase : DisposableBase {
 
     protected PlayListBase? State { get; }
@@ -144,18 +148,16 @@ public abstract class RouterBase : DisposableBase {
     public override void Dispose();
 
 }
-```
-```
-namespace GameFramework.Pro;
+
+// App
 public abstract class ApplicationBase : DisposableBase {
 
     public ApplicationBase();
     public override void Dispose();
 
 }
-```
-```
-namespace GameFramework.Pro;
+
+// Game (domain, business)
 public abstract class GameBase : DisposableBase {
 
     public GameBase();
@@ -175,6 +177,9 @@ public abstract class EntityBase : DisposableBase {
 
 }
 ```
+
+###### GameFramework.Pro.Extensions
+
 ```
 namespace GameFramework.Pro.Extensions;
 public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase where TTheme : ThemeBase where TScreen : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
@@ -188,9 +193,8 @@ public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : Pro
     public override void Dispose();
 
 }
-```
-```
-namespace GameFramework.Pro.Extensions;
+
+// UI
 public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
 
     protected TRouter Router { get; init; }

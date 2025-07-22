@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFramework.Pro.Internal", "GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj", "{AC11C8A7-265A-4184-AE72-10F1CA2A907A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{AB28A7B2-B1D5-4520-AF51-87615889D572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB28A7B2-B1D5-4520-AF51-87615889D572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB28A7B2-B1D5-4520-AF51-87615889D572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC11C8A7-265A-4184-AE72-10F1CA2A907A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC11C8A7-265A-4184-AE72-10F1CA2A907A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC11C8A7-265A-4184-AE72-10F1CA2A907A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC11C8A7-265A-4184-AE72-10F1CA2A907A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
