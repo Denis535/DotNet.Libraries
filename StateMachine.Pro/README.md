@@ -222,5 +222,5 @@ public sealed class State<TUserData> : StateBase<State<TUserData>> {
 
 # Link
 - https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro
-- https://www.nuget.org/packages/StateMachine.Pro
+- https://nuget.org/packages/StateMachine.Pro
 - https://youtu.be/1T3O5YpGdAY
