@@ -231,3 +231,4 @@ public abstract class RouterBase2<TTheme, TScreen, TApplication> : RouterBase wh
 
 - https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro
 - https://www.nuget.org/packages/GameFramework.Pro
+- https://youtu.be/u7wjaaMr6wQ
