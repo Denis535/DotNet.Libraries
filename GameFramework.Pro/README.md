@@ -34,7 +34,6 @@ public abstract class ProgramBase : DisposableBase {
     public override void Dispose();
 
 }
-
 // UI
 public abstract class ThemeBase : DisposableBase {
 
@@ -148,7 +147,6 @@ public abstract class RouterBase : DisposableBase {
     public override void Dispose();
 
 }
-
 // App
 public abstract class ApplicationBase : DisposableBase {
 
@@ -156,7 +154,6 @@ public abstract class ApplicationBase : DisposableBase {
     public override void Dispose();
 
 }
-
 // Game (domain, business)
 public abstract class GameBase : DisposableBase {
 
@@ -193,7 +190,6 @@ public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : Pro
     public override void Dispose();
 
 }
-
 // UI
 public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
 
