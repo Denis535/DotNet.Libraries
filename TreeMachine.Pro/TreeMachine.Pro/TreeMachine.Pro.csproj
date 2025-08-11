@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>2.1.1</Version>
+        <Version>2.1.2</Version>
         <Description>The library that allows you to easily implement a hierarchical object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -25,7 +25,7 @@
         <PackageIconUrl></PackageIconUrl>
         <PackageDescription>$(Description)</PackageDescription>
         <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro</PackageProjectUrl>
-        <PackageTags>tree machine; tree; node; hierarchy; hierarchical; pattern</PackageTags>
+        <PackageTags>tree-machine tree hierarchy hierarchical node pattern</PackageTags>
 
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseUrl></PackageLicenseUrl>

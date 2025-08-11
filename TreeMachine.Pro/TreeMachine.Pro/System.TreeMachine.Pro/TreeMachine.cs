@@ -6,11 +6,11 @@ namespace System.TreeMachine.Pro {
 
     public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
 
-        // UserData
-        public TUserData UserData { get; private set; }
-
         // Root
         public new T? Root => base.Root;
+
+        // UserData
+        public TUserData UserData { get; private set; }
 
         // Constructor
         public TreeMachine(TUserData userData) {

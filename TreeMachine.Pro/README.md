@@ -119,9 +119,9 @@ public enum Activity {
 }
 public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
 
-    public TUserData UserData { get; private set; }
-
     public new T? Root { get; }
+
+    public TUserData UserData { get; private set; }
 
     public TreeMachine(TUserData userData);
 
