@@ -4,26 +4,6 @@ The framework that allows you to design high-quality architecture of your game p
 
 # Reference
 
-###### System
-
-```
-namespace System;
-public abstract class DisposableBase : IDisposable {
-
-    public bool IsDisposed { get; }
-    public CancellationToken DisposeCancellationToken { get; }
-
-    public DisposableBase();
-    public virtual void Dispose();
-
-}
-public static class DisposableExtensions {
-
-    public static void DisposeAll(this IEnumerable<IDisposable> disposables);
-
-}
-```
-
 ###### GameFramework.Pro
 
 ```
