@@ -6,11 +6,11 @@ namespace System.StateMachine.Pro {
 
     public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
 
-        // UserData
-        public TUserData UserData { get; private set; }
-
         // State
         public new T? State => base.State;
+
+        // UserData
+        public TUserData UserData { get; private set; }
 
         // Constructor
         public StateMachine(TUserData userData) {

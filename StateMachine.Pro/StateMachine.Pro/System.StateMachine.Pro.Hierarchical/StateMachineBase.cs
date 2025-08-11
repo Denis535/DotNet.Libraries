@@ -27,7 +27,7 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine_NoRecursive} machine", state.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Parent} parent", state.Parent == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == Activity.Inactive );
-            Assert.Argument.Valid( $"Machine {this} must have no {this.State} state", this.State == null );
+            Assert.Argument.Valid( $"StateMachine {this} must have no {this.State} state", this.State == null );
             this.State = state;
             this.State.Attach( this, argument );
         }
@@ -36,13 +36,13 @@ namespace System.StateMachine.Pro.Hierarchical {
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have {this} machine", state.Machine_NoRecursive == this );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Parent} parent", state.Parent == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == Activity.Active );
-            Assert.Argument.Valid( $"Machine {this} must have {state} state", this.State == state );
+            Assert.Argument.Valid( $"StateMachine {this} must have {state} state", this.State == state );
             this.State.Detach( this, argument );
             this.State = null;
             callback?.Invoke( state, argument );
         }
         protected void RemoveState(object? argument, Action<T, object?>? callback) {
-            Assert.Operation.Valid( $"Machine {this} must have state", this.State != null );
+            Assert.Operation.Valid( $"StateMachine {this} must have state", this.State != null );
             this.RemoveState( this.State, argument, callback );
         }
 

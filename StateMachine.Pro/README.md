@@ -66,9 +66,9 @@ public enum Activity {
 }
 public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
 
-    public TUserData UserData { get; private set; }
-
     public new T? State { get; }
+
+    public TUserData UserData { get; private set; }
 
     public StateMachine(TUserData userData);
 
@@ -183,9 +183,9 @@ public enum Activity {
 }
 public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : notnull, StateBase<T> {
 
-    public TUserData UserData { get; private set; }
-
     public new T? State { get; }
+
+    public TUserData UserData { get; private set; }
 
     public StateMachine(TUserData userData);
 
