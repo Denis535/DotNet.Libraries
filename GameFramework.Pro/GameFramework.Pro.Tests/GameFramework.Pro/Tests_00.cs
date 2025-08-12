@@ -3,6 +3,7 @@ namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.TreeMachine.Pro;
     using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
@@ -14,7 +15,6 @@ namespace GameFramework.Pro {
         }
 
     }
-
     internal class Program : ProgramBase2<Theme, Screen, Router, Application> {
 
         public Program() {
@@ -32,7 +32,7 @@ namespace GameFramework.Pro {
         }
 
     }
-
+    // UI
     internal class Theme : ThemeBase2<Router, Application> {
 
         public Theme(Router router, Application application) {
@@ -85,16 +85,15 @@ namespace GameFramework.Pro {
         }
 
     }
-
     internal class Screen : ScreenBase2<Router, Application> {
 
         public Screen(Router router, Application application) {
             base.Router = router;
             base.Application = application;
-            base.AddRoot( new RootWidget(), null );
+            base.Machine.AddRoot( new RootWidget().Node, null );
         }
         public override void Dispose() {
-            base.RemoveRoot( null, (root, arg) => root.Dispose() );
+            base.Machine.RemoveRoot( null, (root, arg) => root.UserData.Dispose() );
             base.Dispose();
         }
 
@@ -102,11 +101,11 @@ namespace GameFramework.Pro {
     internal class RootWidget : WidgetBase {
 
         public RootWidget() {
-            base.AddChild( new MainWidget(), null );
-            base.AddChild( new GameWidget(), null );
+            base.Node.AddChild( new MainWidget().Node, null );
+            base.Node.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
-            _ = base.RemoveChildren( null, (child, arg) => child.Dispose() );
+            _ = base.Node.RemoveChildren( null, (child, arg) => child.UserData.Dispose() );
             base.Dispose();
         }
 
@@ -120,22 +119,22 @@ namespace GameFramework.Pro {
         protected override void OnDeactivate(object? argument) {
         }
 
-        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
-        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
 
     }
@@ -166,22 +165,22 @@ namespace GameFramework.Pro {
         protected override void OnDeactivate(object? argument) {
         }
 
-        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
-        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
 
     }
@@ -212,26 +211,25 @@ namespace GameFramework.Pro {
         protected override void OnDeactivate(object? argument) {
         }
 
-        protected override void OnBeforeDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantAttach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDetach(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
-        protected override void OnBeforeDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantActivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
-        protected override void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument) {
+        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
 
     }
-
     internal class Router : RouterBase2<Theme, Screen, Application> {
 
         public Router(Func<Theme> theme, Func<Screen> screen, Application application) {
@@ -244,7 +242,7 @@ namespace GameFramework.Pro {
         }
 
     }
-
+    // App
     internal class Application : ApplicationBase {
 
         private Game Game { get; init; }
@@ -258,7 +256,7 @@ namespace GameFramework.Pro {
         }
 
     }
-
+    // Domain
     internal class Game : GameBase {
 
         private Player Player { get; init; }
