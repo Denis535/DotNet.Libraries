@@ -17,32 +17,23 @@ public abstract class ProgramBase : DisposableBase {
 // UI
 public abstract class ThemeBase : DisposableBase {
 
-    protected PlayListBase? State { get; }
+    protected StateMachine<State<PlayListBase>, ThemeBase> Machine { get; }
 
     public ThemeBase();
     public override void Dispose();
 
-    protected virtual void SetState(PlayListBase? state, object? argument, Action<PlayListBase, object?>? callback);
-    protected virtual void AddState(PlayListBase state, object? argument);
-    protected virtual void RemoveState(PlayListBase state, object? argument, Action<PlayListBase, object?>? callback);
-    protected virtual void RemoveState(object? argument, Action<PlayListBase, object?>? callback);
-
 }
 public abstract class ScreenBase : DisposableBase {
 
-    protected WidgetBase? Root { get; }
+    protected TreeMachine<Node2<WidgetBase>, ScreenBase> Machine { get; }
 
     public ScreenBase();
     public override void Dispose();
 
-    protected virtual void AddRoot(WidgetBase root, object? argument);
-    protected virtual void RemoveRoot(WidgetBase root, object? argument, Action<WidgetBase, object?>? callback);
-    protected virtual void RemoveRoot(object? argument, Action<WidgetBase, object?>? callback);
-
 }
 public abstract class PlayListBase : DisposableBase {
 
-    public Activity Activity { get; }
+    public State<PlayListBase> State { get; }
 
     public PlayListBase();
     public override void Dispose();
@@ -56,20 +47,7 @@ public abstract class PlayListBase : DisposableBase {
 }
 public abstract class WidgetBase : DisposableBase {
 
-    [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
-    public WidgetBase Root { get; }
-
-    public WidgetBase? Parent { get; }
-    public IEnumerable<WidgetBase> Ancestors { get; }
-    public IEnumerable<WidgetBase> AncestorsAndSelf { get; }
-
-    public Activity Activity { get; }
-
-    public IEnumerable<WidgetBase> Children { get; }
-    public IEnumerable<WidgetBase> Descendants { get; }
-    public IEnumerable<WidgetBase> DescendantsAndSelf { get; }
-
-    protected IComparer<WidgetBase>? Comparer { get; init; }
+    public Node2<WidgetBase> Node { get; }
 
     public WidgetBase();
     public override void Dispose();
@@ -80,23 +58,15 @@ public abstract class WidgetBase : DisposableBase {
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
 
-    protected virtual void OnBeforeDescendantAttach(WidgetBase descendant, object? argument);
-    protected virtual void OnAfterDescendantAttach(WidgetBase descendant, object? argument);
-    protected virtual void OnBeforeDescendantDetach(WidgetBase descendant, object? argument);
-    protected virtual void OnAfterDescendantDetach(WidgetBase descendant, object? argument);
+    protected virtual void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument);
 
-    protected virtual void OnBeforeDescendantActivate(WidgetBase descendant, object? argument);
-    protected virtual void OnAfterDescendantActivate(WidgetBase descendant, object? argument);
-    protected virtual void OnBeforeDescendantDeactivate(WidgetBase descendant, object? argument);
-    protected virtual void OnAfterDescendantDeactivate(WidgetBase descendant, object? argument);
-
-    protected virtual void AddChild(WidgetBase child, object? argument);
-    protected virtual void AddChildren(IEnumerable<WidgetBase> children, object? argument);
-    protected virtual void RemoveChild(WidgetBase child, object? argument, Action<WidgetBase, object?>? callback);
-    protected virtual bool RemoveChild(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback);
-    protected virtual int RemoveChildren(Func<WidgetBase, bool> predicate, object? argument, Action<WidgetBase, object?>? callback);
-    protected virtual int RemoveChildren(object? argument, Action<WidgetBase, object?>? callback);
-    protected virtual void RemoveSelf(object? argument, Action<WidgetBase, object?>? callback);
+    protected virtual void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument);
+    protected virtual void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
