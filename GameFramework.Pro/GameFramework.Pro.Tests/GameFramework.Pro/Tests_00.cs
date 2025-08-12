@@ -38,11 +38,11 @@ namespace GameFramework.Pro {
         public Theme(Router router, Application application) {
             base.Router = router;
             base.Application = application;
-            base.SetState( new MainPlayList(), null, (state, arg) => state.Dispose() );
-            base.SetState( new GamePlayList(), null, (state, arg) => state.Dispose() );
+            base.Machine.SetState( new MainPlayList().State, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetState( new GamePlayList().State, null, (state, arg) => state.UserData.Dispose() );
         }
         public override void Dispose() {
-            base.SetState( null, null, (state, arg) => state.Dispose() );
+            base.Machine.SetState( null, null, (state, arg) => state.UserData.Dispose() );
             base.Dispose();
         }
 

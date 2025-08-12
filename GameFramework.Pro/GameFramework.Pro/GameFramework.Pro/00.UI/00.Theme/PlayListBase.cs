@@ -6,41 +6,18 @@ namespace GameFramework.Pro {
     using System.Text;
 
     public abstract class PlayListBase : DisposableBase {
-        internal sealed class State_ : StateBase<State_> {
 
-            internal PlayListBase Owner { get; }
-
-            public State_(PlayListBase owner) {
-                this.Owner = owner;
-            }
-
-            protected override void OnAttach(object? argument) {
-                this.Owner.OnAttach( argument );
-            }
-            protected override void OnDetach(object? argument) {
-                this.Owner.OnDetach( argument );
-            }
-
-            protected override void OnActivate(object? argument) {
-                this.Owner.OnActivate( argument );
-            }
-            protected override void OnDeactivate(object? argument) {
-                this.Owner.OnDeactivate( argument );
-            }
-
-        }
-
-        internal State_ State { get; }
-
-        internal StateMachineBase<State_>? Machine => this.State.Machine;
-
-        public Activity Activity => this.State.Activity;
+        public State<PlayListBase> State { get; }
 
         public PlayListBase() {
-            this.State = new State_( this );
+            this.State = new State<PlayListBase>( this );
+            this.State.OnAttachCallback += this.OnAttach;
+            this.State.OnDetachCallback += this.OnDetach;
+            this.State.OnActivateCallback += this.OnActivate;
+            this.State.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Disposable {this} must be inactive", this.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"PlayList {this} must be inactive", this.State.Activity == Activity.Inactive );
             base.Dispose();
         }
 
