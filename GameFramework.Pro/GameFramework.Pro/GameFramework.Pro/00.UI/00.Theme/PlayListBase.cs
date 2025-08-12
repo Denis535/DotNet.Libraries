@@ -11,19 +11,12 @@ namespace GameFramework.Pro {
 
         public PlayListBase() {
             this.State = new State<PlayListBase>( this );
-            this.State.OnAttachCallback += this.OnAttach;
-            this.State.OnDetachCallback += this.OnDetach;
             this.State.OnActivateCallback += this.OnActivate;
             this.State.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"PlayList {this} must be inactive", this.State.Activity == Activity.Inactive );
             base.Dispose();
-        }
-
-        protected virtual void OnAttach(object? argument) {
-        }
-        protected virtual void OnDetach(object? argument) {
         }
 
         protected virtual void OnActivate(object? argument) {

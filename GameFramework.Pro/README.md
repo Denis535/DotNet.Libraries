@@ -38,9 +38,6 @@ public abstract class PlayListBase : DisposableBase {
     public PlayListBase();
     public override void Dispose();
 
-    protected virtual void OnAttach(object? argument);
-    protected virtual void OnDetach(object? argument);
-
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
 
@@ -52,16 +49,8 @@ public abstract class WidgetBase : DisposableBase {
     public WidgetBase();
     public override void Dispose();
 
-    protected virtual void OnAttach(object? argument);
-    protected virtual void OnDetach(object? argument);
-
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
-
-    protected virtual void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument);
 
     protected virtual void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument);
     protected virtual void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument);

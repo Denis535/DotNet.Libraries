@@ -55,11 +55,6 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected override void OnAttach(object? argument) {
-        }
-        protected override void OnDetach(object? argument) {
-        }
-
         protected override void OnActivate(object? argument) {
         }
         protected override void OnDeactivate(object? argument) {
@@ -72,11 +67,6 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             base.Dispose();
-        }
-
-        protected override void OnAttach(object? argument) {
-        }
-        protected override void OnDetach(object? argument) {
         }
 
         protected override void OnActivate(object? argument) {
@@ -109,23 +99,9 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected override void OnAttach(object? argument) {
-        }
-        protected override void OnDetach(object? argument) {
-        }
-
         protected override void OnActivate(object? argument) {
         }
         protected override void OnDeactivate(object? argument) {
-        }
-
-        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
         protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
@@ -155,23 +131,9 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected override void OnAttach(object? argument) {
-        }
-        protected override void OnDetach(object? argument) {
-        }
-
         protected override void OnActivate(object? argument) {
         }
         protected override void OnDeactivate(object? argument) {
-        }
-
-        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
         protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
@@ -201,23 +163,9 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected override void OnAttach(object? argument) {
-        }
-        protected override void OnDetach(object? argument) {
-        }
-
         protected override void OnActivate(object? argument) {
         }
         protected override void OnDeactivate(object? argument) {
-        }
-
-        protected override void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
         protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {

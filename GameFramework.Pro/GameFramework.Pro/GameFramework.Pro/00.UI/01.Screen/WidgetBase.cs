@@ -12,14 +12,8 @@ namespace GameFramework.Pro {
 
         public WidgetBase() {
             this.Node = new Node2<WidgetBase>( this );
-            this.Node.OnAttachCallback += this.OnAttach;
-            this.Node.OnDetachCallback += this.OnDetach;
             this.Node.OnActivateCallback += this.OnActivate;
             this.Node.OnDeactivateCallback += this.OnDeactivate;
-            this.Node.OnBeforeDescendantAttachCallback += this.OnBeforeDescendantAttach;
-            this.Node.OnAfterDescendantAttachCallback += this.OnAfterDescendantAttach;
-            this.Node.OnBeforeDescendantDetachCallback += this.OnBeforeDescendantDetach;
-            this.Node.OnAfterDescendantDetachCallback += this.OnAfterDescendantDetach;
             this.Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
             this.Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
             this.Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
@@ -31,23 +25,9 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected virtual void OnAttach(object? argument) {
-        }
-        protected virtual void OnDetach(object? argument) {
-        }
-
         protected virtual void OnActivate(object? argument) {
         }
         protected virtual void OnDeactivate(object? argument) {
-        }
-
-        protected virtual void OnBeforeDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantAttach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnBeforeDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantDetach(Node2<WidgetBase> descendant, object? argument) {
         }
 
         protected virtual void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
