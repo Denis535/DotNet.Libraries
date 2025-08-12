@@ -7,10 +7,10 @@ namespace GameFramework.Pro {
 
     public abstract class ScreenBase : DisposableBase {
 
-        protected TreeMachine<Node2<WidgetBase>, object?> Machine { get; }
+        protected TreeMachine<Node2<WidgetBase>, ScreenBase> Machine { get; }
 
         public ScreenBase() {
-            this.Machine = new TreeMachine<Node2<WidgetBase>, object?>( null );
+            this.Machine = new TreeMachine<Node2<WidgetBase>, ScreenBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Screen {this} must have no {this.Machine.Root} root", this.Machine.Root == null );
