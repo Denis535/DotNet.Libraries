@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>1.2.4</Version>
+        <Version>1.2.5</Version>
         <Description>The framework that allows you to design high-quality architecture of your game project.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -25,7 +25,7 @@
         <PackageIconUrl></PackageIconUrl>
         <PackageDescription>$(Description)</PackageDescription>
         <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro</PackageProjectUrl>
-        <PackageTags>game; framework; architecture; best practices</PackageTags>
+        <PackageTags>game gamedev design architecture framework pattern patterns clean-architecture best-practices</PackageTags>
 
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseUrl></PackageLicenseUrl>
@@ -64,7 +64,7 @@
         <PackageReference Include="TreeMachine.Pro" Version="2.1.2" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
+        <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
     </ItemGroup>
 
     <!--PackageReference-->
