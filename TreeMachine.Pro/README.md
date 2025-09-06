@@ -149,6 +149,8 @@ public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
     public new int RemoveChildren(object? argument, Action<Node<TUserData>, object?>? callback);
     public new void RemoveSelf(object? argument, Action<Node<TUserData>, object?>? callback);
 
+	protected override void Sort(List<IState> children);
+
 }
 // Node2
 public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
@@ -194,6 +196,8 @@ public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
     public new int RemoveChildren(Func<Node2<TUserData>, bool> predicate, object? argument, Action<Node2<TUserData>, object?>? callback);
     public new int RemoveChildren(object? argument, Action<Node2<TUserData>, object?>? callback);
     public new void RemoveSelf(object? argument, Action<Node2<TUserData>, object?>? callback);
+
+	protected override void Sort(List<IState> children);
 
 }
 ```

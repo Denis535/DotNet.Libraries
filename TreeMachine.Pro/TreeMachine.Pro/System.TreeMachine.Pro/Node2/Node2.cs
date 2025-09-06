@@ -105,5 +105,10 @@ namespace System.TreeMachine.Pro {
             base.RemoveSelf( argument, callback );
         }
 
+        // Sort
+        protected override void Sort(List<Node2<TUserData>> children) {
+            base.Sort( children );
+        }
+
     }
 }
