@@ -7,7 +7,10 @@ namespace System.TreeMachine.Pro {
     public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
         // UserData
-        public TUserData UserData { get; private set; }
+        public TUserData UserData { get; }
+
+        // Sort
+        public Action<List<Node2<TUserData>>>? SortDelegate { get; init; }
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -107,7 +110,7 @@ namespace System.TreeMachine.Pro {
 
         // Sort
         protected override void Sort(List<Node2<TUserData>> children) {
-            base.Sort( children );
+            this.SortDelegate?.Invoke( children );
         }
 
     }

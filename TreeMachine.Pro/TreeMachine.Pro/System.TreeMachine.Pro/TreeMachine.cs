@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
         public new T? Root => base.Root;
 
         // UserData
-        public TUserData UserData { get; private set; }
+        public TUserData UserData { get; }
 
         // Constructor
         public TreeMachine(TUserData userData) {
