@@ -117,6 +117,10 @@ public enum Activity {
     Active,
     Deactivating,
 }
+```
+
+```
+namespace System.TreeMachine.Pro;
 public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
 
     public new T? Root { get; }
