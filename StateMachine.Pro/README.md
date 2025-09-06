@@ -253,7 +253,7 @@ public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
 
     public TUserData UserData { get; }
 
-	public Action<List<IState>>? SortDelegate { get; init; }
+    public Action<List<IState>>? SortDelegate { get; init; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
@@ -269,7 +269,7 @@ public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
     protected override void OnActivate(object? argument);
     protected override void OnDeactivate(object? argument);
 
-	protected override void Sort(List<IState> children);
+    protected override void Sort(List<IState> children);
 
 }
 ```
