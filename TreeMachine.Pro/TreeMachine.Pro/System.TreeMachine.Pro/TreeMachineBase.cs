@@ -4,7 +4,14 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class TreeMachineBase<T> where T : notnull, NodeBase<T> {
+    public abstract class TreeMachineBase {
+
+        // Constructor
+        internal TreeMachineBase() {
+        }
+
+    }
+    public abstract class TreeMachineBase<T> : TreeMachineBase where T : notnull, NodeBase<T> {
 
         // Root
         protected T? Root { get; private set; }

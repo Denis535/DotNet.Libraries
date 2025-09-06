@@ -7,7 +7,9 @@ The library that allows you to easily implement a hierarchical object.
 
 ```
 namespace System.TreeMachine.Pro;
-public abstract class TreeMachineBase<T> where T : notnull, NodeBase<T> {
+public abstract class TreeMachineBase {
+}
+public abstract class TreeMachineBase<T> : TreeMachineBase where T : notnull, NodeBase<T> {
 
     protected T? Root { get; }
 
