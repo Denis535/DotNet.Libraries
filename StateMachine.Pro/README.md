@@ -253,6 +253,8 @@ public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
 
     public TUserData UserData { get; }
 
+	public Action<List<IState>>? SortDelegate { get; init; }
+
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
 

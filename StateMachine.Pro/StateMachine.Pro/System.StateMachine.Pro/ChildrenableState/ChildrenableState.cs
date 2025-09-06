@@ -7,7 +7,10 @@ namespace System.StateMachine.Pro {
     public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
 
         // UserData
-        public TUserData UserData { get; private set; }
+        public TUserData UserData { get; }
+
+        // Sort
+        public Action<List<IState>>? SortDelegate { get; init; }
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -40,7 +43,7 @@ namespace System.StateMachine.Pro {
 
         // Sort
         protected override void Sort(List<IState> children) {
-            base.Sort( children );
+            this.SortDelegate?.Invoke( children );
         }
 
     }

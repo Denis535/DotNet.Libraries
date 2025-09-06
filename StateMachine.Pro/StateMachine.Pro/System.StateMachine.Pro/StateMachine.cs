@@ -10,7 +10,7 @@ namespace System.StateMachine.Pro {
         public new IState? State => base.State;
 
         // UserData
-        public TUserData UserData { get; private set; }
+        public TUserData UserData { get; }
 
         // Constructor
         public StateMachine(TUserData userData) {

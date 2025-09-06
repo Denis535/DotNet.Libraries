@@ -7,7 +7,7 @@ namespace System.StateMachine.Pro {
     public sealed class State<TUserData> : StateBase {
 
         // UserData
-        public TUserData UserData { get; private set; }
+        public TUserData UserData { get; }
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
