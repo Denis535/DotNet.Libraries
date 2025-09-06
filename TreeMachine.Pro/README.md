@@ -18,6 +18,13 @@ public abstract class TreeMachineBase<T> where T : notnull, NodeBase<T> {
     protected void RemoveRoot(object? argument, Action<T, object?>? callback);
 
 }
+public enum Activity {
+    Inactive,
+    Activating,
+    Active,
+    Deactivating,
+}
+// NodeBase
 public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
 
     public TreeMachineBase<TThis>? Machine { get; }
@@ -73,6 +80,7 @@ public abstract partial class NodeBase<TThis> {
     protected virtual void Sort(List<TThis> children);
 
 }
+// NodeBase2
 public abstract partial class NodeBase2<TThis> : NodeBase<TThis> where TThis : notnull, NodeBase2<TThis> {
 
     protected override void OnBeforeAttach(object? argument);
@@ -99,12 +107,6 @@ public abstract partial class NodeBase2<TThis> {
     protected abstract void OnAfterDescendantDeactivate(TThis descendant, object? argument);
 
 }
-public enum Activity {
-    Inactive,
-    Activating,
-    Active,
-    Deactivating,
-}
 ```
 
 ```
@@ -122,6 +124,7 @@ public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : not
     public new void RemoveRoot(object? argument, Action<T, object?>? callback);
 
 }
+// Node
 public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
     public TUserData UserData { get; }
@@ -147,6 +150,7 @@ public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
     public new void RemoveSelf(object? argument, Action<Node<TUserData>, object?>? callback);
 
 }
+// Node2
 public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
     public TUserData UserData { get; }
