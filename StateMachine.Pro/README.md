@@ -265,6 +265,8 @@ public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
     protected override void OnActivate(object? argument);
     protected override void OnDeactivate(object? argument);
 
+	protected override void Sort(List<IState> children);
+
 }
 ```
 

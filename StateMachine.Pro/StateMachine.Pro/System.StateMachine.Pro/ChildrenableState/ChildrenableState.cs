@@ -38,5 +38,10 @@ namespace System.StateMachine.Pro {
             this.OnDeactivateCallback?.Invoke( argument );
         }
 
+        // Sort
+        protected override void Sort(List<IState> children) {
+            base.Sort( children );
+        }
+
     }
 }
