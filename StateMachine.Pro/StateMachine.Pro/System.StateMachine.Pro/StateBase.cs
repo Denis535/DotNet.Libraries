@@ -4,15 +4,17 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract partial class StateBase<TThis> where TThis : notnull, StateBase<TThis> {
+    public abstract partial class StateBase<TThis> : IState<TThis> where TThis : class, IState<TThis> {
 
         // Owner
         private StateMachineBase<TThis>? Owner { get; set; }
 
         // Machine
+        StateMachineBase<TThis>? IState<TThis>.Machine => this.Machine;
         public StateMachineBase<TThis>? Machine => this.Owner;
 
         // Activity
+        Activity IState<TThis>.Activity => this.Activity;
         public Activity Activity { get; private set; } = Activity.Inactive;
 
         // Constructor
@@ -23,6 +25,9 @@ namespace System.StateMachine.Pro {
     public abstract partial class StateBase<TThis> {
 
         // Attach
+        void IState<TThis>.Attach(StateMachineBase<TThis> machine, object? argument) {
+            this.Attach( machine, argument );
+        }
         internal void Attach(StateMachineBase<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine} machine", this.Machine == null );
@@ -39,6 +44,9 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
+        void IState<TThis>.Detach(StateMachineBase<TThis> machine, object? argument) {
+            this.Detach( machine, argument );
+        }
         internal void Detach(StateMachineBase<TThis> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine == machine );

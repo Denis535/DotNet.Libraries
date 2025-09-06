@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class StateMachineBase<T> where T : notnull, StateBase<T> {
+    public abstract class StateMachineBase<T> where T : class, IState<T> {
 
         // State
         protected T? State { get; private set; }
