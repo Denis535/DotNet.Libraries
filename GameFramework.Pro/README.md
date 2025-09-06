@@ -54,13 +54,10 @@ public abstract class WidgetBase : DisposableBase {
     public WidgetBase();
     public override void Dispose();
 
+    protected virtual void Sort(List<Node2<WidgetBase>> children);
+
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
-
-    protected virtual void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument);
-    protected virtual void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {

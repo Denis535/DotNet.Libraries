@@ -11,7 +11,9 @@ namespace GameFramework.Pro {
         public Node2<WidgetBase> Node { get; }
 
         public WidgetBase() {
-            this.Node = new Node2<WidgetBase>( this );
+            this.Node = new Node2<WidgetBase>( this ) {
+                SortDelegate = this.Sort,
+            };
             this.Node.OnActivateCallback += this.OnActivate;
             this.Node.OnDeactivateCallback += this.OnDeactivate;
         }
@@ -19,6 +21,9 @@ namespace GameFramework.Pro {
             Assert.Operation.Valid( $"Widget {this} must have no children", !this.Node.Children.Any() );
             Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
             base.Dispose();
+        }
+
+        protected virtual void Sort(List<Node2<WidgetBase>> children) {
         }
 
         protected virtual void OnActivate(object? argument) {
