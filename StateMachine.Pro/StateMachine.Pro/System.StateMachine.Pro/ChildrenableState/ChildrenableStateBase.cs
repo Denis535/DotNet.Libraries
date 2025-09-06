@@ -6,7 +6,7 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class ChildableStateBase : IState {
+    public abstract partial class ChildrenableStateBase : IState {
 
         // Owner
         private object? Owner { get; set; }
@@ -42,35 +42,28 @@ namespace System.StateMachine.Pro {
         Activity IState.Activity => this.Activity;
         public Activity Activity { get; private set; } = Activity.Inactive;
 
-        // Child
-        IEnumerable<IState> IState.Children {
-            get {
-                if (this.Child != null) {
-                    return Enumerable.Empty<IState>().Append( this.Child );
-                } else {
-                    return Enumerable.Empty<IState>();
-                }
-            }
-        }
+        // Children
+        IEnumerable<IState> IState.Children => this.ChildrenMutable;
         IEnumerable<IState> IState.Descendants => this.Descendants;
         IEnumerable<IState> IState.DescendantsAndSelf => this.DescendantsAndSelf;
-        public IState? Child { get; private set; }
+        private List<IState> ChildrenMutable { get; } = new List<IState>( 0 );
+        public IReadOnlyList<IState> Children => this.ChildrenMutable;
         public IEnumerable<IState> Descendants {
             get {
-                if (this.Child != null) {
-                    yield return this.Child;
-                    foreach (var i in this.Child.Descendants) yield return i;
+                foreach (var child in this.Children) {
+                    yield return child;
+                    foreach (var i in child.Descendants) yield return i;
                 }
             }
         }
         public IEnumerable<IState> DescendantsAndSelf => this.Descendants.Prepend( this );
 
         // Constructor
-        public ChildableStateBase() {
+        public ChildrenableStateBase() {
         }
 
     }
-    public abstract partial class ChildableStateBase {
+    public abstract partial class ChildrenableStateBase {
 
         // Attach
         void IState.Attach(StateMachineBase machine, object? argument) {
@@ -164,7 +157,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public abstract partial class ChildableStateBase {
+    public abstract partial class ChildrenableStateBase {
 
         // Activate
         void IState.Activate(object? argument) {
@@ -178,8 +171,8 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeActivate( argument );
                 this.Activity = Activity.Activating;
                 this.OnActivate( argument );
-                if (this.Child != null) {
-                    this.Child.Activate( argument );
+                foreach (var child in this.Children) {
+                    child.Activate( argument );
                 }
                 this.Activity = Activity.Active;
                 this.OnAfterActivate( argument );
@@ -197,8 +190,8 @@ namespace System.StateMachine.Pro {
             {
                 this.OnBeforeDeactivate( argument );
                 this.Activity = Activity.Deactivating;
-                if (this.Child != null) {
-                    this.Child.Deactivate( argument );
+                foreach (var child in this.Children.Reverse()) {
+                    child.Deactivate( argument );
                 }
                 this.OnDeactivate( argument );
                 this.Activity = Activity.Inactive;
@@ -221,17 +214,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public abstract partial class ChildableStateBase {
-
-        // SetChild
-        protected virtual void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
-            if (this.Child != null) {
-                this.RemoveChild( this.Child, argument, callback );
-            }
-            if (child != null) {
-                this.AddChild( child, argument );
-            }
-        }
+    public abstract partial class ChildrenableStateBase {
 
         // AddChild
         protected virtual void AddChild(IState child, object? argument) {
@@ -239,9 +222,16 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
-            Assert.Operation.Valid( $"State {this} must have no {this.Child} child", this.Child == null );
-            this.Child = child;
-            this.Child.Attach( this, argument );
+            Assert.Operation.Valid( $"Node {this} must have no {child} child", !this.Children.Contains( child ) );
+            this.ChildrenMutable.Add( child );
+            this.Sort( this.ChildrenMutable );
+            child.Attach( this, argument );
+        }
+        protected void AddChildren(IEnumerable<IState> children, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
+            foreach (var child in children) {
+                this.AddChild( child, argument );
+            }
         }
 
         // RemoveChild
@@ -253,14 +243,37 @@ namespace System.StateMachine.Pro {
             } else {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             }
-            Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
-            this.Child.Detach( this, argument );
-            this.Child = null;
+            Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
+            child.Detach( this, argument );
+            _ = this.ChildrenMutable.Remove( child );
             callback?.Invoke( child, argument );
         }
-        protected void RemoveChild(object? argument, Action<IState, object?>? callback) {
-            Assert.Operation.Valid( $"State {this} must have child", this.Child != null );
-            this.RemoveChild( this.Child, argument, callback );
+        protected bool RemoveChild(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            var child = this.Children.LastOrDefault( predicate );
+            if (child != null) {
+                this.RemoveChild( child, argument, callback );
+                return true;
+            }
+            return false;
+        }
+        protected int RemoveChildren(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            var children = this.Children.Reverse().Where( predicate ).ToList();
+            foreach (var child in children) {
+                this.RemoveChild( child, argument, callback );
+            }
+            return children.Count;
+        }
+        protected int RemoveChildren(object? argument, Action<IState, object?>? callback) {
+            var children = this.Children.Reverse().ToList();
+            foreach (var child in children) {
+                this.RemoveChild( child, argument, callback );
+            }
+            return children.Count;
+        }
+
+        // Sort
+        protected virtual void Sort(List<IState> children) {
+            //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
         }
 
     }

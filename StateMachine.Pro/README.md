@@ -43,6 +43,7 @@ public enum Activity {
     Active,
     Deactivating,
 }
+// StateBase
 public abstract partial class StateBase : IState {
 
     public StateMachineBase? Machine { get; }
@@ -81,6 +82,7 @@ public abstract partial class StateBase {
     protected virtual void OnAfterDeactivate(object? argument);
 
 }
+// ChildableStateBase
 public abstract partial class ChildableStateBase : IState {
 
     public StateMachineBase? Machine { get; }
@@ -131,6 +133,61 @@ public abstract partial class ChildableStateBase {
     protected void RemoveChild(object? argument, Action<IState, object?>? callback);
 
 }
+// ChildrenableStateBase
+public abstract partial class ChildrenableStateBase : IState {
+
+    public StateMachineBase? Machine { get; }
+
+    [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
+    public IState Root { get; }
+
+    public IState? Parent { get; }
+    public IEnumerable<IState> Ancestors { get; }
+    public IEnumerable<IState> AncestorsAndSelf { get; }
+
+    public Activity Activity { get; }
+
+    public IReadOnlyList<IState> Children { get; }
+    public IEnumerable<IState> Descendants { get; }
+    public IEnumerable<IState> DescendantsAndSelf { get; }
+
+    public ChildrenableStateBase();
+
+}
+public abstract partial class ChildrenableStateBase {
+
+    protected abstract void OnAttach(object? argument);
+    protected virtual void OnBeforeAttach(object? argument);
+    protected virtual void OnAfterAttach(object? argument);
+
+    protected abstract void OnDetach(object? argument);
+    protected virtual void OnBeforeDetach(object? argument);
+    protected virtual void OnAfterDetach(object? argument);
+
+}
+public abstract partial class ChildrenableStateBase {
+
+    protected abstract void OnActivate(object? argument);
+    protected virtual void OnBeforeActivate(object? argument);
+    protected virtual void OnAfterActivate(object? argument);
+
+    protected abstract void OnDeactivate(object? argument);
+    protected virtual void OnBeforeDeactivate(object? argument);
+    protected virtual void OnAfterDeactivate(object? argument);
+
+}
+public abstract partial class ChildrenableStateBase {
+
+    protected virtual void AddChild(IState child, object? argument);
+    protected void AddChildren(IEnumerable<IState> children, object? argument);
+    protected virtual void RemoveChild(IState child, object? argument, Action<IState, object?>? callback);
+    protected bool RemoveChild(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback);
+    protected int RemoveChildren(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback);
+    protected int RemoveChildren(object? argument, Action<IState, object?>? callback);
+
+    protected virtual void Sort(List<IState> children);
+
+}
 ```
 
 ```
@@ -149,6 +206,7 @@ public sealed class StateMachine<TUserData> : StateMachineBase {
     public new void RemoveState(object? argument, Action<IState, object?>? callback);
 
 }
+// State
 public sealed class State<TUserData> : StateBase {
 
     public TUserData UserData { get; }
@@ -168,9 +226,10 @@ public sealed class State<TUserData> : StateBase {
     protected override void OnDeactivate(object? argument);
 
 }
+// ChildableState
 public sealed class ChildableState<TUserData> : ChildableStateBase {
 
-    public TUserData UserData { get; private set; }
+    public TUserData UserData { get; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
@@ -179,6 +238,26 @@ public sealed class ChildableState<TUserData> : ChildableStateBase {
     public event Action<object?>? OnDeactivateCallback;
 
     public ChildableState(TUserData userData);
+
+    protected override void OnAttach(object? argument);
+    protected override void OnDetach(object? argument);
+
+    protected override void OnActivate(object? argument);
+    protected override void OnDeactivate(object? argument);
+
+}
+// ChildrenableState
+public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
+
+    public TUserData UserData { get; }
+
+    public event Action<object?>? OnAttachCallback;
+    public event Action<object?>? OnDetachCallback;
+
+    public event Action<object?>? OnActivateCallback;
+    public event Action<object?>? OnDeactivateCallback;
+
+    public ChildrenableState(TUserData userData);
 
     protected override void OnAttach(object? argument);
     protected override void OnDetach(object? argument);
