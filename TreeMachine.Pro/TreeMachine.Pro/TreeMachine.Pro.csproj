@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>2.1.2</Version>
+        <Version>3.0.0</Version>
         <Description>The library that allows you to easily implement a hierarchical object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -59,8 +59,6 @@
     <ItemGroup>
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
-
-    <!--PackageReference-->
 
     <!--Include Builds-->
     <Target Name="IncludeBuilds">
