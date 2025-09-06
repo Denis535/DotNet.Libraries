@@ -8,15 +8,17 @@ The library that allows you to easily implement a stateful object.
 ```
 namespace System.StateMachine.Pro;
 public abstract class StateMachineBase {
+}
+public abstract class StateMachineBase<T> : StateMachineBase where T : class, IState  {
 
-    protected IState? State { get; }
+    protected T? State { get; }
 
     public StateMachineBase();
 
-    protected virtual void SetState(IState? state, object? argument, Action<IState, object?>? callback);
-    protected virtual void AddState(IState state, object? argument);
-    protected virtual void RemoveState(IState state, object? argument, Action<IState, object?>? callback);
-    protected void RemoveState(object? argument, Action<IState, object?>? callback);
+    protected virtual void SetState(T? state, object? argument, Action<T, object?>? callback);
+    protected virtual void AddState(T state, object? argument);
+    protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    protected void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 public interface IState {
@@ -192,18 +194,18 @@ public abstract partial class ChildrenableStateBase {
 
 ```
 namespace System.StateMachine.Pro;
-public sealed class StateMachine<TUserData> : StateMachineBase {
+public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : class, IState {
 
-    public new IState? State { get; }
+    public new T? State { get; }
 
     public TUserData UserData { get; }
 
     public StateMachine(TUserData userData);
 
-    public new void SetState(IState? state, object? argument, Action<IState, object?>? callback);
-    public new void AddState(IState state, object? argument);
-    public new void RemoveState(IState state, object? argument, Action<IState, object?>? callback);
-    public new void RemoveState(object? argument, Action<IState, object?>? callback);
+    public new void SetState(T? state, object? argument, Action<T, object?>? callback);
+    public new void AddState(T state, object? argument);
+    public new void RemoveState(T state, object? argument, Action<T, object?>? callback);
+    public new void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 // State
