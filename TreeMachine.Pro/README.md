@@ -9,21 +9,18 @@ The library that allows you to easily implement a hierarchical object.
 namespace System.TreeMachine.Pro;
 public abstract class TreeMachineBase<T> where T : notnull, NodeBase<T> {
 
-    protected T? Root { get; private set; }
+    protected T? Root { get; }
 
     public TreeMachineBase();
 
     protected virtual void AddRoot(T root, object? argument);
-    protected internal virtual void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
+    protected virtual void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
     protected void RemoveRoot(object? argument, Action<T, object?>? callback);
 
 }
 public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
 
-    private object? Owner { get; set; }
-
     public TreeMachineBase<TThis>? Machine { get; }
-    internal TreeMachineBase<TThis>? Machine_NoRecursive { get; }
 
     [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
     public TThis Root { get; }
@@ -32,9 +29,8 @@ public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TT
     public IEnumerable<TThis> Ancestors { get; }
     public IEnumerable<TThis> AncestorsAndSelf { get; }
 
-    public Activity Activity { get; private set; }
+    public Activity Activity { get; }
 
-    private List<TThis> Children_Mutable { get; }
     public IReadOnlyList<TThis> Children { get; }
     public IEnumerable<TThis> Descendants { get; }
     public IEnumerable<TThis> DescendantsAndSelf { get; }
@@ -43,11 +39,6 @@ public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TT
 
 }
 public abstract partial class NodeBase<TThis> {
-
-    internal void Attach(TreeMachineBase<TThis> machine, object? argument);
-    private void Attach(TThis parent, object? argument);
-    internal void Detach(TreeMachineBase<TThis> machine, object? argument);
-    private void Detach(TThis parent, object? argument);
 
     protected abstract void OnAttach(object? argument);
     protected virtual void OnBeforeAttach(object? argument);
@@ -59,9 +50,6 @@ public abstract partial class NodeBase<TThis> {
 
 }
 public abstract partial class NodeBase<TThis> {
-
-    private void Activate(object? argument);
-    private void Deactivate(object? argument);
 
     protected abstract void OnActivate(object? argument);
     protected virtual void OnBeforeActivate(object? argument);
@@ -125,7 +113,7 @@ public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : not
 
     public new T? Root { get; }
 
-    public TUserData UserData { get; private set; }
+    public TUserData UserData { get; }
 
     public TreeMachine(TUserData userData);
 
@@ -136,7 +124,7 @@ public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : not
 }
 public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
-    public TUserData UserData { get; private set; }
+    public TUserData UserData { get; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
@@ -161,7 +149,7 @@ public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 }
 public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
-    public TUserData UserData { get; private set; }
+    public TUserData UserData { get; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;

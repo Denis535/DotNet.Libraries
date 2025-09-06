@@ -35,8 +35,8 @@ namespace System.TreeMachine.Pro {
         public Activity Activity { get; private set; } = Activity.Inactive;
 
         // Children
-        private List<TThis> Children_Mutable { get; } = new List<TThis>( 0 );
-        public IReadOnlyList<TThis> Children => this.Children_Mutable;
+        private List<TThis> ChildrenMutable { get; } = new List<TThis>( 0 );
+        public IReadOnlyList<TThis> Children => this.ChildrenMutable;
         public IEnumerable<TThis> Descendants {
             get {
                 foreach (var child in this.Children) {
@@ -193,8 +193,8 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             Assert.Operation.Valid( $"Node {this} must have no {child} child", !this.Children.Contains( child ) );
-            this.Children_Mutable.Add( child );
-            this.Sort( this.Children_Mutable );
+            this.ChildrenMutable.Add( child );
+            this.Sort( this.ChildrenMutable );
             child.Attach( (TThis) this, argument );
         }
         protected void AddChildren(IEnumerable<TThis> children, object? argument) {
@@ -215,7 +215,7 @@ namespace System.TreeMachine.Pro {
             }
             Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
             child.Detach( (TThis) this, argument );
-            _ = this.Children_Mutable.Remove( child );
+            _ = this.ChildrenMutable.Remove( child );
             callback?.Invoke( child, argument );
         }
         protected bool RemoveChild(Func<TThis, bool> predicate, object? argument, Action<TThis, object?>? callback) {
