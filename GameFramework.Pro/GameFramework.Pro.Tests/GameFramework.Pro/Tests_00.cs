@@ -3,7 +3,6 @@ namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.TreeMachine.Pro;
     using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
@@ -104,15 +103,6 @@ namespace GameFramework.Pro {
         protected override void OnDeactivate(object? argument) {
         }
 
-        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-
     }
     internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
         internal class MainWidgetView : ViewBase {
@@ -136,15 +126,6 @@ namespace GameFramework.Pro {
         protected override void OnDeactivate(object? argument) {
         }
 
-        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-
     }
     internal class GameWidget : ViewableWidgetBase<GameWidget.GameWidgetView> {
         internal class GameWidgetView : ViewBase {
@@ -166,15 +147,6 @@ namespace GameFramework.Pro {
         protected override void OnActivate(object? argument) {
         }
         protected override void OnDeactivate(object? argument) {
-        }
-
-        protected override void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected override void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
 
     }

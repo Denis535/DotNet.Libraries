@@ -7,6 +7,7 @@ The framework that allows you to design high-quality architecture of your game p
 ###### GameFramework.Pro
 
 ```
+// Program
 namespace GameFramework.Pro;
 public abstract class ProgramBase : DisposableBase {
 
@@ -14,7 +15,11 @@ public abstract class ProgramBase : DisposableBase {
     public override void Dispose();
 
 }
+```
+
+```
 // UI
+namespace GameFramework.Pro;
 public abstract class ThemeBase : DisposableBase {
 
     protected StateMachine<State<PlayListBase>, ThemeBase> Machine { get; }
@@ -86,14 +91,22 @@ public abstract class RouterBase : DisposableBase {
     public override void Dispose();
 
 }
+```
+
+```
 // App
+namespace GameFramework.Pro;
 public abstract class ApplicationBase : DisposableBase {
 
     public ApplicationBase();
     public override void Dispose();
 
 }
-// Game (domain, business)
+```
+
+```
+// Domain (Business, Game)
+namespace GameFramework.Pro;
 public abstract class GameBase : DisposableBase {
 
     public GameBase();
@@ -117,6 +130,7 @@ public abstract class EntityBase : DisposableBase {
 ###### GameFramework.Pro.Extensions
 
 ```
+// Program
 namespace GameFramework.Pro.Extensions;
 public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase where TTheme : ThemeBase where TScreen : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
 
@@ -129,7 +143,11 @@ public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : Pro
     public override void Dispose();
 
 }
+```
+
+```
 // UI
+namespace GameFramework.Pro.Extensions;
 public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
 
     protected TRouter Router { get; init; }

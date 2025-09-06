@@ -60,8 +60,8 @@
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="StateMachine.Pro" Version="2.1.2" />
-        <PackageReference Include="TreeMachine.Pro" Version="2.1.2" />
+        <PackageReference Include="StateMachine.Pro" Version="3.0.1" />
+        <PackageReference Include="TreeMachine.Pro" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />

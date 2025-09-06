@@ -14,10 +14,6 @@ namespace GameFramework.Pro {
             this.Node = new Node2<WidgetBase>( this );
             this.Node.OnActivateCallback += this.OnActivate;
             this.Node.OnDeactivateCallback += this.OnDeactivate;
-            this.Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
-            this.Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
-            this.Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
-            this.Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Widget {this} must have no children", !this.Node.Children.Any() );
@@ -28,15 +24,6 @@ namespace GameFramework.Pro {
         protected virtual void OnActivate(object? argument) {
         }
         protected virtual void OnDeactivate(object? argument) {
-        }
-
-        protected virtual void OnBeforeDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantActivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnBeforeDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantDeactivate(Node2<WidgetBase> descendant, object? argument) {
         }
 
     }
