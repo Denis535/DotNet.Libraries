@@ -131,7 +131,7 @@ public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
 
     public TUserData UserData { get; }
 
-	public Action<List<Node<TUserData>>>? SortDelegate { get; init; }
+    public Action<List<Node<TUserData>>>? SortDelegate { get; init; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
@@ -153,7 +153,7 @@ public sealed class Node<TUserData> : NodeBase<Node<TUserData>> {
     public new int RemoveChildren(object? argument, Action<Node<TUserData>, object?>? callback);
     public new void RemoveSelf(object? argument, Action<Node<TUserData>, object?>? callback);
 
-	protected override void Sort(List<Node<TUserData>> children);
+    protected override void Sort(List<Node<TUserData>> children);
 
 }
 // Node2
@@ -161,7 +161,7 @@ public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
 
     public TUserData UserData { get; }
 
-	public Action<List<Node2<TUserData>>>? SortDelegate { get; init; }
+    public Action<List<Node2<TUserData>>>? SortDelegate { get; init; }
 
     public event Action<object?>? OnAttachCallback;
     public event Action<object?>? OnDetachCallback;
@@ -203,7 +203,7 @@ public sealed class Node2<TUserData> : NodeBase2<Node2<TUserData>> {
     public new int RemoveChildren(object? argument, Action<Node2<TUserData>, object?>? callback);
     public new void RemoveSelf(object? argument, Action<Node2<TUserData>, object?>? callback);
 
-	protected override void Sort(List<Node2<TUserData>> children);
+    protected override void Sort(List<Node2<TUserData>> children);
 
 }
 ```
