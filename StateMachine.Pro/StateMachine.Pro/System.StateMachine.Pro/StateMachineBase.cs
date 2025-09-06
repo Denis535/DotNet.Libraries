@@ -4,17 +4,17 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class StateMachineBase<T> where T : class, IState<T> {
+    public abstract class StateMachineBase {
 
         // State
-        protected T? State { get; private set; }
+        protected IState? State { get; private set; }
 
         // Constructor
         public StateMachineBase() {
         }
 
         // SetState
-        protected virtual void SetState(T? state, object? argument, Action<T, object?>? callback) {
+        protected virtual void SetState(IState? state, object? argument, Action<IState, object?>? callback) {
             if (this.State != null) {
                 this.RemoveState( this.State, argument, callback );
             }
@@ -22,7 +22,7 @@ namespace System.StateMachine.Pro {
                 this.AddState( state, argument );
             }
         }
-        protected virtual void AddState(T state, object? argument) {
+        protected virtual void AddState(IState state, object? argument) {
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine} machine", state.Machine == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == Activity.Inactive );
@@ -30,7 +30,7 @@ namespace System.StateMachine.Pro {
             this.State = state;
             this.State.Attach( this, argument );
         }
-        protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback) {
+        protected virtual void RemoveState(IState state, object? argument, Action<IState, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have {this} machine", state.Machine == this );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == Activity.Active );
@@ -39,7 +39,7 @@ namespace System.StateMachine.Pro {
             this.State = null;
             callback?.Invoke( state, argument );
         }
-        protected void RemoveState(object? argument, Action<T, object?>? callback) {
+        protected void RemoveState(object? argument, Action<IState, object?>? callback) {
             Assert.Operation.Valid( $"StateMachine {this} must have state", this.State != null );
             this.RemoveState( this.State, argument, callback );
         }

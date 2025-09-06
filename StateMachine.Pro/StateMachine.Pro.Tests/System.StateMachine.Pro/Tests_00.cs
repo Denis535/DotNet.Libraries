@@ -9,7 +9,7 @@ namespace System.StateMachine.Pro {
 
         [Test]
         public void Test_00() {
-            var machine = new StateMachine<State<string>, object?>( null );
+            var machine = new StateMachine<object?>( null );
             var a = new State<string>( "a" );
             var b = new State<string>( "b" );
             {
@@ -44,7 +44,7 @@ namespace System.StateMachine.Pro {
 
         [Test]
         public void Test_01() {
-            var machine = new StateMachine<State<string>, object?>( null );
+            var machine = new StateMachine<object?>( null );
             var a = new State<string>( "a" );
             var b = new State<string>( "b" );
             {

@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class State<TUserData> : StateBase {
+    public sealed class ChildableState<TUserData> : ChildableStateBase {
 
         // UserData
         public TUserData UserData { get; private set; }
@@ -18,7 +18,7 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnDeactivateCallback;
 
         // Constructor
-        public State(TUserData userData) {
+        public ChildableState(TUserData userData) {
             this.UserData = userData;
         }
 
