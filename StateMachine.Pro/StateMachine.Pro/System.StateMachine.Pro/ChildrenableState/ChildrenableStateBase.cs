@@ -222,7 +222,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
-            Assert.Operation.Valid( $"Node {this} must have no {child} child", !this.Children.Contains( child ) );
+            Assert.Operation.Valid( $"State {this} must have no {child} child", !this.Children.Contains( child ) );
             this.ChildrenMutable.Add( child );
             this.Sort( this.ChildrenMutable );
             child.Attach( this, argument );
@@ -243,7 +243,7 @@ namespace System.StateMachine.Pro {
             } else {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             }
-            Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
+            Assert.Operation.Valid( $"State {this} must have {child} child", this.Children.Contains( child ) );
             child.Detach( this, argument );
             _ = this.ChildrenMutable.Remove( child );
             callback?.Invoke( child, argument );
