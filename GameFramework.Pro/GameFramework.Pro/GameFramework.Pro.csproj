@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>1.2.8</Version>
+        <Version>1.2.9</Version>
         <Description>The framework that allows you to design high-quality architecture of your game project.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -55,26 +55,24 @@
         <InternalsVisibleTo Include="GameFramework.Pro.Tests" />
     </ItemGroup>
 
-    <!--Clean-->
     <ItemGroup>
-        <Clean Include="$(PackageOutputPath)\*.nupkg" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="StateMachine.Pro" Version="3.0.1" />
+        <PackageReference Include="StateMachine.Pro" Version="3.0.2" />
         <PackageReference Include="TreeMachine.Pro" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
     </ItemGroup>
 
-    <!--Include Builds-->
+    <ItemGroup>
+        <Clean Include="$(PackageOutputPath)\*.nupkg" />
+    </ItemGroup>
+
     <Target Name="IncludeBuilds" DependsOnTargets="ResolveReferences">
         <ItemGroup>
             <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
         </ItemGroup>
     </Target>
 
-    <!--Include Content-->
     <Target Name="IncludeContent">
         <ItemGroup>
             <TfmSpecificPackageFile Include="../README.md" PackagePath="/" />
