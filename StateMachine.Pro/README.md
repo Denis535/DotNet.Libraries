@@ -247,6 +247,11 @@ public sealed class ChildableState<TUserData> : ChildableStateBase {
     protected override void OnActivate(object? argument);
     protected override void OnDeactivate(object? argument);
 
+    public new void SetChild(IState? child, object? argument, Action<IState, object?>? callback);
+    public new void AddChild(IState child, object? argument);
+    public new void RemoveChild(IState child, object? argument, Action<IState, object?>? callback);
+    public new void RemoveChild(object? argument, Action<IState, object?>? callback);
+
 }
 // ChildrenableState
 public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
@@ -268,6 +273,13 @@ public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
 
     protected override void OnActivate(object? argument);
     protected override void OnDeactivate(object? argument);
+
+    public new void AddChild(IState child, object? argument);
+    public new void AddChildren(IEnumerable<IState> children, object? argument);
+    public new void RemoveChild(IState child, object? argument, Action<IState, object?>? callback);
+    public new bool RemoveChild(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback);
+    public new int RemoveChildren(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback);
+    public new int RemoveChildren(object? argument, Action<IState, object?>? callback);
 
     protected override void Sort(List<IState> children);
 

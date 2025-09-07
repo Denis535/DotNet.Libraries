@@ -41,6 +41,28 @@ namespace System.StateMachine.Pro {
             this.OnDeactivateCallback?.Invoke( argument );
         }
 
+        // AddChild
+        public new void AddChild(IState child, object? argument) {
+            base.AddChild( child, argument );
+        }
+        public new void AddChildren(IEnumerable<IState> children, object? argument) {
+            base.AddChildren( children, argument );
+        }
+
+        // RemoveChild
+        public new void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
+            base.RemoveChild( child, argument, callback );
+        }
+        public new bool RemoveChild(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            return base.RemoveChild( predicate, argument, callback );
+        }
+        public new int RemoveChildren(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            return base.RemoveChildren( predicate, argument, callback );
+        }
+        public new int RemoveChildren(object? argument, Action<IState, object?>? callback) {
+            return base.RemoveChildren( argument, callback );
+        }
+
         // Sort
         protected override void Sort(List<IState> children) {
             this.SortDelegate?.Invoke( children );
