@@ -29,7 +29,9 @@ namespace System.StateMachine.Pro {
                 this.AddState( state, argument );
             }
         }
-        protected virtual void AddState(T state, object? argument) {
+
+        // AddState
+        private void AddState(T state, object? argument) {
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have no {state.Machine} machine", state.Machine == null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be inactive", state.Activity == Activity.Inactive );
@@ -37,7 +39,9 @@ namespace System.StateMachine.Pro {
             this.State = state;
             this.State.Attach( this, argument );
         }
-        protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback) {
+
+        // RemoveState
+        private void RemoveState(T state, object? argument, Action<T, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'state' must be non-null", state != null );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must have {this} machine", state.Machine == this );
             Assert.Argument.Valid( $"Argument 'state' ({state}) must be active", state.Activity == Activity.Active );
@@ -45,10 +49,6 @@ namespace System.StateMachine.Pro {
             this.State.Detach( this, argument );
             this.State = null;
             callback?.Invoke( state, argument );
-        }
-        protected void RemoveState(object? argument, Action<T, object?>? callback) {
-            Assert.Operation.Valid( $"StateMachine {this} must have state", this.State != null );
-            this.RemoveState( this.State, argument, callback );
         }
 
     }

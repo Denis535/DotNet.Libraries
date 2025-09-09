@@ -234,7 +234,7 @@ namespace System.StateMachine.Pro {
         }
 
         // AddChild
-        protected virtual void AddChild(IState child, object? argument) {
+        private void AddChild(IState child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
@@ -245,7 +245,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveChild
-        protected virtual void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
+        private void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
             if (this.Activity == Activity.Active) {
@@ -257,10 +257,6 @@ namespace System.StateMachine.Pro {
             this.Child.Detach( this, argument );
             this.Child = null;
             callback?.Invoke( child, argument );
-        }
-        protected void RemoveChild(object? argument, Action<IState, object?>? callback) {
-            Assert.Operation.Valid( $"State {this} must have child", this.Child != null );
-            this.RemoveChild( this.Child, argument, callback );
         }
 
     }

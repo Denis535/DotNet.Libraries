@@ -16,9 +16,6 @@ public abstract class StateMachineBase<T> : StateMachineBase where T : class, IS
     public StateMachineBase();
 
     protected virtual void SetState(T? state, object? argument, Action<T, object?>? callback);
-    protected virtual void AddState(T state, object? argument);
-    protected virtual void RemoveState(T state, object? argument, Action<T, object?>? callback);
-    protected void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 public interface IState {
@@ -130,9 +127,6 @@ public abstract partial class ChildableStateBase {
 public abstract partial class ChildableStateBase {
 
     protected virtual void SetChild(IState? child, object? argument, Action<IState, object?>? callback);
-    protected virtual void AddChild(IState child, object? argument);
-    protected virtual void RemoveChild(IState child, object? argument, Action<IState, object?>? callback);
-    protected void RemoveChild(object? argument, Action<IState, object?>? callback);
 
 }
 // ChildrenableStateBase
@@ -203,9 +197,6 @@ public sealed class StateMachine<T, TUserData> : StateMachineBase<T> where T : c
     public StateMachine(TUserData userData);
 
     public new void SetState(T? state, object? argument, Action<T, object?>? callback);
-    public new void AddState(T state, object? argument);
-    public new void RemoveState(T state, object? argument, Action<T, object?>? callback);
-    public new void RemoveState(object? argument, Action<T, object?>? callback);
 
 }
 // State
@@ -248,9 +239,6 @@ public sealed class ChildableState<TUserData> : ChildableStateBase {
     protected override void OnDeactivate(object? argument);
 
     public new void SetChild(IState? child, object? argument, Action<IState, object?>? callback);
-    public new void AddChild(IState child, object? argument);
-    public new void RemoveChild(IState child, object? argument, Action<IState, object?>? callback);
-    public new void RemoveChild(object? argument, Action<IState, object?>? callback);
 
 }
 // ChildrenableState

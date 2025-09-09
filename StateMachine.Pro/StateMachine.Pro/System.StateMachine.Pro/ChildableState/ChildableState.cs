@@ -43,18 +43,5 @@ namespace System.StateMachine.Pro {
             base.SetChild( child, argument, callback );
         }
 
-        // AddChild
-        public new void AddChild(IState child, object? argument) {
-            base.AddChild( child, argument );
-        }
-
-        // RemoveChild
-        public new void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
-            base.RemoveChild( child, argument, callback );
-        }
-        public new void RemoveChild(object? argument, Action<IState, object?>? callback) {
-            base.RemoveChild( argument, callback );
-        }
-
     }
 }
