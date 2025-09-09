@@ -56,7 +56,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StateMachine.Pro" Version="3.0.2" />
+        <PackageReference Include="StateMachine.Pro" Version="3.0.3" />
         <PackageReference Include="TreeMachine.Pro" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
