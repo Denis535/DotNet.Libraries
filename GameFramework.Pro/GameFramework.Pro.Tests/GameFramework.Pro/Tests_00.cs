@@ -105,7 +105,7 @@ namespace GameFramework.Pro {
 
     }
     internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
-        internal class MainWidgetView : ViewBase {
+        internal class MainWidgetView : DisposableBase {
             public MainWidgetView() {
             }
             public override void Dispose() {
@@ -128,7 +128,7 @@ namespace GameFramework.Pro {
 
     }
     internal class GameWidget : ViewableWidgetBase<GameWidget.GameWidgetView> {
-        internal class GameWidgetView : ViewBase {
+        internal class GameWidgetView : DisposableBase {
             public GameWidgetView() {
             }
             public override void Dispose() {

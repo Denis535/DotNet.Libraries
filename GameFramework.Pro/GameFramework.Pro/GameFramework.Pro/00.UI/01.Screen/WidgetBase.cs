@@ -23,18 +23,18 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected virtual void Sort(List<Node2<WidgetBase>> children) {
-        }
-
         protected virtual void OnActivate(object? argument) {
         }
         protected virtual void OnDeactivate(object? argument) {
         }
 
+        protected virtual void Sort(List<Node2<WidgetBase>> children) {
+        }
+
     }
     public abstract class ViewableWidgetBase : WidgetBase {
 
-        protected IView View { get; init; } = default!;
+        protected object View { get; init; } = default!;
 
         public ViewableWidgetBase() {
         }
@@ -46,7 +46,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull, IView {
+    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull {
 
         protected new TView View { get => (TView) base.View; init => base.View = value; }
 
@@ -56,7 +56,5 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-    }
-    public interface IView {
     }
 }

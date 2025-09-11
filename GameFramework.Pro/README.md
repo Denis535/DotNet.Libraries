@@ -54,31 +54,25 @@ public abstract class WidgetBase : DisposableBase {
     public WidgetBase();
     public override void Dispose();
 
-    protected virtual void Sort(List<Node2<WidgetBase>> children);
-
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
+
+	protected virtual void Sort(List<Node2<WidgetBase>> children);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
 
-    protected IView View { get; init; }
+    protected object View { get; init; }
 
     public ViewableWidgetBase();
     public override void Dispose();
 
 }
-public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull, IView {
+public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull {
 
     protected new TView View { get; init; }
 
     public ViewableWidgetBase();
-    public override void Dispose();
-
-}
-public abstract class ViewBase : DisposableBase, IView {
-
-    public ViewBase();
     public override void Dispose();
 
 }
