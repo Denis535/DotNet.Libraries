@@ -57,7 +57,7 @@ public abstract class WidgetBase : DisposableBase {
     protected virtual void OnActivate(object? argument);
     protected virtual void OnDeactivate(object? argument);
 
-	protected virtual void Sort(List<Node2<WidgetBase>> children);
+    protected virtual void Sort(List<Node2<WidgetBase>> children);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
