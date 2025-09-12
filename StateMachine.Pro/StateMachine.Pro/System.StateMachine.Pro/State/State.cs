@@ -4,10 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class State<TUserData> : StateBase {
-
-        // UserData
-        public TUserData UserData { get; }
+    public class State : StateBase {
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -18,8 +15,7 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnDeactivateCallback;
 
         // Constructor
-        public State(TUserData userData) {
-            this.UserData = userData;
+        public State() {
         }
 
         // OnAttach
@@ -36,6 +32,17 @@ namespace System.StateMachine.Pro {
         }
         protected override void OnDeactivate(object? argument) {
             this.OnDeactivateCallback?.Invoke( argument );
+        }
+
+    }
+    public class State<TUserData> : State {
+
+        // UserData
+        public TUserData UserData { get; }
+
+        // Constructor
+        public State(TUserData userData) {
+            this.UserData = userData;
         }
 
     }

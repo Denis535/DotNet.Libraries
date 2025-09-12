@@ -4,10 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class ChildrenableState<TUserData> : ChildrenableStateBase {
-
-        // UserData
-        public TUserData UserData { get; }
+    public class ChildrenableState : ChildrenableStateBase {
 
         // Sort
         public Action<List<IState>>? SortDelegate { get; init; }
@@ -21,8 +18,7 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnDeactivateCallback;
 
         // Constructor
-        public ChildrenableState(TUserData userData) {
-            this.UserData = userData;
+        public ChildrenableState() {
         }
 
         // OnAttach
@@ -66,6 +62,17 @@ namespace System.StateMachine.Pro {
         // Sort
         protected override void Sort(List<IState> children) {
             this.SortDelegate?.Invoke( children );
+        }
+
+    }
+    public class ChildrenableState<TUserData> : ChildrenableState {
+
+        // UserData
+        public TUserData UserData { get; }
+
+        // Constructor
+        public ChildrenableState(TUserData userData) {
+            this.UserData = userData;
         }
 
     }

@@ -4,10 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class ChildableState<TUserData> : ChildableStateBase {
-
-        // UserData
-        public TUserData UserData { get; }
+    public class ChildableState : ChildableStateBase {
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -18,8 +15,7 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnDeactivateCallback;
 
         // Constructor
-        public ChildableState(TUserData userData) {
-            this.UserData = userData;
+        public ChildableState() {
         }
 
         // OnAttach
@@ -41,6 +37,17 @@ namespace System.StateMachine.Pro {
         // SetChild
         public new void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
             base.SetChild( child, argument, callback );
+        }
+
+    }
+    public class ChildableState<TUserData> : ChildableState {
+
+        // UserData
+        public TUserData UserData { get; }
+
+        // Constructor
+        public ChildableState(TUserData userData) {
+            this.UserData = userData;
         }
 
     }
