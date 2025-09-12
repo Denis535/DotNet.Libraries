@@ -38,11 +38,11 @@ namespace GameFramework.Pro {
         public Theme(Router router, Application application) {
             base.Router = router;
             base.Application = application;
-            base.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.UserData.Dispose() );
-            base.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.PlayList().Dispose() );
+            base.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.PlayList().Dispose() );
         }
         public override void Dispose() {
-            base.Machine.SetRoot( null, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetRoot( null, null, (state, arg) => state.PlayList().Dispose() );
             base.Dispose();
         }
 
@@ -83,7 +83,7 @@ namespace GameFramework.Pro {
             base.Machine.SetRoot( new RootWidget().Node, null, null );
         }
         public override void Dispose() {
-            base.Machine.SetRoot( null, null, (root, arg) => root.UserData.Dispose() );
+            base.Machine.SetRoot( null, null, (root, arg) => root.Widget().Dispose() );
             base.Dispose();
         }
 
