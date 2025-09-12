@@ -12,8 +12,8 @@ namespace System.TreeMachine.Pro {
         private object? Owner { get; set; }
 
         // Machine
-        public TreeMachineBase<TThis>? Machine => (this.Owner as TreeMachineBase<TThis>) ?? (this.Owner as NodeBase<TThis>)?.Machine;
-        internal TreeMachineBase<TThis>? Machine_NoRecursive => this.Owner as TreeMachineBase<TThis>;
+        public TreeMachineBase? Machine => (this.Owner as TreeMachineBase) ?? (this.Owner as NodeBase<TThis>)?.Machine;
+        internal TreeMachineBase? Machine_NoRecursive => this.Owner as TreeMachineBase;
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Parent == null;
@@ -55,7 +55,7 @@ namespace System.TreeMachine.Pro {
     public abstract partial class NodeBase<TThis> {
 
         // Attach
-        internal void Attach(TreeMachineBase<TThis> machine, object? argument) {
+        internal void Attach(TreeMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"Node {this} must have no {this.Parent} parent", this.Parent == null );
@@ -87,7 +87,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        internal void Detach(TreeMachineBase<TThis> machine, object? argument) {
+        internal void Detach(TreeMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );
             Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
@@ -243,12 +243,8 @@ namespace System.TreeMachine.Pro {
 
         // RemoveSelf
         protected void RemoveSelf(object? argument, Action<TThis, object?>? callback) {
-            if (this.Parent != null) {
-                this.Parent.RemoveChild( (TThis) this, argument, callback );
-            } else {
-                Assert.Operation.Valid( $"Node {this} must have machine", this.Machine_NoRecursive != null );
-                this.Machine_NoRecursive.RemoveRoot( (TThis) this, argument, callback );
-            }
+            Assert.Operation.Valid( $"Node {this} must have parent", this.Parent != null );
+            this.Parent.RemoveChild( (TThis) this, argument, callback );
         }
 
         // Sort

@@ -11,17 +11,17 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public abstract class TreeMachineBase<T> : TreeMachineBase where T : notnull, NodeBase<T> {
+    public abstract class TreeMachineBase<TNode> : TreeMachineBase where TNode : notnull, NodeBase<TNode> {
 
         // Root
-        protected T? Root { get; private set; }
+        protected TNode? Root { get; private set; }
 
         // Constructor
         public TreeMachineBase() {
         }
 
         // AddRoot
-        protected virtual void AddRoot(T root, object? argument) {
+        protected virtual void AddRoot(TNode root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
@@ -30,7 +30,7 @@ namespace System.TreeMachine.Pro {
             this.Root = root;
             this.Root.Attach( this, argument );
         }
-        protected internal virtual void RemoveRoot(T root, object? argument, Action<T, object?>? callback) {
+        protected internal virtual void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
@@ -40,7 +40,7 @@ namespace System.TreeMachine.Pro {
             this.Root = null;
             callback?.Invoke( root, argument );
         }
-        protected void RemoveRoot(object? argument, Action<T, object?>? callback) {
+        protected void RemoveRoot(object? argument, Action<TNode, object?>? callback) {
             Assert.Operation.Valid( $"TreeMachine {this} must have root", this.Root != null );
             this.RemoveRoot( this.Root, argument, callback );
         }

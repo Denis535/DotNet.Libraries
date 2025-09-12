@@ -9,15 +9,15 @@ The library that allows you to easily implement a hierarchical object.
 namespace System.TreeMachine.Pro;
 public abstract class TreeMachineBase {
 }
-public abstract class TreeMachineBase<T> : TreeMachineBase where T : notnull, NodeBase<T> {
+public abstract class TreeMachineBase<TNode> : TreeMachineBase where TNode : notnull, NodeBase<TNode> {
 
-    protected T? Root { get; }
+    protected TNode? Root { get; }
 
     public TreeMachineBase();
 
-    protected virtual void AddRoot(T root, object? argument);
-    protected virtual void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
-    protected void RemoveRoot(object? argument, Action<T, object?>? callback);
+    protected virtual void AddRoot(TNode root, object? argument);
+    protected virtual void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback);
+    protected void RemoveRoot(object? argument, Action<TNode, object?>? callback);
 
 }
 public enum Activity {
@@ -29,7 +29,7 @@ public enum Activity {
 // NodeBase
 public abstract partial class NodeBase<TThis> where TThis : notnull, NodeBase<TThis> {
 
-    public TreeMachineBase<TThis>? Machine { get; }
+    public TreeMachineBase? Machine { get; }
 
     [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
     public TThis Root { get; }
@@ -113,17 +113,17 @@ public abstract partial class NodeBase2<TThis> {
 
 ```
 namespace System.TreeMachine.Pro;
-public sealed class TreeMachine<T, TUserData> : TreeMachineBase<T> where T : notnull, NodeBase<T> {
+public sealed class TreeMachine<TNode, TUserData> : TreeMachineBase<TNode> where TNode : notnull, NodeBase<TNode> {
 
-    public new T? Root { get; }
+    public new TNode? Root { get; }
 
     public TUserData UserData { get; }
 
     public TreeMachine(TUserData userData);
 
-    public new void AddRoot(T root, object? argument);
-    public new void RemoveRoot(T root, object? argument, Action<T, object?>? callback);
-    public new void RemoveRoot(object? argument, Action<T, object?>? callback);
+    public new void AddRoot(TNode root, object? argument);
+    public new void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback);
+    public new void RemoveRoot(object? argument, Action<TNode, object?>? callback);
 
 }
 // Node
