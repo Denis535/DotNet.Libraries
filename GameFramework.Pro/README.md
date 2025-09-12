@@ -6,170 +6,28 @@ The framework that allows you to design high-quality architecture of your game p
 
 ###### GameFramework.Pro
 
-```
-// Program
-namespace GameFramework.Pro;
-public abstract class ProgramBase : DisposableBase {
-
-    public ProgramBase();
-    public override void Dispose();
-
-}
-```
-
-```
-// UI
-namespace GameFramework.Pro;
-public abstract class ThemeBase : DisposableBase {
-
-    protected StateMachine<State<PlayListBase>, ThemeBase> Machine { get; }
-
-    public ThemeBase();
-    public override void Dispose();
-
-}
-public abstract class ScreenBase : DisposableBase {
-
-    protected TreeMachine<Node2<WidgetBase>, ScreenBase> Machine { get; }
-
-    public ScreenBase();
-    public override void Dispose();
-
-}
-public abstract class PlayListBase : DisposableBase {
-
-    public State<PlayListBase> State { get; }
-
-    public PlayListBase();
-    public override void Dispose();
-
-    protected virtual void OnActivate(object? argument);
-    protected virtual void OnDeactivate(object? argument);
-
-}
-public abstract class WidgetBase : DisposableBase {
-
-    public Node2<WidgetBase> Node { get; }
-
-    public WidgetBase();
-    public override void Dispose();
-
-    protected virtual void OnActivate(object? argument);
-    protected virtual void OnDeactivate(object? argument);
-
-    protected virtual void Sort(List<Node2<WidgetBase>> children);
-
-}
-public abstract class ViewableWidgetBase : WidgetBase {
-
-    protected object View { get; init; }
-
-    public ViewableWidgetBase();
-    public override void Dispose();
-
-}
-public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull {
-
-    protected new TView View { get; init; }
-
-    public ViewableWidgetBase();
-    public override void Dispose();
-
-}
-public abstract class RouterBase : DisposableBase {
-
-    public RouterBase();
-    public override void Dispose();
-
-}
-```
-
-```
-// App
-namespace GameFramework.Pro;
-public abstract class ApplicationBase : DisposableBase {
-
-    public ApplicationBase();
-    public override void Dispose();
-
-}
-```
-
-```
-// Domain (Business, Game)
-namespace GameFramework.Pro;
-public abstract class GameBase : DisposableBase {
-
-    public GameBase();
-    public override void Dispose();
-
-}
-public abstract class PlayerBase : DisposableBase {
-
-    public PlayerBase();
-    public override void Dispose();
-
-}
-public abstract class EntityBase : DisposableBase {
-
-    public EntityBase();
-    public override void Dispose();
-
-}
-```
+- ProgramBase
+- UI
+    - ThemeBase
+    - ScreenBase
+    - PlayListBase
+    - WidgetBase
+    - ViewableWidgetBase
+    - RouterBase
+- App
+    - ApplicationBase
+- Domain
+    - GameBase
+    - PlayerBase
+    - EntityBase
 
 ###### GameFramework.Pro.Extensions
 
-```
-// Program
-namespace GameFramework.Pro.Extensions;
-public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase where TTheme : ThemeBase where TScreen : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
-
-    protected TTheme Theme { get; init; }
-    protected TScreen Screen { get; init; }
-    protected TRouter Router { get; init; }
-    protected TApplication Application { get; init; }
-
-    public ProgramBase2();
-    public override void Dispose();
-
-}
-```
-
-```
-// UI
-namespace GameFramework.Pro.Extensions;
-public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
-
-    protected TRouter Router { get; init; }
-    protected TApplication Application { get; init; }
-
-    public ThemeBase2();
-    public override void Dispose();
-
-}
-public abstract class ScreenBase2<TRouter, TApplication> : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
-
-    protected TRouter Router { get; init; }
-    protected TApplication Application { get; init; }
-
-    public ScreenBase2();
-    public override void Dispose();
-
-}
-public abstract class RouterBase2<TTheme, TScreen, TApplication> : RouterBase where TTheme : ThemeBase where TScreen : ScreenBase where TApplication : ApplicationBase {
-
-    protected TTheme Theme { get; }
-    protected Func<TTheme> Theme_ { init; }
-    protected TScreen Screen { get; }
-    protected Func<TScreen> Screen_ { init; }
-    protected TApplication Application { get; init; }
-
-    public RouterBase2();
-    public override void Dispose();
-
-}
-```
+- ProgramBase2
+- UI
+    - ThemeBase2
+    - ScreenBase2
+    - RouterBase2
 
 # Links
 

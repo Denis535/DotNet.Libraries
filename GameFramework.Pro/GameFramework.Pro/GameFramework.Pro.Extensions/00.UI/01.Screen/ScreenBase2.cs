@@ -4,8 +4,7 @@ namespace GameFramework.Pro.Extensions {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class ScreenBase2<TRoot, TRouter, TApplication> : ScreenBase<TRoot>
-        where TRoot : WidgetBase
+    public abstract class ScreenBase2<TRouter, TApplication> : ScreenBase
         where TRouter : RouterBase
         where TApplication : ApplicationBase {
 

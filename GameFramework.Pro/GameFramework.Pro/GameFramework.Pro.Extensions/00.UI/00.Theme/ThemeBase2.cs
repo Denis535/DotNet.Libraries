@@ -4,8 +4,7 @@ namespace GameFramework.Pro.Extensions {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class ThemeBase2<TRoot, TRouter, TApplication> : ThemeBase<TRoot>
-        where TRoot : PlayListBase
+    public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase
         where TRouter : RouterBase
         where TApplication : ApplicationBase {
 

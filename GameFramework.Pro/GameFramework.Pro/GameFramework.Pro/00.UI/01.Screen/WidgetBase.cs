@@ -8,19 +8,10 @@ namespace GameFramework.Pro {
 
     public abstract class WidgetBase : DisposableBase {
 
-        internal WidgetBase() {
-        }
-        public override void Dispose() {
-            base.Dispose();
-        }
-
-    }
-    public abstract class WidgetBase<TThis> : WidgetBase where TThis : WidgetBase {
-
-        public Node2<TThis> Node { get; }
+        public Node2<WidgetBase> Node { get; }
 
         public WidgetBase() {
-            this.Node = new Node2<TThis>( (TThis) (object) this ) {
+            this.Node = new Node2<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
             this.Node.OnActivateCallback += this.OnActivate;
@@ -41,7 +32,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ViewableWidgetBase<TThis> : WidgetBase<TThis> where TThis : WidgetBase {
+    public abstract class ViewableWidgetBase : WidgetBase {
 
         protected object View { get; init; } = default!;
 
@@ -55,7 +46,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ViewableWidgetBase<TThis, TView> : ViewableWidgetBase<TThis> where TThis : WidgetBase where TView : notnull {
+    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull {
 
         protected new TView View { get => (TView) base.View; init => base.View = value; }
 

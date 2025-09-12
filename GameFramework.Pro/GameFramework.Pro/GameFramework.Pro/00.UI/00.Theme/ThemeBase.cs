@@ -7,19 +7,10 @@ namespace GameFramework.Pro {
 
     public abstract class ThemeBase : DisposableBase {
 
-        internal ThemeBase() {
-        }
-        public override void Dispose() {
-            base.Dispose();
-        }
-
-    }
-    public abstract class ThemeBase<TRoot> : ThemeBase where TRoot : PlayListBase {
-
-        protected StateMachine<State<TRoot>, ThemeBase> Machine { get; }
+        protected StateMachine<State<PlayListBase>, ThemeBase> Machine { get; }
 
         public ThemeBase() {
-            this.Machine = new StateMachine<State<TRoot>, ThemeBase>( this );
+            this.Machine = new StateMachine<State<PlayListBase>, ThemeBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Theme {this} must have no {this.Machine.Root} root", this.Machine.Root == null );

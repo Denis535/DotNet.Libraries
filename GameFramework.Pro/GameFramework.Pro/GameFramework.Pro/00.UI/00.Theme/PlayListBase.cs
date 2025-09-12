@@ -7,19 +7,10 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase : DisposableBase {
 
-        internal PlayListBase() {
-        }
-        public override void Dispose() {
-            base.Dispose();
-        }
-
-    }
-    public abstract class PlayListBase<TThis> : PlayListBase where TThis : PlayListBase {
-
-        public State<TThis> State { get; }
+        public State<PlayListBase> State { get; }
 
         public PlayListBase() {
-            this.State = new State<TThis>( (TThis) (object) this );
+            this.State = new State<PlayListBase>( this );
             this.State.OnActivateCallback += this.OnActivate;
             this.State.OnDeactivateCallback += this.OnDeactivate;
         }
