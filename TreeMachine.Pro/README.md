@@ -11,7 +11,7 @@ public abstract class TreeMachineBase {
 }
 public abstract class TreeMachineBase<TRoot, TNode> : TreeMachineBase where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
 
-    protected TNode? Root { get; }
+    protected TRoot? Root { get; }
 
     public TreeMachineBase();
 
