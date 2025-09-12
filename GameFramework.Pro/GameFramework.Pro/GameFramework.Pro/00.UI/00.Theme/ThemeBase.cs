@@ -14,12 +14,12 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ThemeBase<TRoot> : ThemeBase where TRoot : class, IState {
+    public abstract class ThemeBase<TRoot> : ThemeBase where TRoot : PlayListBase {
 
-        protected StateMachine<TRoot, ThemeBase> Machine { get; }
+        protected StateMachine<State<TRoot>, ThemeBase> Machine { get; }
 
         public ThemeBase() {
-            this.Machine = new StateMachine<TRoot, ThemeBase>( this );
+            this.Machine = new StateMachine<State<TRoot>, ThemeBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Theme {this} must have no {this.Machine.Root} root", this.Machine.Root == null );

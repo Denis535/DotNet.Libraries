@@ -3,11 +3,9 @@ namespace GameFramework.Pro.Extensions {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.TreeMachine.Pro;
 
-    public abstract class ScreenBase2<TRoot, TNode, TRouter, TApplication> : ScreenBase<TRoot, TNode>
-        where TRoot : TNode
-        where TNode : notnull, NodeBase<TNode>
+    public abstract class ScreenBase2<TRoot, TRouter, TApplication> : ScreenBase<TRoot>
+        where TRoot : WidgetBase
         where TRouter : RouterBase
         where TApplication : ApplicationBase {
 

@@ -14,12 +14,12 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ScreenBase<TRoot, TNode> : ScreenBase where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
+    public abstract class ScreenBase<TRoot> : ScreenBase where TRoot : WidgetBase {
 
-        protected TreeMachine<TRoot, TNode, ScreenBase> Machine { get; }
+        protected TreeMachine<Node2<TRoot>, ScreenBase> Machine { get; }
 
         public ScreenBase() {
-            this.Machine = new TreeMachine<TRoot, TNode, ScreenBase>( this );
+            this.Machine = new TreeMachine<Node2<TRoot>, ScreenBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Screen {this} must have no {this.Machine.Root} root", this.Machine.Root == null );

@@ -2,7 +2,6 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
-    using System.StateMachine.Pro;
     using System.Text;
     using System.TreeMachine.Pro;
     using GameFramework.Pro.Extensions;
@@ -34,7 +33,7 @@ namespace GameFramework.Pro {
 
     }
     // UI
-    internal class Theme : ThemeBase2<State<PlayListBase>, Router, Application> {
+    internal class Theme : ThemeBase2<PlayListBase, Router, Application> {
 
         public Theme(Router router, Application application) {
             base.Router = router;
@@ -48,7 +47,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class MainPlayList : PlayListBase {
+    internal class MainPlayList : PlayListBase<PlayListBase> {
 
         public MainPlayList() {
         }
@@ -62,7 +61,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class GamePlayList : PlayListBase {
+    internal class GamePlayList : PlayListBase<PlayListBase> {
 
         public GamePlayList() {
         }
@@ -76,7 +75,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class Screen : ScreenBase2<Node2<WidgetBase>, Node2<WidgetBase>, Router, Application> {
+    internal class Screen : ScreenBase2<WidgetBase, Router, Application> {
 
         public Screen(Router router, Application application) {
             base.Router = router;
@@ -89,14 +88,14 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class RootWidget : WidgetBase {
+    internal class RootWidget : WidgetBase<WidgetBase> {
 
         public RootWidget() {
             base.Node.AddChild( new MainWidget().Node, null );
             base.Node.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
-            _ = base.Node.RemoveChildren( null, (child, arg) => child.UserData.Dispose() );
+            _ = base.Node.RemoveChildren( null, (child, arg) => ((Node2<WidgetBase>) child).UserData.Dispose() );
             base.Dispose();
         }
 
@@ -106,7 +105,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
+    internal class MainWidget : ViewableWidgetBase<WidgetBase, MainWidget.MainWidgetView> {
         internal class MainWidgetView : DisposableBase {
             public MainWidgetView() {
             }
@@ -119,6 +118,7 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         public override void Dispose() {
+            _ = base.Node.RemoveChildren( null, (child, arg) => ((Node2<WidgetBase>) child).UserData.Dispose() );
             this.View.Dispose();
             base.Dispose();
         }
@@ -129,7 +129,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class GameWidget : ViewableWidgetBase<GameWidget.GameWidgetView> {
+    internal class GameWidget : ViewableWidgetBase<WidgetBase, GameWidget.GameWidgetView> {
         internal class GameWidgetView : DisposableBase {
             public GameWidgetView() {
             }
@@ -142,6 +142,7 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         public override void Dispose() {
+            _ = base.Node.RemoveChildren( null, (child, arg) => ((Node2<WidgetBase>) child).UserData.Dispose() );
             this.View.Dispose();
             base.Dispose();
         }
