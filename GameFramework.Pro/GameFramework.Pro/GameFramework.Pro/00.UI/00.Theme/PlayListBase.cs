@@ -25,4 +25,9 @@ namespace GameFramework.Pro {
         }
 
     }
+    public static class StateExtensions {
+        public static PlayListBase PlayList(this StateBase state) {
+            return ((State<PlayListBase>) state).UserData;
+        }
+    }
 }

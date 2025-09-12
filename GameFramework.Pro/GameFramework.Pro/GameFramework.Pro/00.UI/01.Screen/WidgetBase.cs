@@ -57,4 +57,9 @@ namespace GameFramework.Pro {
         }
 
     }
+    public static class NodeExtensions {
+        public static WidgetBase Widget(this NodeBase node) {
+            return ((Node2<WidgetBase>) node).UserData;
+        }
+    }
 }
