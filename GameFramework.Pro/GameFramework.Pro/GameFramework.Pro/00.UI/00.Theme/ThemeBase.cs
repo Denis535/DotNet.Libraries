@@ -13,7 +13,7 @@ namespace GameFramework.Pro {
             this.Machine = new StateMachine<State<PlayListBase>, ThemeBase>( this );
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Theme {this} must have no {this.Machine.State} state", this.Machine.State == null );
+            Assert.Operation.Valid( $"Theme {this} must have no {this.Machine.Root} root", this.Machine.Root == null );
             base.Dispose();
         }
 

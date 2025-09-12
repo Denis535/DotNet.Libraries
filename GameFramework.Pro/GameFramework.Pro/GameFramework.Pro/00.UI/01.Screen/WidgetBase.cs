@@ -18,8 +18,8 @@ namespace GameFramework.Pro {
             this.Node.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Widget {this} must have no children", !this.Node.Children.Any() );
             Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"Widget {this} must have no children", !this.Node.Children.Any() );
             base.Dispose();
         }
 

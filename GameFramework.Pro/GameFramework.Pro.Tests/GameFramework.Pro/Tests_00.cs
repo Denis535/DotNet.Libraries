@@ -37,11 +37,11 @@ namespace GameFramework.Pro {
         public Theme(Router router, Application application) {
             base.Router = router;
             base.Application = application;
-            base.Machine.SetState( new MainPlayList().State, null, (state, arg) => state.UserData.Dispose() );
-            base.Machine.SetState( new GamePlayList().State, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.UserData.Dispose() );
         }
         public override void Dispose() {
-            base.Machine.SetState( null, null, (state, arg) => state.UserData.Dispose() );
+            base.Machine.SetRoot( null, null, (state, arg) => state.UserData.Dispose() );
             base.Dispose();
         }
 
@@ -79,10 +79,10 @@ namespace GameFramework.Pro {
         public Screen(Router router, Application application) {
             base.Router = router;
             base.Application = application;
-            base.Machine.AddRoot( new RootWidget().Node, null );
+            base.Machine.SetRoot( new RootWidget().Node, null, null );
         }
         public override void Dispose() {
-            base.Machine.RemoveRoot( null, (root, arg) => root.UserData.Dispose() );
+            base.Machine.SetRoot( null, null, (root, arg) => root.UserData.Dispose() );
             base.Dispose();
         }
 

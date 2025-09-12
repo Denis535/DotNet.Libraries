@@ -56,8 +56,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StateMachine.Pro" Version="3.0.3" />
-        <PackageReference Include="TreeMachine.Pro" Version="3.0.1" />
+        <PackageReference Include="StateMachine.Pro" Version="3.0.4" />
+        <PackageReference Include="TreeMachine.Pro" Version="3.0.4" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
