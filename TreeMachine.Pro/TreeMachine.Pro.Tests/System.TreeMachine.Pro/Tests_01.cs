@@ -10,7 +10,7 @@
 
         [Test]
         public void Test_00() {
-            var machine = new TreeMachine<Node<string>, object?>( null );
+            var machine = new TreeMachine<Node<string>, Node<string>, object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -23,8 +23,8 @@
             };
 
             {
-                // machine.AddRoot root
-                machine.AddRoot( root, null );
+                // machine.SetRoot root
+                machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.EqualTo( root ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -53,15 +53,15 @@
                 }
             }
             {
-                // machine.RemoveRoot
-                machine.RemoveRoot( null, null );
+                // machine.SetRoot null
+                machine.SetRoot( null, null, null );
                 Assert.That( machine.Root, Is.Null );
             }
         }
 
         [Test]
         public void Test_01() {
-            var machine = new TreeMachine<Node<string>, object?>( null );
+            var machine = new TreeMachine<Node<string>, Node<string>, object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -75,7 +75,7 @@
 
             {
                 // machine.AddRoot root
-                machine.AddRoot( root, null );
+                machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.EqualTo( root ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -104,8 +104,8 @@
                 }
             }
             {
-                // machine.RemoveRoot
-                machine.RemoveRoot( null, null );
+                // machine.SetRoot null
+                machine.SetRoot( null, null, null );
                 Assert.That( machine.Root, Is.Null );
             }
         }

@@ -4,10 +4,10 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class TreeMachine<TNode, TUserData> : TreeMachineBase<TNode> where TNode : notnull, NodeBase<TNode> {
+    public sealed class TreeMachine<TRoot, TNode, TUserData> : TreeMachineBase<TRoot, TNode> where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
 
         // Root
-        public new TNode? Root => base.Root;
+        public new TRoot? Root => base.Root;
 
         // UserData
         public TUserData UserData { get; }
@@ -17,15 +17,9 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
 
-        // AddRoot
-        public new void AddRoot(TNode root, object? argument) {
-            base.AddRoot( root, argument );
-        }
-        public new void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback) {
-            base.RemoveRoot( root, argument, callback );
-        }
-        public new void RemoveRoot(object? argument, Action<TNode, object?>? callback) {
-            base.RemoveRoot( argument, callback );
+        // SetRoot
+        public new void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback) {
+            base.SetRoot( root, argument, callback );
         }
 
     }

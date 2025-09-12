@@ -9,15 +9,13 @@ The library that allows you to easily implement a hierarchical object.
 namespace System.TreeMachine.Pro;
 public abstract class TreeMachineBase {
 }
-public abstract class TreeMachineBase<TNode> : TreeMachineBase where TNode : notnull, NodeBase<TNode> {
+public abstract class TreeMachineBase<TRoot, TNode> : TreeMachineBase where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
 
     protected TNode? Root { get; }
 
     public TreeMachineBase();
 
-    protected virtual void AddRoot(TNode root, object? argument);
-    protected virtual void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback);
-    protected void RemoveRoot(object? argument, Action<TNode, object?>? callback);
+    protected virtual void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback);
 
 }
 public enum Activity {
@@ -113,17 +111,15 @@ public abstract partial class NodeBase2<TThis> {
 
 ```
 namespace System.TreeMachine.Pro;
-public sealed class TreeMachine<TNode, TUserData> : TreeMachineBase<TNode> where TNode : notnull, NodeBase<TNode> {
+public sealed class TreeMachine<TRoot, TNode, TUserData> : TreeMachineBase<TRoot, TNode> where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
 
-    public new TNode? Root { get; }
+    public new TRoot? Root { get; }
 
     public TUserData UserData { get; }
 
     public TreeMachine(TUserData userData);
 
-    public new void AddRoot(TNode root, object? argument);
-    public new void RemoveRoot(TNode root, object? argument, Action<TNode, object?>? callback);
-    public new void RemoveRoot(object? argument, Action<TNode, object?>? callback);
+    public new void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback);
 
 }
 // Node
