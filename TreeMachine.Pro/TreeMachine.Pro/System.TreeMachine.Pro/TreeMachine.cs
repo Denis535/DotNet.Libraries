@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public class TreeMachine<TRoot> : TreeMachineBase<TRoot> where TRoot : notnull, Node {
+    public class TreeMachine<TRoot> : TreeMachineBase<TRoot> where TRoot : notnull, NodeBase {
 
         // Root
         public new TRoot? Root => base.Root;
@@ -19,7 +19,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public class TreeMachine<TRoot, TUserData> : TreeMachine<TRoot> where TRoot : notnull, Node {
+    public class TreeMachine<TRoot, TUserData> : TreeMachine<TRoot> where TRoot : notnull, NodeBase {
 
         // UserData
         public TUserData UserData { get; }
