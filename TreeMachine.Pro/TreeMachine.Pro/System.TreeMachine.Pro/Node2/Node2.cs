@@ -4,10 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class Node2<TUserData> : NodeBase2 {
-
-        // UserData
-        public TUserData UserData { get; }
+    public class Node2 : NodeBase2 {
 
         // Sort
         public Action<List<NodeBase>>? SortDelegate { get; init; }
@@ -33,8 +30,7 @@ namespace System.TreeMachine.Pro {
         public event Action<NodeBase, object?>? OnAfterDescendantDeactivateCallback;
 
         // Constructor
-        public Node2(TUserData userData) {
-            this.UserData = userData;
+        public Node2() {
         }
 
         // OnAttach
@@ -111,6 +107,17 @@ namespace System.TreeMachine.Pro {
         // Sort
         protected override void Sort(List<NodeBase> children) {
             this.SortDelegate?.Invoke( children );
+        }
+
+    }
+    public class Node2<TUserData> : Node2 {
+
+        // UserData
+        public TUserData UserData { get; }
+
+        // Constructor
+        public Node2(TUserData userData) {
+            this.UserData = userData;
         }
 
     }
