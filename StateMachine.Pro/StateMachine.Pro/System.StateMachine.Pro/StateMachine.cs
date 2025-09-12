@@ -4,10 +4,10 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed class StateMachine<TState, TUserData> : StateMachineBase<TState> where TState : class, IState {
+    public sealed class StateMachine<TRoot, TUserData> : StateMachineBase<TRoot> where TRoot : class, IState {
 
-        // State
-        public new TState? State => base.State;
+        // Root
+        public new TRoot? Root => base.Root;
 
         // UserData
         public TUserData UserData { get; }
@@ -17,9 +17,9 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
 
-        // SetState
-        public new void SetState(TState? state, object? argument, Action<TState, object?>? callback) {
-            base.SetState( state, argument, callback );
+        // SetRoot
+        public new void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback) {
+            base.SetRoot( root, argument, callback );
         }
 
     }

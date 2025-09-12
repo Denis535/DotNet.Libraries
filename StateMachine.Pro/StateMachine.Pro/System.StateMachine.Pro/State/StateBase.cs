@@ -58,8 +58,8 @@ namespace System.StateMachine.Pro {
         void IState.Attach(StateMachineBase machine, object? argument) {
             this.Attach( machine, argument );
         }
-        void IState.Attach(IState state, object? argument) {
-            this.Attach( state, argument );
+        void IState.Attach(IState parent, object? argument) {
+            this.Attach( parent, argument );
         }
         private void Attach(StateMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
@@ -97,8 +97,8 @@ namespace System.StateMachine.Pro {
         void IState.Detach(StateMachineBase machine, object? argument) {
             this.Detach( machine, argument );
         }
-        void IState.Detach(IState state, object? argument) {
-            this.Detach( state, argument );
+        void IState.Detach(IState parent, object? argument) {
+            this.Detach( parent, argument );
         }
         private void Detach(StateMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );

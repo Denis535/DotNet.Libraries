@@ -9,13 +9,13 @@ The library that allows you to easily implement a stateful object.
 namespace System.StateMachine.Pro;
 public abstract class StateMachineBase {
 }
-public abstract class StateMachineBase<TState> : StateMachineBase where TState : class, IState  {
+public abstract class StateMachineBase<TRoot> : StateMachineBase where TRoot : class, IState  {
 
-    protected TState? State { get; }
+    protected TRoot? Root { get; }
 
     public StateMachineBase();
 
-    protected virtual void SetState(TState? state, object? argument, Action<TState, object?>? callback);
+    protected virtual void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback);
 
 }
 public interface IState {
@@ -188,15 +188,15 @@ public abstract partial class ChildrenableStateBase {
 
 ```
 namespace System.StateMachine.Pro;
-public sealed class StateMachine<TState, TUserData> : StateMachineBase<TState> where TState : class, IState {
+public sealed class StateMachine<TRoot, TUserData> : StateMachineBase<TRoot> where TRoot : class, IState {
 
-    public new TState? State { get; }
+    public new TRoot? Root { get; }
 
     public TUserData UserData { get; }
 
     public StateMachine(TUserData userData);
 
-    public new void SetState(TState? state, object? argument, Action<TState, object?>? callback);
+    public new void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback);
 
 }
 // State

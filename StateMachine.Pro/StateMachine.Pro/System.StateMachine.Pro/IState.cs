@@ -30,7 +30,7 @@ namespace System.StateMachine.Pro {
 
         // Attach
         internal void Attach(StateMachineBase machine, object? argument);
-        internal void Attach(IState state, object? argument);
+        internal void Attach(IState parent, object? argument);
 
         // Detach
         internal void Detach(StateMachineBase machine, object? argument);
