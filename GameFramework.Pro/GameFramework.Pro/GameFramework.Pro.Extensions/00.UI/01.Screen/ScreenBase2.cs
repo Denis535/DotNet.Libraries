@@ -3,8 +3,13 @@ namespace GameFramework.Pro.Extensions {
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.TreeMachine.Pro;
 
-    public abstract class ScreenBase2<TRouter, TApplication> : ScreenBase where TRouter : RouterBase where TApplication : ApplicationBase {
+    public abstract class ScreenBase2<TRoot, TNode, TRouter, TApplication> : ScreenBase<TRoot, TNode>
+        where TRoot : TNode
+        where TNode : notnull, NodeBase<TNode>
+        where TRouter : RouterBase
+        where TApplication : ApplicationBase {
 
         private TRouter router = default!;
         private TApplication application = default!;

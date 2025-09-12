@@ -4,7 +4,10 @@ namespace GameFramework.Pro.Extensions {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class RouterBase2<TTheme, TScreen, TApplication> : RouterBase where TTheme : ThemeBase where TScreen : ScreenBase where TApplication : ApplicationBase {
+    public abstract class RouterBase2<TTheme, TScreen, TApplication> : RouterBase
+        where TTheme : ThemeBase
+        where TScreen : ScreenBase
+        where TApplication : ApplicationBase {
 
         private Func<TTheme> theme = default!;
         private Func<TScreen> screen = default!;

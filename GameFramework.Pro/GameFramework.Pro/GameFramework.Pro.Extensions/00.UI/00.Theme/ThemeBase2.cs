@@ -2,9 +2,13 @@
 namespace GameFramework.Pro.Extensions {
     using System;
     using System.Collections.Generic;
+    using System.StateMachine.Pro;
     using System.Text;
 
-    public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase where TRouter : RouterBase where TApplication : ApplicationBase {
+    public abstract class ThemeBase2<TRoot, TRouter, TApplication> : ThemeBase<TRoot>
+        where TRoot : class, IState
+        where TRouter : RouterBase
+        where TApplication : ApplicationBase {
 
         private TRouter router = default!;
         private TApplication application = default!;

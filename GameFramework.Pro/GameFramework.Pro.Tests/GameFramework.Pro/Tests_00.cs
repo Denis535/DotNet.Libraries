@@ -2,7 +2,9 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.StateMachine.Pro;
     using System.Text;
+    using System.TreeMachine.Pro;
     using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
@@ -32,7 +34,7 @@ namespace GameFramework.Pro {
 
     }
     // UI
-    internal class Theme : ThemeBase2<Router, Application> {
+    internal class Theme : ThemeBase2<State<PlayListBase>, Router, Application> {
 
         public Theme(Router router, Application application) {
             base.Router = router;
@@ -74,7 +76,7 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class Screen : ScreenBase2<Router, Application> {
+    internal class Screen : ScreenBase2<Node2<WidgetBase>, Node2<WidgetBase>, Router, Application> {
 
         public Screen(Router router, Application application) {
             base.Router = router;
