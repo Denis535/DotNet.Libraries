@@ -11,7 +11,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public abstract class TreeMachineBase<TRoot, TNode> : TreeMachineBase where TRoot : TNode where TNode : notnull, NodeBase<TNode> {
+    public abstract class TreeMachineBase<TRoot> : TreeMachineBase where TRoot : notnull, NodeBase {
 
         // Root
         protected TRoot? Root { get; private set; }
