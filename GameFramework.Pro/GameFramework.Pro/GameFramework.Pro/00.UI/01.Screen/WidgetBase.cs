@@ -61,5 +61,8 @@ namespace GameFramework.Pro {
         public static WidgetBase Widget(this NodeBase node) {
             return ((Node2<WidgetBase>) node).UserData;
         }
+        public static T Widget<T>(this NodeBase node) where T : WidgetBase {
+            return (T) ((Node2<WidgetBase>) node).UserData;
+        }
     }
 }

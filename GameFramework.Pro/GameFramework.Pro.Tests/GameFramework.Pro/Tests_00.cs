@@ -3,7 +3,6 @@ namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.TreeMachine.Pro;
     using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
