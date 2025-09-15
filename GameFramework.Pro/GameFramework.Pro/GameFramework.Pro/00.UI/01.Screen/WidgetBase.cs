@@ -9,7 +9,7 @@ namespace GameFramework.Pro {
     public abstract class WidgetBase : DisposableBase {
 
         public Node2<WidgetBase> Node { get; }
-        protected ScreenBase? Theme => ((TreeMachine<Node2<PlayListBase>, ScreenBase>?) this.Node.Machine)?.UserData;
+        protected ScreenBase? Screen => ((TreeMachine<Node2<PlayListBase>, ScreenBase>?) this.Node.Machine)?.UserData;
 
         public WidgetBase() {
             this.Node = new Node2<WidgetBase>( this ) {
