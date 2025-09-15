@@ -8,6 +8,7 @@ namespace GameFramework.Pro {
     public abstract class PlayListBase : DisposableBase {
 
         public State<PlayListBase> State { get; }
+        protected ThemeBase? Theme => ((StateMachine<State<PlayListBase>, ThemeBase>?) this.State.Machine)?.UserData;
 
         public PlayListBase() {
             this.State = new State<PlayListBase>( this );
@@ -19,10 +20,8 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        protected virtual void OnActivate(object? argument) {
-        }
-        protected virtual void OnDeactivate(object? argument) {
-        }
+        protected abstract void OnActivate(object? argument);
+        protected abstract void OnDeactivate(object? argument);
 
     }
     public static class StateExtensions {

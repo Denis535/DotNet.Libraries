@@ -94,7 +94,9 @@ namespace GameFramework.Pro {
             base.Node.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
-            _ = base.Node.RemoveChildren( null, (child, arg) => child.Widget().Dispose() );
+            foreach (var child in base.Node.Children) {
+                child.Widget().Dispose();
+            }
             base.Dispose();
         }
 
@@ -117,7 +119,9 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         public override void Dispose() {
-            _ = base.Node.RemoveChildren( null, (child, arg) => child.Widget().Dispose() );
+            foreach (var child in base.Node.Children) {
+                child.Widget().Dispose();
+            }
             this.View.Dispose();
             base.Dispose();
         }
@@ -141,7 +145,9 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         public override void Dispose() {
-            _ = base.Node.RemoveChildren( null, (child, arg) => child.Widget().Dispose() );
+            foreach (var child in base.Node.Children) {
+                child.Widget().Dispose();
+            }
             this.View.Dispose();
             base.Dispose();
         }

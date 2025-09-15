@@ -9,6 +9,7 @@ namespace GameFramework.Pro {
     public abstract class WidgetBase : DisposableBase {
 
         public Node2<WidgetBase> Node { get; }
+        protected ScreenBase? Theme => ((TreeMachine<Node2<PlayListBase>, ScreenBase>?) this.Node.Machine)?.UserData;
 
         public WidgetBase() {
             this.Node = new Node2<WidgetBase>( this ) {
@@ -16,16 +17,27 @@ namespace GameFramework.Pro {
             };
             this.Node.OnActivateCallback += this.OnActivate;
             this.Node.OnDeactivateCallback += this.OnDeactivate;
+            this.Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
+            this.Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
+            this.Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
+            this.Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
-            Assert.Operation.Valid( $"Widget {this} must have no children", !this.Node.Children.Any() );
+            Assert.Operation.Valid( $"Widget {this} must have no children", this.Node.Children.All( i => i.Widget().IsDisposed ) );
             base.Dispose();
         }
 
-        protected virtual void OnActivate(object? argument) {
+        protected abstract void OnActivate(object? argument);
+        protected abstract void OnDeactivate(object? argument);
+
+        protected virtual void OnBeforeDescendantActivate(NodeBase descendant, object? argument) {
         }
-        protected virtual void OnDeactivate(object? argument) {
+        protected virtual void OnAfterDescendantActivate(NodeBase descendant, object? argument) {
+        }
+        protected virtual void OnBeforeDescendantDeactivate(NodeBase descendant, object? argument) {
+        }
+        protected virtual void OnAfterDescendantDeactivate(NodeBase descendant, object? argument) {
         }
 
         protected virtual void Sort(List<NodeBase> children) {
@@ -34,7 +46,7 @@ namespace GameFramework.Pro {
     }
     public abstract class ViewableWidgetBase : WidgetBase {
 
-        protected object View { get; init; } = default!;
+        public object View { get; protected init; } = default!;
 
         public ViewableWidgetBase() {
         }
