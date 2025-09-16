@@ -24,12 +24,4 @@ namespace GameFramework.Pro {
         protected abstract void OnDeactivate(object? argument);
 
     }
-    public static class StateExtensions {
-        public static PlayListBase PlayList(this StateBase state) {
-            return ((State<PlayListBase>) state).UserData;
-        }
-        public static T PlayList<T>(this StateBase state) where T : PlayListBase {
-            return (T) ((State<PlayListBase>) state).UserData;
-        }
-    }
 }
