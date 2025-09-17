@@ -3,7 +3,6 @@ namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using GameFramework.Pro.Extensions;
     using NUnit.Framework;
 
     public class Tests_00 {

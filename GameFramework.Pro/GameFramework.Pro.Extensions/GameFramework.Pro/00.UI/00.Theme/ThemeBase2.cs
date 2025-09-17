@@ -1,10 +1,10 @@
 ﻿#nullable enable
-namespace GameFramework.Pro.Extensions {
+namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class ScreenBase2<TRouter, TApplication> : ScreenBase
+    public abstract class ThemeBase2<TRouter, TApplication> : ThemeBase
         where TRouter : RouterBase
         where TApplication : ApplicationBase {
 
@@ -32,7 +32,7 @@ namespace GameFramework.Pro.Extensions {
             }
         }
 
-        public ScreenBase2() {
+        public ThemeBase2() {
         }
         public override void Dispose() {
             base.Dispose();
