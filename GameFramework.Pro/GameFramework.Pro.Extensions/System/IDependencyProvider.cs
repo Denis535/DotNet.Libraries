@@ -7,32 +7,29 @@ namespace System {
     public interface IDependencyProvider {
 
         // GetDependency
-        public sealed object? GetDependency(Type type, object? argument = null) {
-            var option = this.GetValue( type, argument );
-            return option.ValueOrDefault;
-        }
         public sealed T? GetDependency<T>(object? argument = null) {
-            var option = this.GetValue<T>( argument );
-            return (T?) option.ValueOrDefault;
+            var value = this.GetValue( typeof( T ), argument );
+            return (T?) value.ValueOrDefault;
+        }
+        public sealed T? GetDependency<T>(Type type, object? argument = null) {
+            var value = this.GetValue( type, argument );
+            return (T?) value.ValueOrDefault;
         }
 
         // RequireDependency
-        public sealed object? RequireDependency(Type type, object? argument = null) {
-            var option = this.GetValue( type, argument );
-            Assert.Operation.Valid( $"Dependency {type} ({argument}) was not found", option.HasValue );
-            return option.Value;
-        }
         public sealed T RequireDependency<T>(object? argument = null) {
-            var option = this.GetValue<T>( argument );
-            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", option.HasValue );
-            return (T?) option.Value!;
+            var value = this.GetValue( typeof( T ), argument );
+            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value.HasValue );
+            return (T) value.Value!;
+        }
+        public sealed T RequireDependency<T>(Type type, object? argument = null) {
+            var value = this.GetValue( type, argument );
+            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value.HasValue );
+            return (T) value.Value!;
         }
 
         // GetValue
         protected Option<object?> GetValue(Type type, object? argument);
-        private Option<object?> GetValue<T>(object? argument) {
-            return this.GetValue( typeof( T ), argument );
-        }
 
     }
 }
