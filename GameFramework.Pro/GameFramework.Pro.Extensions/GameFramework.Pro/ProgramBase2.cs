@@ -4,7 +4,7 @@ namespace GameFramework.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase
+    public abstract class ProgramBase2<TTheme, TScreen, TRouter, TApplication> : ProgramBase, IDependencyProvider
         where TTheme : ThemeBase
         where TScreen : ScreenBase
         where TRouter : RouterBase
@@ -60,6 +60,25 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             base.Dispose();
+        }
+
+        Option<object?> IDependencyProvider.GetValue(Type type, object? argument) {
+            return this.GetValue( type, argument );
+        }
+        protected virtual Option<object?> GetValue(Type type, object? argument) {
+            if (type == typeof( TTheme )) {
+                return Option.Create( (object?) this.Theme );
+            }
+            if (type == typeof( TScreen )) {
+                return Option.Create( (object?) this.Screen );
+            }
+            if (type == typeof( TRouter )) {
+                return Option.Create( (object?) this.Router );
+            }
+            if (type == typeof( TApplication )) {
+                return Option.Create( (object?) this.Application );
+            }
+            return default;
         }
 
     }

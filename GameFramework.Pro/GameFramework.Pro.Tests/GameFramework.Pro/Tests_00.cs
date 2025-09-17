@@ -16,16 +16,16 @@ namespace GameFramework.Pro {
     internal class Program : ProgramBase2<Theme, Screen, Router, Application> {
 
         public Program() {
-            base.Application = new Application();
-            base.Router = new Router( () => base.Theme, () => base.Screen, base.Application );
-            base.Screen = new Screen( base.Router, base.Application );
-            base.Theme = new Theme( base.Router, base.Application );
+            this.Application = new Application();
+            this.Router = new Router( this );
+            this.Screen = new Screen( this );
+            this.Theme = new Theme( this );
         }
         public override void Dispose() {
-            base.Theme.Dispose();
-            base.Screen.Dispose();
-            base.Router.Dispose();
-            base.Application.Dispose();
+            this.Theme.Dispose();
+            this.Screen.Dispose();
+            this.Router.Dispose();
+            this.Application.Dispose();
             base.Dispose();
         }
 
@@ -33,14 +33,12 @@ namespace GameFramework.Pro {
     // UI
     internal class Theme : ThemeBase2<Router, Application> {
 
-        public Theme(Router router, Application application) {
-            base.Router = router;
-            base.Application = application;
-            base.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.PlayList().Dispose() );
-            base.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.PlayList().Dispose() );
+        public Theme(IDependencyProvider provider) : base( provider ) {
+            this.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.PlayList().Dispose() );
+            this.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.PlayList().Dispose() );
         }
         public override void Dispose() {
-            base.Machine.SetRoot( null, null, (state, arg) => state.PlayList().Dispose() );
+            this.Machine.SetRoot( null, null, (state, arg) => state.PlayList().Dispose() );
             base.Dispose();
         }
 
@@ -75,13 +73,11 @@ namespace GameFramework.Pro {
     }
     internal class Screen : ScreenBase2<Router, Application> {
 
-        public Screen(Router router, Application application) {
-            base.Router = router;
-            base.Application = application;
-            base.Machine.SetRoot( new RootWidget().Node, null, null );
+        public Screen(IDependencyProvider provider) : base( provider ) {
+            this.Machine.SetRoot( new RootWidget().Node, null, null );
         }
         public override void Dispose() {
-            base.Machine.SetRoot( null, null, (root, arg) => root.Widget().Dispose() );
+            this.Machine.SetRoot( null, null, (root, arg) => root.Widget().Dispose() );
             base.Dispose();
         }
 
@@ -89,11 +85,11 @@ namespace GameFramework.Pro {
     internal class RootWidget : WidgetBase {
 
         public RootWidget() {
-            base.Node.AddChild( new MainWidget().Node, null );
-            base.Node.AddChild( new GameWidget().Node, null );
+            this.Node.AddChild( new MainWidget().Node, null );
+            this.Node.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
-            foreach (var child in base.Node.Children) {
+            foreach (var child in this.Node.Children) {
                 child.Widget().Dispose();
             }
             base.Dispose();
@@ -118,7 +114,7 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         public override void Dispose() {
-            foreach (var child in base.Node.Children) {
+            foreach (var child in this.Node.Children) {
                 child.Widget().Dispose();
             }
             this.View.Dispose();
@@ -144,7 +140,7 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         public override void Dispose() {
-            foreach (var child in base.Node.Children) {
+            foreach (var child in this.Node.Children) {
                 child.Widget().Dispose();
             }
             this.View.Dispose();
@@ -159,10 +155,7 @@ namespace GameFramework.Pro {
     }
     internal class Router : RouterBase2<Theme, Screen, Application> {
 
-        public Router(Func<Theme> theme, Func<Screen> screen, Application application) {
-            base.Theme_ = theme;
-            base.Screen_ = screen;
-            base.Application = application;
+        public Router(IDependencyProvider provider) : base( provider ) {
         }
         public override void Dispose() {
             base.Dispose();
