@@ -56,19 +56,24 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentSyntax.Pro" Version="1.0.1" />
+        <PackageReference Include="Option.Pro" Version="1.0.5" />
         <PackageReference Include="StateMachine.Pro" Version="3.0.6" />
         <PackageReference Include="TreeMachine.Pro" Version="3.0.6" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
+        <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj">
+            <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
 
-    <Target Name="IncludeBuilds" DependsOnTargets="ResolveReferences">
+    <Target Name="IncludeBuilds">
         <ItemGroup>
+            <BuildOutputInPackage Include="..\GameFramework.Pro.Extensions\bin\$(Configuration)\$(TargetFramework)\GameFramework.Pro.Extensions.dll" />
         </ItemGroup>
     </Target>
 

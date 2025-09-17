@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <RootNamespace />
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GameFramework.Pro\GameFramework.Pro.csproj" />
+        <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj" />
+        <ProjectReference Include="..\GameFramework.Pro\GameFramework.Pro.csproj" />
     </ItemGroup>
 
 </Project>
