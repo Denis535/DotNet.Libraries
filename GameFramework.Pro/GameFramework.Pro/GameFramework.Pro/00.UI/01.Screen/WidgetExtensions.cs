@@ -8,7 +8,6 @@ namespace GameFramework.Pro {
 
     public static class WidgetExtensions {
 
-        // Widget
         public static WidgetBase Widget(this NodeBase node) {
             return ((Node2<WidgetBase>) node).UserData;
         }
@@ -16,7 +15,6 @@ namespace GameFramework.Pro {
             return (T) ((Node2<WidgetBase>) node).UserData;
         }
 
-        // GetCancellationToken
         public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget) {
             var cts = new CancellationTokenSource();
             widget.Node.OnDetachCallback += Callback;

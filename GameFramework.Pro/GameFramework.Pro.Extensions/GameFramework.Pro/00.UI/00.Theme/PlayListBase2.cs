@@ -6,10 +6,8 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase2 : PlayListBase {
 
-        // System
         protected IDependencyProvider Provider { get; }
 
-        // Constructor
         public PlayListBase2(IDependencyProvider provider) {
             this.Provider = provider;
         }

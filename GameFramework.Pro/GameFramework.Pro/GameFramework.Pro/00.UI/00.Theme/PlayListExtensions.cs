@@ -8,7 +8,6 @@ namespace GameFramework.Pro {
 
     public static class PlayListExtensions {
 
-        // PlayList
         public static PlayListBase PlayList(this StateBase state) {
             return ((State<PlayListBase>) state).UserData;
         }
@@ -16,7 +15,6 @@ namespace GameFramework.Pro {
             return (T) ((State<PlayListBase>) state).UserData;
         }
 
-        // GetCancellationToken
         public static CancellationToken GetCancellationToken_OnDetachCallback(this PlayListBase playList) {
             var cts = new CancellationTokenSource();
             playList.State.OnDetachCallback += Callback;

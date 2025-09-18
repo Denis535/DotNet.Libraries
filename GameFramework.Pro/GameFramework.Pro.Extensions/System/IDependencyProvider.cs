@@ -6,7 +6,6 @@ namespace System {
 
     public interface IDependencyProvider {
 
-        // GetDependency
         public sealed T? GetDependency<T>(object? argument = null) {
             var value = this.GetValue( typeof( T ), argument );
             return (T?) value.ValueOrDefault;
@@ -16,7 +15,6 @@ namespace System {
             return (T?) value.ValueOrDefault;
         }
 
-        // RequireDependency
         public sealed T RequireDependency<T>(object? argument = null) {
             var value = this.GetValue( typeof( T ), argument );
             Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value.HasValue );
@@ -28,7 +26,6 @@ namespace System {
             return (T) value.Value!;
         }
 
-        // GetValue
         protected Option<object?> GetValue(Type type, object? argument);
 
     }

@@ -6,10 +6,8 @@ namespace GameFramework.Pro {
 
     public abstract class ApplicationBase2 : ApplicationBase {
 
-        // System
         protected IDependencyProvider Provider { get; }
 
-        // Constructor
         public ApplicationBase2(IDependencyProvider provider) {
             this.Provider = provider;
         }
