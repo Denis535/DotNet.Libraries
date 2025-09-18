@@ -58,7 +58,8 @@ namespace GameFramework.Pro {
         }
 
     }
-    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase where TView : notnull {
+    public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase
+        where TView : notnull {
 
         protected new TView View { get => (TView) base.View; init => base.View = value; }
 

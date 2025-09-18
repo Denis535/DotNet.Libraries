@@ -24,7 +24,7 @@ namespace System {
         }
         public sealed T RequireDependency<T>(Type type, object? argument = null) {
             var value = this.GetValue( type, argument );
-            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value.HasValue );
+            Assert.Operation.Valid( $"Dependency {type} ({argument}) was not found", value.HasValue );
             return (T) value.Value!;
         }
 
