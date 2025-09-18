@@ -91,6 +91,15 @@ public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase {
     public override void Dispose();
 
 }
+public static class WidgetExtensions {
+
+    public static WidgetBase Widget(this NodeBase node);
+    public static T Widget<T>(this NodeBase node);
+
+    public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget);
+    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this WidgetBase widget);
+
+}
 ```
 ```
 // UI

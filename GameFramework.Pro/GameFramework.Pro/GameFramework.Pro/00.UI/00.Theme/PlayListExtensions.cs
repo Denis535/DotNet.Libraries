@@ -11,7 +11,7 @@ namespace GameFramework.Pro {
         public static PlayListBase PlayList(this StateBase state) {
             return ((State<PlayListBase>) state).UserData;
         }
-        public static T PlayList<T>(this StateBase state) where T : PlayListBase {
+        public static T PlayList<T>(this StateBase state) where T : notnull, PlayListBase {
             return (T) ((State<PlayListBase>) state).UserData;
         }
 
