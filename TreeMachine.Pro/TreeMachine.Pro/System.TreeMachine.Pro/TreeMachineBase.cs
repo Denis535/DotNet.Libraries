@@ -6,22 +6,15 @@ namespace System.TreeMachine.Pro {
 
     public abstract class TreeMachineBase {
 
-        // Constructor
-        internal TreeMachineBase() {
-        }
-
-    }
-    public abstract class TreeMachineBase<TRoot> : TreeMachineBase where TRoot : notnull, NodeBase {
-
         // Root
-        protected TRoot? Root { get; private set; }
+        protected NodeBase? Root { get; private set; }
 
         // Constructor
         public TreeMachineBase() {
         }
 
         // SetRoot
-        protected virtual void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback) {
+        protected virtual void SetRoot(NodeBase? root, object? argument, Action<NodeBase, object?>? callback) {
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
             }
@@ -31,7 +24,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // AddRoot
-        private void AddRoot(TRoot root, object? argument) {
+        private void AddRoot(NodeBase root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
@@ -42,7 +35,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(TRoot root, object? argument, Action<TRoot, object?>? callback) {
+        private void RemoveRoot(NodeBase root, object? argument, Action<NodeBase, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );

@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00() {
-            var machine = new TreeMachine<Node<string>, object?>( null );
+            var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -32,7 +32,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.AddChildren a, b
-                machine.Root.AddChildren( [ a, b ], null );
+                ((Node) machine.Root).AddChildren( [ a, b ], null );
                 Assert.That( machine.Root, Is.EqualTo( root ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -62,7 +62,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.RemoveChildren a, b
-                _ = machine.Root.RemoveChildren( null, null );
+                _ = ((Node) machine.Root).RemoveChildren( null, null );
                 Assert.That( machine.Root, Is.EqualTo( root ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -110,7 +110,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01() {
-            var machine = new TreeMachine<Node<string>, object?>( null );
+            var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -157,7 +157,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_02() {
-            var machine = new TreeMachine<Node<string>, object?>( null );
+            var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             {
                 // machine.SetRoot root
