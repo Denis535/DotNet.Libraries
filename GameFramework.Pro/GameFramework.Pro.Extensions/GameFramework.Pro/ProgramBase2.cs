@@ -27,18 +27,22 @@ namespace GameFramework.Pro {
         protected virtual Option<object?> GetValue(Type type, object? argument) {
             if (typeof( TTheme ).IsAssignableFrom( type )) {
                 Assert.Operation.Valid( $"Theme must be non-null", this.Theme != null );
+                Assert.Operation.NotDisposed( $"Theme must be non-disposed", !this.Theme.IsDisposed );
                 return Option.Create<object?>( this.Theme );
             }
             if (typeof( TScreen ).IsAssignableFrom( type )) {
                 Assert.Operation.Valid( $"Screen must be non-null", this.Screen != null );
+                Assert.Operation.NotDisposed( $"Screen must be non-disposed", !this.Screen.IsDisposed );
                 return Option.Create<object?>( this.Screen );
             }
             if (typeof( TRouter ).IsAssignableFrom( type )) {
                 Assert.Operation.Valid( $"Router must be non-null", this.Router != null );
+                Assert.Operation.NotDisposed( $"Router must be non-disposed", !this.Router.IsDisposed );
                 return Option.Create<object?>( this.Router );
             }
             if (typeof( TApplication ).IsAssignableFrom( type )) {
                 Assert.Operation.Valid( $"Application must be non-null", this.Application != null );
+                Assert.Operation.NotDisposed( $"Application must be non-disposed", !this.Application.IsDisposed );
                 return Option.Create<object?>( this.Application );
             }
             return default;

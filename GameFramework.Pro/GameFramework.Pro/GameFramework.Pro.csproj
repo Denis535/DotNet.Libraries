@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>1.3.4</Version>
+        <Version>1.3.5</Version>
         <Description>The framework that allows you to design high-quality architecture of your game project.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
