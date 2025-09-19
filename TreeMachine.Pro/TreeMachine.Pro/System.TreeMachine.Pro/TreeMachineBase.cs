@@ -7,14 +7,14 @@ namespace System.TreeMachine.Pro {
     public abstract class TreeMachineBase {
 
         // Root
-        protected NodeBase? Root { get; private set; }
+        protected INode? Root { get; private set; }
 
         // Constructor
         public TreeMachineBase() {
         }
 
         // SetRoot
-        protected virtual void SetRoot(NodeBase? root, object? argument, Action<NodeBase, object?>? callback) {
+        protected virtual void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
             }
@@ -24,7 +24,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // AddRoot
-        private void AddRoot(NodeBase root, object? argument) {
+        private void AddRoot(INode root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
@@ -35,7 +35,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(NodeBase root, object? argument, Action<NodeBase, object?>? callback) {
+        private void RemoveRoot(INode root, object? argument, Action<INode, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );

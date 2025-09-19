@@ -7,14 +7,14 @@ namespace System.TreeMachine.Pro {
     public class TreeMachine : TreeMachineBase {
 
         // Root
-        public new NodeBase? Root => base.Root;
+        public new INode? Root => base.Root;
 
         // Constructor
         public TreeMachine() {
         }
 
         // SetRoot
-        public new void SetRoot(NodeBase? root, object? argument, Action<NodeBase, object?>? callback) {
+        public new void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
             base.SetRoot( root, argument, callback );
         }
 
