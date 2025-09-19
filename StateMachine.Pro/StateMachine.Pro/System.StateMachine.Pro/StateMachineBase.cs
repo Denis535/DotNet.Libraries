@@ -3,25 +3,18 @@ namespace System.StateMachine.Pro {
     using System;
     using System.Collections.Generic;
     using System.Text;
-
+     
     public abstract class StateMachineBase {
 
-        // Constructor
-        internal StateMachineBase() {
-        }
-
-    }
-    public abstract class StateMachineBase<TRoot> : StateMachineBase where TRoot : class, IState {
-
         // Root
-        protected TRoot? Root { get; private set; }
+        protected IState? Root { get; private set; }
 
         // Constructor
         public StateMachineBase() {
         }
 
         // SetRoot
-        protected virtual void SetRoot(TRoot? root, object? argument, Action<TRoot, object?>? callback) {
+        protected virtual void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
             }
@@ -31,7 +24,7 @@ namespace System.StateMachine.Pro {
         }
 
         // AddRoot
-        private void AddRoot(TRoot root, object? argument) {
+        private void AddRoot(IState root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine} machine", root.Machine == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
@@ -41,7 +34,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(TRoot root, object? argument, Action<TRoot, object?>? callback) {
+        private void RemoveRoot(IState root, object? argument, Action<IState, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );

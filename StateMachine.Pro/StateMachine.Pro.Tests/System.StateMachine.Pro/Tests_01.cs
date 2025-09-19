@@ -5,12 +5,12 @@ namespace System.StateMachine.Pro {
     using System.Text;
     using NUnit.Framework;
     using Assert = NUnit.Framework.Assert;
-    
+
     public class Tests_01 {
 
         [Test]
         public void Test_00() {
-            var machine = new StateMachine<ChildableState<string>, object?>( null );
+            var machine = new StateMachine<object?>( null );
             var a = new ChildableState<string>( "a" );
             var b = new ChildableState<string>( "b" );
             {
