@@ -18,7 +18,7 @@ public abstract class ProgramBase : DisposableBase {
 // UI
 public abstract class ThemeBase : DisposableBase {
 
-    protected StateMachine<State<PlayListBase>, ThemeBase> Machine { get; }
+    protected StateMachine<ThemeBase> Machine { get; }
 
     public ThemeBase();
     public override void Dispose();
@@ -26,8 +26,9 @@ public abstract class ThemeBase : DisposableBase {
 }
 public abstract class PlayListBase : DisposableBase {
 
-    public State<PlayListBase> State { get; }
     protected ThemeBase? Theme { get; }
+    public IState State { get; }
+    protected State<PlayListBase> StateMutable { get; }
 
     public PlayListBase();
     public override void Dispose();
@@ -38,8 +39,8 @@ public abstract class PlayListBase : DisposableBase {
 }
 public static class PlayListExtensions {
 
-    public static PlayListBase PlayList(this StateBase state);
-    public static T PlayList<T>(this StateBase state);
+    public static PlayListBase PlayList(this IState state);
+    public static T PlayList<T>(this IState state);
 
     public static CancellationToken GetCancellationToken_OnDetachCallback(this PlayListBase playList);
     public static CancellationToken GetCancellationToken_OnDeactivateCallback(this PlayListBase playList);
@@ -50,7 +51,7 @@ public static class PlayListExtensions {
 // UI
 public abstract class ScreenBase : DisposableBase {
 
-    protected TreeMachine<Node2<WidgetBase>, ScreenBase> Machine { get; }
+    protected TreeMachine<ScreenBase> Machine { get; }
 
     public ScreenBase();
     public override void Dispose();
@@ -58,8 +59,9 @@ public abstract class ScreenBase : DisposableBase {
 }
 public abstract class WidgetBase : DisposableBase {
 
-    public Node2<WidgetBase> Node { get; }
     protected ScreenBase? Screen { get; }
+    public INode Node { get; }
+    protected Node2<WidgetBase> NodeMutable { get; }
 
     public WidgetBase();
     public override void Dispose();
@@ -72,7 +74,7 @@ public abstract class WidgetBase : DisposableBase {
     protected virtual void OnBeforeDescendantDeactivate(NodeBase descendant, object? argument);
     protected virtual void OnAfterDescendantDeactivate(NodeBase descendant, object? argument);
 
-    protected virtual void Sort(List<NodeBase> children);
+    protected virtual void Sort(List<INode> children);
 
 }
 public abstract class ViewableWidgetBase : WidgetBase {
@@ -93,8 +95,8 @@ public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase {
 }
 public static class WidgetExtensions {
 
-    public static WidgetBase Widget(this NodeBase node);
-    public static T Widget<T>(this NodeBase node);
+    public static WidgetBase Widget(this INode node);
+    public static T Widget<T>(this INode node);
 
     public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget);
     public static CancellationToken GetCancellationToken_OnDeactivateCallback(this WidgetBase widget);

@@ -7,13 +7,14 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase : DisposableBase {
 
-        public State<PlayListBase> State { get; }
-        protected ThemeBase? Theme => ((StateMachine<State<PlayListBase>, ThemeBase>?) this.State.Machine)?.UserData;
+        protected ThemeBase? Theme => ((StateMachine<ThemeBase>?) this.State.Machine)?.UserData;
+        public IState State => this.StateMutable;
+        protected internal State<PlayListBase> StateMutable { get; }
 
         public PlayListBase() {
-            this.State = new State<PlayListBase>( this );
-            this.State.OnActivateCallback += this.OnActivate;
-            this.State.OnDeactivateCallback += this.OnDeactivate;
+            this.StateMutable = new State<PlayListBase>( this );
+            this.StateMutable.OnActivateCallback += this.OnActivate;
+            this.StateMutable.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"PlayList {this} must be inactive", this.State.Activity == Activity.Inactive );

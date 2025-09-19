@@ -8,19 +8,20 @@ namespace GameFramework.Pro {
 
     public abstract class WidgetBase : DisposableBase {
 
-        public Node2<WidgetBase> Node { get; }
-        protected ScreenBase? Screen => ((TreeMachine<Node2<PlayListBase>, ScreenBase>?) this.Node.Machine)?.UserData;
+        protected ScreenBase? Screen => ((TreeMachine<ScreenBase>?) this.Node.Machine)?.UserData;
+        public INode Node => this.NodeMutable;
+        protected internal Node2<WidgetBase> NodeMutable { get; }
 
         public WidgetBase() {
-            this.Node = new Node2<WidgetBase>( this ) {
+            this.NodeMutable = new Node2<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.Node.OnActivateCallback += this.OnActivate;
-            this.Node.OnDeactivateCallback += this.OnDeactivate;
-            this.Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
-            this.Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
-            this.Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
-            this.Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
+            this.NodeMutable.OnActivateCallback += this.OnActivate;
+            this.NodeMutable.OnDeactivateCallback += this.OnDeactivate;
+            this.NodeMutable.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
+            this.NodeMutable.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
+            this.NodeMutable.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
+            this.NodeMutable.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
@@ -40,7 +41,7 @@ namespace GameFramework.Pro {
         protected virtual void OnAfterDescendantDeactivate(NodeBase descendant, object? argument) {
         }
 
-        protected virtual void Sort(List<NodeBase> children) {
+        protected virtual void Sort(List<INode> children) {
         }
 
     }

@@ -85,8 +85,8 @@ namespace GameFramework.Pro {
     internal class RootWidget : WidgetBase {
 
         public RootWidget() {
-            this.Node.AddChild( new MainWidget().Node, null );
-            this.Node.AddChild( new GameWidget().Node, null );
+            this.NodeMutable.AddChild( new MainWidget().Node, null );
+            this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
             foreach (var child in this.Node.Children) {

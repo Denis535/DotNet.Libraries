@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>1.3.5</Version>
+        <Version>1.4.0</Version>
         <Description>The framework that allows you to design high-quality architecture of your game project.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -58,8 +58,8 @@
     <ItemGroup>
         <PackageReference Include="FluentSyntax.Pro" Version="1.0.1" />
         <PackageReference Include="Option.Pro" Version="1.0.5" />
-        <PackageReference Include="StateMachine.Pro" Version="3.0.6" />
-        <PackageReference Include="TreeMachine.Pro" Version="3.0.6" />
+        <PackageReference Include="StateMachine.Pro" Version="3.1.0" />
+        <PackageReference Include="TreeMachine.Pro" Version="3.1.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj">
