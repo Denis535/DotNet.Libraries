@@ -10,51 +10,10 @@ namespace GameFramework.Pro {
         where TRouter : RouterBase
         where TApplication : ApplicationBase {
 
-        private TTheme theme = default!;
-        private TScreen screen = default!;
-        private TRouter router = default!;
-        private TApplication application = default!;
-
-        protected TTheme Theme {
-            get {
-                Assert.Operation.Valid( $"Theme must be non-null", this.theme != null );
-                return this.theme;
-            }
-            init {
-                Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
-                this.theme = value;
-            }
-        }
-        protected TScreen Screen {
-            get {
-                Assert.Operation.Valid( $"Screen must be non-null", this.screen != null );
-                return this.screen;
-            }
-            init {
-                Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
-                this.screen = value;
-            }
-        }
-        protected TRouter Router {
-            get {
-                Assert.Operation.Valid( $"Router must be non-null", this.router != null );
-                return this.router;
-            }
-            init {
-                Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
-                this.router = value;
-            }
-        }
-        protected TApplication Application {
-            get {
-                Assert.Operation.Valid( $"Application must be non-null", this.application != null );
-                return this.application;
-            }
-            init {
-                Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
-                this.application = value;
-            }
-        }
+        protected TTheme Theme { get; init; } = default!;
+        protected TScreen Screen { get; init; } = default!;
+        protected TRouter Router { get; init; } = default!;
+        protected TApplication Application { get; init; } = default!;
 
         public ProgramBase2() {
         }
@@ -66,17 +25,21 @@ namespace GameFramework.Pro {
             return this.GetValue( type, argument );
         }
         protected virtual Option<object?> GetValue(Type type, object? argument) {
-            if (type == typeof( TTheme )) {
-                return Option.Create( (object?) this.Theme );
+            if (typeof( TTheme ).IsAssignableFrom( type )) {
+                Assert.Operation.Valid( $"Theme must be non-null", this.Theme != null );
+                return Option.Create<object?>( this.Theme );
             }
-            if (type == typeof( TScreen )) {
-                return Option.Create( (object?) this.Screen );
+            if (typeof( TScreen ).IsAssignableFrom( type )) {
+                Assert.Operation.Valid( $"Screen must be non-null", this.Screen != null );
+                return Option.Create<object?>( this.Screen );
             }
-            if (type == typeof( TRouter )) {
-                return Option.Create( (object?) this.Router );
+            if (typeof( TRouter ).IsAssignableFrom( type )) {
+                Assert.Operation.Valid( $"Router must be non-null", this.Router != null );
+                return Option.Create<object?>( this.Router );
             }
-            if (type == typeof( TApplication )) {
-                return Option.Create( (object?) this.Application );
+            if (typeof( TApplication ).IsAssignableFrom( type )) {
+                Assert.Operation.Valid( $"Application must be non-null", this.Application != null );
+                return Option.Create<object?>( this.Application );
             }
             return default;
         }
