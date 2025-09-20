@@ -70,7 +70,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public class Node<TUserData> : Node {
+    public class Node<TUserData> : Node, IUserData<TUserData> {
 
         // UserData
         public TUserData UserData { get; }

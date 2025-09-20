@@ -18,16 +18,16 @@ namespace System.TreeMachine.Pro {
         public event Action<object?>? OnDeactivateCallback;
 
         // OnDescendantAttach
-        public event Action<NodeBase, object?>? OnBeforeDescendantAttachCallback;
-        public event Action<NodeBase, object?>? OnAfterDescendantAttachCallback;
-        public event Action<NodeBase, object?>? OnBeforeDescendantDetachCallback;
-        public event Action<NodeBase, object?>? OnAfterDescendantDetachCallback;
+        public event Action<INode2, object?>? OnBeforeDescendantAttachCallback;
+        public event Action<INode2, object?>? OnAfterDescendantAttachCallback;
+        public event Action<INode2, object?>? OnBeforeDescendantDetachCallback;
+        public event Action<INode2, object?>? OnAfterDescendantDetachCallback;
 
         // OnDescendantActivate
-        public event Action<NodeBase, object?>? OnBeforeDescendantActivateCallback;
-        public event Action<NodeBase, object?>? OnAfterDescendantActivateCallback;
-        public event Action<NodeBase, object?>? OnBeforeDescendantDeactivateCallback;
-        public event Action<NodeBase, object?>? OnAfterDescendantDeactivateCallback;
+        public event Action<INode2, object?>? OnBeforeDescendantActivateCallback;
+        public event Action<INode2, object?>? OnAfterDescendantActivateCallback;
+        public event Action<INode2, object?>? OnBeforeDescendantDeactivateCallback;
+        public event Action<INode2, object?>? OnAfterDescendantDeactivateCallback;
 
         // Constructor
         public Node2() {
@@ -50,30 +50,30 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnDescendantAttach
-        protected override void OnBeforeDescendantAttach(NodeBase descendant, object? argument) {
+        protected override void OnBeforeDescendantAttach(INode2 descendant, object? argument) {
             this.OnBeforeDescendantAttachCallback?.Invoke( descendant, argument );
         }
-        protected override void OnAfterDescendantAttach(NodeBase descendant, object? argument) {
+        protected override void OnAfterDescendantAttach(INode2 descendant, object? argument) {
             this.OnAfterDescendantAttachCallback?.Invoke( descendant, argument );
         }
-        protected override void OnBeforeDescendantDetach(NodeBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDetach(INode2 descendant, object? argument) {
             this.OnBeforeDescendantDetachCallback?.Invoke( descendant, argument );
         }
-        protected override void OnAfterDescendantDetach(NodeBase descendant, object? argument) {
+        protected override void OnAfterDescendantDetach(INode2 descendant, object? argument) {
             this.OnAfterDescendantDetachCallback?.Invoke( descendant, argument );
         }
 
         // OnDescendantActivate
-        protected override void OnBeforeDescendantActivate(NodeBase descendant, object? argument) {
+        protected override void OnBeforeDescendantActivate(INode2 descendant, object? argument) {
             this.OnBeforeDescendantActivateCallback?.Invoke( descendant, argument );
         }
-        protected override void OnAfterDescendantActivate(NodeBase descendant, object? argument) {
+        protected override void OnAfterDescendantActivate(INode2 descendant, object? argument) {
             this.OnAfterDescendantActivateCallback?.Invoke( descendant, argument );
         }
-        protected override void OnBeforeDescendantDeactivate(NodeBase descendant, object? argument) {
+        protected override void OnBeforeDescendantDeactivate(INode2 descendant, object? argument) {
             this.OnBeforeDescendantDeactivateCallback?.Invoke( descendant, argument );
         }
-        protected override void OnAfterDescendantDeactivate(NodeBase descendant, object? argument) {
+        protected override void OnAfterDescendantDeactivate(INode2 descendant, object? argument) {
             this.OnAfterDescendantDeactivateCallback?.Invoke( descendant, argument );
         }
 
@@ -110,7 +110,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public class Node2<TUserData> : Node2 {
+    public class Node2<TUserData> : Node2, IUserData<TUserData> {
 
         // UserData
         public TUserData UserData { get; }
