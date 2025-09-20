@@ -60,7 +60,7 @@ public abstract class ScreenBase : DisposableBase {
 public abstract class WidgetBase : DisposableBase {
 
     protected ScreenBase? Screen { get; }
-    public INode Node { get; }
+    public INode2 Node { get; }
     protected Node2<WidgetBase> NodeMutable { get; }
 
     public WidgetBase();

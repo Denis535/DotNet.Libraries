@@ -7,7 +7,7 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase : DisposableBase {
 
-        protected ThemeBase? Theme => ((StateMachine<ThemeBase>?) this.State.Machine)?.UserData;
+        protected ThemeBase? Theme => ((IUserData<ThemeBase>?) this.State.Machine)?.UserData;
         public IState State => this.StateMutable;
         protected internal State<PlayListBase> StateMutable { get; }
 
