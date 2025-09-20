@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface INode2 {
+    public interface INode2 : INode {
 
         // OnDescendantAttach
         internal void OnBeforeDescendantAttach(INode2 descendant, object? argument);
