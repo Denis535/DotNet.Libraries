@@ -101,8 +101,8 @@ public static class WidgetExtensions {
     public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node);
     public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node);
 
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node);
+    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node2 node);
+    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node2 node);
 
 }
 ```
