@@ -10,7 +10,7 @@ namespace GameFramework.Pro {
 
         protected ScreenBase? Screen => ((IUserData<ScreenBase>?) this.Node.Machine)?.UserData;
         public INode2 Node => this.NodeMutable;
-        protected internal Node2<WidgetBase> NodeMutable { get; }
+        protected Node2<WidgetBase> NodeMutable { get; }
 
         public WidgetBase() {
             this.NodeMutable = new Node2<WidgetBase>( this ) {

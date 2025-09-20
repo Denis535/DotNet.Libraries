@@ -9,7 +9,7 @@ namespace GameFramework.Pro {
 
         protected ThemeBase? Theme => ((IUserData<ThemeBase>?) this.State.Machine)?.UserData;
         public IState State => this.StateMutable;
-        protected internal State<PlayListBase> StateMutable { get; }
+        protected State<PlayListBase> StateMutable { get; }
 
         public PlayListBase() {
             this.StateMutable = new State<PlayListBase>( this );
