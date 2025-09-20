@@ -65,7 +65,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public class ChildrenableState<TUserData> : ChildrenableState {
+    public class ChildrenableState<TUserData> : ChildrenableState, IUserData<TUserData> {
 
         // UserData
         public TUserData UserData { get; }

@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\StateMachine.Pro.Extensions\StateMachine.Pro.Extensions.csproj" />
         <ProjectReference Include="..\StateMachine.Pro\StateMachine.Pro.csproj" />
     </ItemGroup>
 

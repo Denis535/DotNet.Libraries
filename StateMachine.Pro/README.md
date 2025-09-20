@@ -5,58 +5,20 @@ The library that allows you to easily implement a stateful object.
 
 ###### System.StateMachine.Pro
 
-```
-namespace System.StateMachine.Pro;
-public abstract class StateMachineBase {
+- StateMachineBase
+- IState
+- Activity
+- StateBase
+- ChildableStateBase
+- ChildrenableStateBase
 
-    protected IState? Root { get; }
+###### System.StateMachine.Pro
 
-    public StateMachineBase();
-
-    protected virtual void SetRoot(IState? root, object? argument, Action<IState, object?>? callback);
-
-}
-public class StateMachine : StateMachineBase {
-
-    public new IState? Root { get; }
-
-    public StateMachine();
-
-    public new void SetRoot(IState? root, object? argument, Action<IState, object?>? callback);
-
-}
-public class StateMachine<TUserData> : StateMachine {
-
-    public TUserData UserData { get; }
-
-    public StateMachine(TUserData userData);
-
-}
-public interface IState {
-
-    public StateMachineBase? Machine { get; }
-
-    [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
-    public IState Root { get; }
-
-    public IState? Parent { get; }
-    public IEnumerable<IState> Ancestors { get; }
-    public IEnumerable<IState> AncestorsAndSelf { get; }
-
-    public Activity Activity { get; }
-
-    public IEnumerable<IState> Children { get; }
-    public IEnumerable<IState> Descendants { get; }
-    public IEnumerable<IState> DescendantsAndSelf { get; }
-
-}
-public enum Activity {
-    Inactive,
-    Activating,
-    Active,
-    Deactivating,
-}
-```
+- StateMachine
+- State
+- ChildableState
+- ChildrenableState
+- IUserData
 
 # Link
 

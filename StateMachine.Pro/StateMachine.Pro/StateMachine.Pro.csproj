@@ -52,6 +52,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Extensions" />
         <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     </ItemGroup>
 
