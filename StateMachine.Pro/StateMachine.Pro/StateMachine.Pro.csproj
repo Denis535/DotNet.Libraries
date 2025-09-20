@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>3.1.0</Version>
+        <Version>3.1.1</Version>
         <Description>The library that allows you to easily implement a stateful object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -64,6 +64,7 @@
     <!--Include Builds-->
     <Target Name="IncludeBuilds">
         <ItemGroup>
+            <BuildOutputInPackage Include="..\$(AssemblyName).Extensions\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).Extensions.dll" />
         </ItemGroup>
     </Target>
 
