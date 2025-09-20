@@ -7,6 +7,14 @@ namespace System.TreeMachine.Pro {
 
     public abstract partial class NodeBase2 : NodeBase, INode2 {
 
+        // Constructor
+        public NodeBase2() {
+        }
+
+    }
+    public abstract partial class NodeBase2 {
+
+        // OnDescendantAttach
         void INode2.OnBeforeDescendantAttach(INode2 descendant, object? argument) {
             this.OnBeforeDescendantAttach( descendant, argument );
         }
@@ -20,6 +28,7 @@ namespace System.TreeMachine.Pro {
             this.OnAfterDescendantDetach( descendant, argument );
         }
 
+        // OnDescendantActivate
         void INode2.OnBeforeDescendantActivate(INode2 descendant, object? argument) {
             this.OnBeforeDescendantActivate( descendant, argument );
         }
