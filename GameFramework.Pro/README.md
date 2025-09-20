@@ -42,8 +42,8 @@ public static class PlayListExtensions {
     public static PlayListBase PlayList(this IState state);
     public static T PlayList<T>(this IState state);
 
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this PlayListBase playList);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this PlayListBase playList);
+    public static CancellationToken GetCancellationToken_OnDetachCallback(this State state);
+    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this State state);
 
 }
 ```
@@ -98,8 +98,11 @@ public static class WidgetExtensions {
     public static WidgetBase Widget(this INode node);
     public static T Widget<T>(this INode node);
 
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this WidgetBase widget);
+    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node);
+    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node);
+
+    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node);
+    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node);
 
 }
 ```

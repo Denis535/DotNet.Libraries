@@ -24,22 +24,22 @@ namespace GameFramework.Pro {
             }
             return cts.Token;
         }
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this Node2 node) {
-            var cts = new CancellationTokenSource();
-            node.OnDetachCallback += Callback;
-            void Callback(object? argument) {
-                cts.Cancel();
-                node.OnDetachCallback -= Callback;
-            }
-            return cts.Token;
-        }
-
         public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node) {
             var cts = new CancellationTokenSource();
             node.OnDeactivateCallback += Callback;
             void Callback(object? argument) {
                 cts.Cancel();
                 node.OnDeactivateCallback -= Callback;
+            }
+            return cts.Token;
+        }
+
+        public static CancellationToken GetCancellationToken_OnDetachCallback(this Node2 node) {
+            var cts = new CancellationTokenSource();
+            node.OnDetachCallback += Callback;
+            void Callback(object? argument) {
+                cts.Cancel();
+                node.OnDetachCallback -= Callback;
             }
             return cts.Token;
         }
