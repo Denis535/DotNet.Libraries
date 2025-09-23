@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IUserData<TUserData> {
+    public interface IUserData<out TUserData> {
 
         public TUserData UserData { get; }
 
