@@ -4,147 +4,46 @@ The framework that allows you to design high-quality architecture of your game p
 
 # Reference
 
+###### System
+
+- DisposableBase
+- DisposableExtensions
+- IDependencyProvider
+
 ###### GameFramework.Pro
 
-```
-public abstract class ProgramBase : DisposableBase {
+- ProgramBase
+- UI
+    - ThemeBase
+    - PlayListBase
+    - PlayListExtensions
+    - ScreenBase
+    - WidgetBase
+    - ViewableWidgetBase
+    - WidgetExtensions
+    - RouterBase
+- App
+    - ApplicationBase
+- Domain (Business, Game)
+    - GameBase
+    - PlayerBase
+    - EntityBase (Character, Vehicle, Environment)
 
-    public ProgramBase();
-    public override void Dispose();
+###### GameFramework.Pro
 
-}
-```
-```
-// UI
-public abstract class ThemeBase : DisposableBase {
-
-    protected StateMachine<ThemeBase> Machine { get; }
-
-    public ThemeBase();
-    public override void Dispose();
-
-}
-public abstract class PlayListBase : DisposableBase {
-
-    protected ThemeBase? Theme { get; }
-    public IState State { get; }
-    protected State<PlayListBase> StateMutable { get; }
-
-    public PlayListBase();
-    public override void Dispose();
-
-    protected abstract void OnActivate(object? argument);
-    protected abstract void OnDeactivate(object? argument);
-
-}
-public static class PlayListExtensions {
-
-    public static PlayListBase PlayList(this IState state);
-    public static T PlayList<T>(this IState state);
-
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this State state);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this State state);
-
-}
-```
-```
-// UI
-public abstract class ScreenBase : DisposableBase {
-
-    protected TreeMachine<ScreenBase> Machine { get; }
-
-    public ScreenBase();
-    public override void Dispose();
-
-}
-public abstract class WidgetBase : DisposableBase {
-
-    protected ScreenBase? Screen { get; }
-    public INode2 Node { get; }
-    protected Node2<WidgetBase> NodeMutable { get; }
-
-    public WidgetBase();
-    public override void Dispose();
-
-    protected abstract void OnActivate(object? argument);
-    protected abstract void OnDeactivate(object? argument);
-
-    protected virtual void OnBeforeDescendantActivate(NodeBase descendant, object? argument);
-    protected virtual void OnAfterDescendantActivate(NodeBase descendant, object? argument);
-    protected virtual void OnBeforeDescendantDeactivate(NodeBase descendant, object? argument);
-    protected virtual void OnAfterDescendantDeactivate(NodeBase descendant, object? argument);
-
-    protected virtual void Sort(List<INode> children);
-
-}
-public abstract class ViewableWidgetBase : WidgetBase {
-
-    public object View { get; protected init; }
-
-    public ViewableWidgetBase();
-    public override void Dispose();
-
-}
-public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase {
-
-    protected new TView View { get; init; }
-
-    public ViewableWidgetBase();
-    public override void Dispose();
-
-}
-public static class WidgetExtensions {
-
-    public static WidgetBase Widget(this INode node);
-    public static T Widget<T>(this INode node);
-
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node);
-
-    public static CancellationToken GetCancellationToken_OnDetachCallback(this Node2 node);
-    public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node2 node);
-
-}
-```
-```
-// UI
-public abstract class RouterBase : DisposableBase {
-
-    public RouterBase();
-    public override void Dispose();
-
-}
-```
-```
-// App
-public abstract class ApplicationBase : DisposableBase {
-
-    public ApplicationBase();
-    public override void Dispose();
-
-}
-```
-```
-// Domain (Business, Game)
-public abstract class GameBase : DisposableBase {
-
-    public GameBase();
-    public override void Dispose();
-
-}
-public abstract class PlayerBase : DisposableBase {
-
-    public PlayerBase();
-    public override void Dispose();
-
-}
-public abstract class EntityBase : DisposableBase {
-
-    public EntityBase();
-    public override void Dispose();
-
-}
-```
+- ProgramBase2
+- UI
+    - ThemeBase2
+    - PlayListBase2
+    - ScreenBase2
+    - WidgetBase2
+    - ViewableWidgetBase2
+    - RouterBase2
+- App
+    - ApplicationBase2
+- Domain (Business, Game)
+    - GameBase2
+    - PlayerBase2
 
 # Links
 

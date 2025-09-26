@@ -6,10 +6,17 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase2 : PlayListBase {
 
-        protected IDependencyProvider Provider { get; }
+        private readonly IDependencyProvider m_Provider;
+
+        protected IDependencyProvider Provider {
+            get {
+                Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Provider;
+            }
+        }
 
         public PlayListBase2(IDependencyProvider provider) {
-            this.Provider = provider;
+            this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
         public override void Dispose() {
             base.Dispose();

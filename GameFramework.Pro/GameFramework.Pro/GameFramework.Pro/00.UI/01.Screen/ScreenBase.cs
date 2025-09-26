@@ -7,10 +7,17 @@ namespace GameFramework.Pro {
 
     public abstract class ScreenBase : DisposableBase {
 
-        protected TreeMachine<ScreenBase> Machine { get; }
+        private readonly TreeMachine<ScreenBase> m_Machine;
+
+        protected TreeMachine<ScreenBase> Machine {
+            get {
+                Assert.Operation.NotDisposed( $"Screen {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Machine;
+            }
+        }
 
         public ScreenBase() {
-            this.Machine = new TreeMachine<ScreenBase>( this );
+            this.m_Machine = new TreeMachine<ScreenBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Screen {this} must have no {this.Machine.Root} root", this.Machine.Root == null );

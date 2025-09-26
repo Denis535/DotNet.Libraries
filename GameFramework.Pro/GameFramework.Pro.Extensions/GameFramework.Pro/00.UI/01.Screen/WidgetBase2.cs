@@ -6,10 +6,17 @@ namespace GameFramework.Pro {
 
     public abstract class WidgetBase2 : WidgetBase {
 
-        protected IDependencyProvider Provider { get; }
+        private readonly IDependencyProvider m_Provider;
+
+        protected IDependencyProvider Provider {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Provider;
+            }
+        }
 
         public WidgetBase2(IDependencyProvider provider) {
-            this.Provider = provider;
+            this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
         public override void Dispose() {
             base.Dispose();
@@ -19,10 +26,17 @@ namespace GameFramework.Pro {
     public abstract class ViewableWidgetBase2<TView> : ViewableWidgetBase<TView>
         where TView : notnull {
 
-        protected IDependencyProvider Provider { get; }
+        private readonly IDependencyProvider m_Provider;
+
+        protected IDependencyProvider Provider {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Provider;
+            }
+        }
 
         public ViewableWidgetBase2(IDependencyProvider provider) {
-            this.Provider = provider;
+            this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
         public override void Dispose() {
             base.Dispose();

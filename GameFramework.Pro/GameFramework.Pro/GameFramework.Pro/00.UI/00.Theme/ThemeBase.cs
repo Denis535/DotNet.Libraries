@@ -7,10 +7,17 @@ namespace GameFramework.Pro {
 
     public abstract class ThemeBase : DisposableBase {
 
-        protected StateMachine<ThemeBase> Machine { get; }
+        private readonly StateMachine<ThemeBase> m_Machine;
+
+        protected StateMachine<ThemeBase> Machine {
+            get {
+                Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Machine;
+            }
+        }
 
         public ThemeBase() {
-            this.Machine = new StateMachine<ThemeBase>( this );
+            this.m_Machine = new StateMachine<ThemeBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Theme {this} must have no {this.Machine.Root} root", this.Machine.Root == null );

@@ -8,20 +8,37 @@ namespace GameFramework.Pro {
 
     public abstract class WidgetBase : DisposableBase {
 
-        protected ScreenBase? Screen => ((IUserData<ScreenBase>?) this.Node.Machine)?.UserData;
-        public INode2 Node => this.NodeMutable;
-        protected Node2<WidgetBase> NodeMutable { get; }
+        private readonly Node2<WidgetBase> m_Node;
+
+        protected ScreenBase? Screen {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return ((IUserData<ScreenBase>?) this.Node.Machine)?.UserData;
+            }
+        }
+        public INode2 Node {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Node;
+            }
+        }
+        public Node2 NodeMutable {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Node;
+            }
+        }
 
         public WidgetBase() {
-            this.NodeMutable = new Node2<WidgetBase>( this ) {
+            this.m_Node = new Node2<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.NodeMutable.OnActivateCallback += this.OnActivate;
-            this.NodeMutable.OnDeactivateCallback += this.OnDeactivate;
-            this.NodeMutable.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
-            this.NodeMutable.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
-            this.NodeMutable.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
-            this.NodeMutable.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
+            this.m_Node.OnActivateCallback += this.OnActivate;
+            this.m_Node.OnDeactivateCallback += this.OnDeactivate;
+            this.m_Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
+            this.m_Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
+            this.m_Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
+            this.m_Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
@@ -47,7 +64,18 @@ namespace GameFramework.Pro {
     }
     public abstract class ViewableWidgetBase : WidgetBase {
 
-        public object View { get; protected init; } = default!;
+        private object m_View = default!;
+
+        public object View {
+            get {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_View;
+            }
+            protected init {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_View = value ?? throw new ArgumentNullException( nameof( value ) );
+            }
+        }
 
         public ViewableWidgetBase() {
         }
@@ -62,7 +90,10 @@ namespace GameFramework.Pro {
     public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase
         where TView : notnull {
 
-        protected new TView View { get => (TView) base.View; init => base.View = value; }
+        protected new TView View {
+            get => (TView) base.View;
+            init => base.View = value;
+        }
 
         public ViewableWidgetBase() {
         }

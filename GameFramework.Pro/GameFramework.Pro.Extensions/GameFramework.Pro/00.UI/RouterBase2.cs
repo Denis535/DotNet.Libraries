@@ -9,14 +9,27 @@ namespace GameFramework.Pro {
         where TScreen : ScreenBase
         where TApplication : ApplicationBase {
 
-        protected IDependencyProvider Provider { get; }
+        private readonly IDependencyProvider m_Provider;
+        private readonly TApplication m_Application;
+
+        protected IDependencyProvider Provider {
+            get {
+                Assert.Operation.NotDisposed( $"Router {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Provider;
+            }
+        }
         protected TTheme Theme => this.Provider.RequireDependency<TTheme>();
         protected TScreen Screen => this.Provider.RequireDependency<TScreen>();
-        protected TApplication Application { get; }
+        protected TApplication Application {
+            get {
+                Assert.Operation.NotDisposed( $"Router {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Application;
+            }
+        }
 
         public RouterBase2(IDependencyProvider provider) {
-            this.Provider = provider;
-            this.Application = provider.RequireDependency<TApplication>();
+            this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
+            this.m_Application = provider.RequireDependency<TApplication>();
         }
         public override void Dispose() {
             base.Dispose();

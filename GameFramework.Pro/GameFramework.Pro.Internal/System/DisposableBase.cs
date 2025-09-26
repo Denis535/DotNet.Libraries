@@ -7,16 +7,16 @@ namespace System {
 
     public abstract class DisposableBase : IDisposable {
 
-        private CancellationTokenSource? disposeCancellationTokenSource;
+        private CancellationTokenSource? m_DisposeCancellationTokenSource;
 
         public bool IsDisposed { get; private set; }
         public CancellationToken DisposeCancellationToken {
             get {
-                if (this.disposeCancellationTokenSource == null) {
-                    this.disposeCancellationTokenSource = new CancellationTokenSource();
-                    if (this.IsDisposed) this.disposeCancellationTokenSource.Cancel();
+                if (this.m_DisposeCancellationTokenSource == null) {
+                    this.m_DisposeCancellationTokenSource = new CancellationTokenSource();
+                    if (this.IsDisposed) this.m_DisposeCancellationTokenSource.Cancel();
                 }
-                return this.disposeCancellationTokenSource.Token;
+                return this.m_DisposeCancellationTokenSource.Token;
             }
         }
 
@@ -27,7 +27,7 @@ namespace System {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Disposable {this} must be non-disposed", !this.IsDisposed );
-            this.disposeCancellationTokenSource?.Cancel();
+            this.m_DisposeCancellationTokenSource?.Cancel();
             this.IsDisposed = true;
         }
 
