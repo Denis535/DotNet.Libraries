@@ -8,6 +8,9 @@ namespace System.StateMachine.Pro {
 
     public abstract partial class StateBase : IState {
 
+        // IsDisposed
+        public bool IsDisposed { get; private set; }
+
         // Owner
         private object? Owner { get; set; }
 
@@ -36,6 +39,11 @@ namespace System.StateMachine.Pro {
 
         // Constructor
         public StateBase() {
+        }
+        public virtual void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
+            this.IsDisposed = true;
         }
 
     }

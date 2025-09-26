@@ -8,6 +8,9 @@ namespace System.StateMachine.Pro {
 
     public abstract partial class ChildableStateBase : IState {
 
+        // IsDisposed
+        public bool IsDisposed { get; private set; }
+
         // Owner
         private object? Owner { get; set; }
 
@@ -48,6 +51,14 @@ namespace System.StateMachine.Pro {
 
         // Constructor
         public ChildableStateBase() {
+        }
+        public virtual void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
+            if (this.Child is IState child) {
+                Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
+            }
+            this.IsDisposed = true;
         }
 
     }

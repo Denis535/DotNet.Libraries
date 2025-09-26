@@ -5,7 +5,10 @@ namespace System.StateMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface IState {
+    public interface IState : IDisposable {
+
+        // IsDisposed
+        public bool IsDisposed { get; }
 
         // Machine
         public StateMachineBase? Machine { get; }

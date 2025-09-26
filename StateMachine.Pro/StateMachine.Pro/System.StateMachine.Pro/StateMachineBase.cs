@@ -4,13 +4,23 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class StateMachineBase {
+    public abstract class StateMachineBase : IDisposable {
+
+        // IsDisposed
+        public bool IsDisposed { get; private set; }
 
         // Root
         protected IState? Root { get; private set; }
 
         // Constructor
         public StateMachineBase() {
+        }
+        public virtual void Dispose() {
+            Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+            if (this.Root != null) {
+                Assert.Operation.NotDisposed( $"Root {this.Root} must be disposed", this.Root.IsDisposed );
+            }
+            this.IsDisposed = true;
         }
 
         // SetRoot
