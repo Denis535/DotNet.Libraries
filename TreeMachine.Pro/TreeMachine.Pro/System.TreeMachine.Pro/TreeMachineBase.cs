@@ -4,13 +4,23 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class TreeMachineBase {
+    public abstract class TreeMachineBase : IDisposable {
+
+        // IsDisposed
+        public bool IsDisposed { get; private set; }
 
         // Root
         protected INode? Root { get; private set; }
 
         // Constructor
         public TreeMachineBase() {
+        }
+        public virtual void Dispose() {
+            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+            if (this.Root != null) {
+                Assert.Operation.NotDisposed( $"Root {this.Root} must be disposed", this.Root.IsDisposed );
+            }
+            this.IsDisposed = true;
         }
 
         // SetRoot

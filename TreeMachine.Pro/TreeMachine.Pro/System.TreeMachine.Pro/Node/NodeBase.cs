@@ -8,6 +8,9 @@ namespace System.TreeMachine.Pro {
 
     public abstract partial class NodeBase : INode {
 
+        // IsDisposed
+        public bool IsDisposed { get; private set; }
+
         // Owner
         private object? Owner { get; set; }
 
@@ -49,6 +52,14 @@ namespace System.TreeMachine.Pro {
 
         // Constructor
         public NodeBase() {
+        }
+        public virtual void Dispose() {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
+            foreach (var child in this.Children) {
+                Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
+            }
+            this.IsDisposed = true;
         }
 
     }

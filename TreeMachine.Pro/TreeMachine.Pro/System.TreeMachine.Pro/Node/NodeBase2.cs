@@ -10,6 +10,9 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public NodeBase2() {
         }
+        public override void Dispose() {
+            base.Dispose();
+        }
 
     }
     public abstract partial class NodeBase2 {

@@ -5,7 +5,10 @@ namespace System.TreeMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface INode {
+    public interface INode : IDisposable {
+
+        // IsDisposed
+        public bool IsDisposed { get; }
 
         // Machine
         public TreeMachineBase? Machine { get; }
