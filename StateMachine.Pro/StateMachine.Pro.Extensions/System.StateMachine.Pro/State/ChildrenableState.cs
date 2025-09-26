@@ -73,8 +73,19 @@ namespace System.StateMachine.Pro {
     }
     public class ChildrenableState<TUserData> : ChildrenableState, IUserData<TUserData> {
 
+        private TUserData m_UserData = default!;
+
         // UserData
-        public TUserData UserData { get; }
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
 
         // Constructor
         public ChildrenableState(TUserData userData) {

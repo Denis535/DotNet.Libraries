@@ -6,11 +6,22 @@ namespace System.StateMachine.Pro {
 
     public abstract class StateMachineBase : IDisposable {
 
+        private IState? m_Root = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
         // Root
-        protected IState? Root { get; private set; }
+        protected IState? Root {
+            get {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Root;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_Root = value;
+            }
+        }
 
         // Constructor
         public StateMachineBase() {
@@ -25,6 +36,7 @@ namespace System.StateMachine.Pro {
 
         // SetRoot
         protected virtual void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
+            Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
             }
@@ -39,6 +51,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine} machine", root.Machine == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
+            Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"StateMachine {this} must have no {this.Root} root", this.Root == null );
             this.Root = root;
             this.Root.Attach( this, argument );
@@ -50,6 +63,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );
+            Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"StateMachine {this} must have {root} root", this.Root == root );
             this.Root.Detach( this, argument );
             this.Root = null;

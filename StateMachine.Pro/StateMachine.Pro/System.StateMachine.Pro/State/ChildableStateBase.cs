@@ -8,46 +8,115 @@ namespace System.StateMachine.Pro {
 
     public abstract partial class ChildableStateBase : IState {
 
+        private object? m_Owner = null;
+        private Activity m_Activity = Activity.Inactive;
+        private IState? m_Child = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
         // Owner
-        private object? Owner { get; set; }
+        private object? Owner {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Owner;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_Owner = value;
+            }
+        }
 
         // Machine
-        public StateMachineBase? Machine => (this.Owner as StateMachineBase) ?? (this.Owner as IState)?.Machine;
-        internal StateMachineBase? Machine_NoRecursive => this.Owner as StateMachineBase;
+        public StateMachineBase? Machine {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return (this.Owner as StateMachineBase) ?? (this.Owner as IState)?.Machine;
+            }
+        }
+        internal StateMachineBase? Machine_NoRecursive {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Owner as StateMachineBase;
+            }
+        }
 
         // Root
-        [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot => this.Parent == null;
-        public IState Root => this.Parent?.Root ?? this;
+        [MemberNotNullWhen( false, nameof( Parent ) )]
+        public bool IsRoot {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Parent == null;
+            }
+        }
+        public IState Root {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Parent?.Root ?? this;
+            }
+        }
 
         // Parent
-        public IState? Parent => this.Owner as IState;
+        public IState? Parent {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Owner as IState;
+            }
+        }
         public IEnumerable<IState> Ancestors {
             get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 if (this.Parent != null) {
                     yield return this.Parent;
                     foreach (var i in this.Parent.Ancestors) yield return i;
                 }
             }
         }
-        public IEnumerable<IState> AncestorsAndSelf => this.Ancestors.Prepend( this );
+        public IEnumerable<IState> AncestorsAndSelf {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Ancestors.Prepend( this );
+            }
+        }
 
         // Activity
-        public Activity Activity { get; private set; } = Activity.Inactive;
+        public Activity Activity {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Activity;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_Activity = value;
+            }
+        }
 
         // Children
-        public IState? Child { get; private set; }
+        public IState? Child {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Child;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_Child = value;
+            }
+        }
         public IEnumerable<IState> Descendants {
             get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 if (this.Child != null) {
                     yield return this.Child;
                     foreach (var i in this.Child.Descendants) yield return i;
                 }
             }
         }
-        public IEnumerable<IState> DescendantsAndSelf => this.Descendants.Prepend( this );
+        public IEnumerable<IState> DescendantsAndSelf {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.Descendants.Prepend( this );
+            }
+        }
 
         // Constructor
         public ChildableStateBase() {
@@ -169,6 +238,7 @@ namespace System.StateMachine.Pro {
         // Attach
         internal void Attach(StateMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
@@ -184,6 +254,7 @@ namespace System.StateMachine.Pro {
         }
         private void Attach(IState parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
             Assert.Operation.Valid( $"State {this} must have no {this.Parent} parent", this.Parent == null );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
@@ -202,6 +273,7 @@ namespace System.StateMachine.Pro {
         // Detach
         internal void Detach(StateMachineBase machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity == Activity.Active );
             {
@@ -216,6 +288,7 @@ namespace System.StateMachine.Pro {
         }
         private void Detach(IState parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {parent} parent", this.Parent == parent );
             if (parent.Activity == Activity.Active) {
                 Assert.Operation.Valid( $"State {this} must be active", this.Activity == Activity.Active );
@@ -250,6 +323,7 @@ namespace System.StateMachine.Pro {
 
         // Activate
         private void Activate(object? argument) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
             Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
@@ -267,6 +341,7 @@ namespace System.StateMachine.Pro {
 
         // Deactivate
         private void Deactivate(object? argument) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
             Assert.Operation.Valid( $"State {this} must have owner with valid activity", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
             Assert.Operation.Valid( $"State {this} must be active", this.Activity == Activity.Active );
@@ -301,6 +376,7 @@ namespace System.StateMachine.Pro {
 
         // SetChild
         protected virtual void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             if (this.Child != null) {
                 this.RemoveChild( this.Child, argument, callback );
             }
@@ -316,6 +392,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Child} child", this.Child == null );
             this.Child = child;
             this.Child.Attach( this, argument );
@@ -331,6 +408,7 @@ namespace System.StateMachine.Pro {
             } else {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             }
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
             this.Child.Detach( this, argument );
             this.Child = null;
