@@ -36,6 +36,7 @@ namespace System.StateMachine.Pro {
 
         // SetRoot
         protected virtual void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );

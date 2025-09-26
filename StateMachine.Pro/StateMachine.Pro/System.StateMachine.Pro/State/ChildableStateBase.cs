@@ -376,6 +376,7 @@ namespace System.StateMachine.Pro {
 
         // SetChild
         protected virtual void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", child == null || !child.IsDisposed );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             if (this.Child != null) {
                 this.RemoveChild( this.Child, argument, callback );
