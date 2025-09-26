@@ -294,6 +294,7 @@ namespace System.TreeMachine.Pro {
         // AddChild
         protected virtual void AddChild(INode child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
@@ -312,6 +313,7 @@ namespace System.TreeMachine.Pro {
         // RemoveChild
         protected virtual void RemoveChild(INode child, object? argument, Action<INode, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
             if (this.Activity == Activity.Active) {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity.Active );
@@ -321,7 +323,11 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
             child.Detach( this, argument );
             _ = this.ChildrenMutable.Remove( child );
-            callback?.Invoke( child, argument );
+            if (callback != null) {
+                callback.Invoke( child, argument );
+            } else {
+                child.Dispose();
+            }
         }
         protected bool RemoveChild(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
             var child = this.Children.LastOrDefault( predicate );

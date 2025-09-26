@@ -10,7 +10,7 @@
 
         [Test]
         public void Test_00() {
-            var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -61,7 +61,7 @@
 
         [Test]
         public void Test_01() {
-            var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );

@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00() {
-            var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -110,7 +110,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01() {
-            var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
@@ -157,7 +157,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_02() {
-            var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>( null );
             var root = new Node<string>( "root" );
             {
                 // machine.SetRoot root
@@ -184,7 +184,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_03() {
-            var root = new Node<string>( "root" );
+            using var root = new Node<string>( "root" );
             var a = new Node<string>( "a" );
             var b = new Node<string>( "b" );
             {
