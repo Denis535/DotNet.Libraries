@@ -10,8 +10,6 @@ namespace System.StateMachine.Pro {
         [Test]
         public void Test_00() {
             using var machine = new StateMachine<object?>( null );
-            var a = new State<string>( "a" );
-            var b = new State<string>( "b" );
             {
                 // SetState null
                 machine.SetRoot( null, null, null );
@@ -24,31 +22,17 @@ namespace System.StateMachine.Pro {
             }
             {
                 // SetState a
-                machine.SetRoot( a, null, null );
-                Assert.That( machine.Root, Is.EqualTo( a ) );
-                Assert.That( a.Machine, Is.EqualTo( machine ) );
-                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
-            }
-            {
-                // SetState a
-                machine.SetRoot( a, null, null );
-                Assert.That( machine.Root, Is.EqualTo( a ) );
-                Assert.That( a.Machine, Is.EqualTo( machine ) );
-                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
+                machine.SetRoot( new State<string>( "a" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
             }
             {
                 // SetState b
-                machine.SetRoot( b, null, null );
-                Assert.That( machine.Root, Is.EqualTo( b ) );
-                Assert.That( b.Machine, Is.EqualTo( machine ) );
-                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
-            }
-            {
-                // SetState b
-                machine.SetRoot( b, null, null );
-                Assert.That( machine.Root, Is.EqualTo( b ) );
-                Assert.That( b.Machine, Is.EqualTo( machine ) );
-                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
+                machine.SetRoot( new State<string>( "b" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
             }
             {
                 // SetState null

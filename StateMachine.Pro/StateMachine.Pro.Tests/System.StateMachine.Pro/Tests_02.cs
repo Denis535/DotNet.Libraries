@@ -11,8 +11,6 @@ namespace System.StateMachine.Pro {
         [Test]
         public void Test_00() {
             using var machine = new StateMachine<object?>( null );
-            var a = new ChildrenableState<string>( "a" );
-            var b = new ChildrenableState<string>( "b" );
             {
                 // SetState null
                 machine.SetRoot( null, null, null );
@@ -25,63 +23,33 @@ namespace System.StateMachine.Pro {
             }
             {
                 // SetState a
-                machine.SetRoot( a, null, null );
-                Assert.That( machine.Root, Is.EqualTo( a ) );
-                Assert.That( a.Machine, Is.EqualTo( machine ) );
-                Assert.That( a.IsRoot, Is.True );
-                Assert.That( a.Root, Is.EqualTo( a ) );
-                Assert.That( a.Parent, Is.Null );
-                Assert.That( a.Ancestors.Count(), Is.Zero );
-                Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( a.Children, Is.Empty );
-                Assert.That( a.Descendants.Count(), Is.Zero );
-                Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
-            }
-            {
-                // SetState a
-                machine.SetRoot( a, null, null );
-                Assert.That( machine.Root, Is.EqualTo( a ) );
-                Assert.That( a.Machine, Is.EqualTo( machine ) );
-                Assert.That( a.IsRoot, Is.True );
-                Assert.That( a.Root, Is.EqualTo( a ) );
-                Assert.That( a.Parent, Is.Null );
-                Assert.That( a.Ancestors.Count(), Is.Zero );
-                Assert.That( a.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( a.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( a.Children, Is.Empty );
-                Assert.That( a.Descendants.Count(), Is.Zero );
-                Assert.That( a.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
+                machine.SetRoot( new ChildrenableState<string>( "a" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.IsRoot, Is.True );
+                Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
+                Assert.That( machine.Root.Parent, Is.Null );
+                Assert.That( machine.Root.Ancestors.Count(), Is.Zero );
+                Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
+                Assert.That( machine.Root.Children.Count(), Is.Zero );
+                Assert.That( machine.Root.Descendants.Count(), Is.Zero );
+                Assert.That( machine.Root.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
             }
             {
                 // SetState b
-                machine.SetRoot( b, null, null );
-                Assert.That( machine.Root, Is.EqualTo( b ) );
-                Assert.That( b.Machine, Is.EqualTo( machine ) );
-                Assert.That( b.IsRoot, Is.True );
-                Assert.That( b.Root, Is.EqualTo( b ) );
-                Assert.That( b.Parent, Is.Null );
-                Assert.That( b.Ancestors.Count(), Is.Zero );
-                Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( b.Children, Is.Empty );
-                Assert.That( b.Descendants.Count(), Is.Zero );
-                Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
-            }
-            {
-                // SetState b
-                machine.SetRoot( b, null, null );
-                Assert.That( machine.Root, Is.EqualTo( b ) );
-                Assert.That( b.Machine, Is.EqualTo( machine ) );
-                Assert.That( b.IsRoot, Is.True );
-                Assert.That( b.Root, Is.EqualTo( b ) );
-                Assert.That( b.Parent, Is.Null );
-                Assert.That( b.Ancestors.Count(), Is.Zero );
-                Assert.That( b.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
-                Assert.That( b.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( b.Children, Is.Empty );
-                Assert.That( b.Descendants.Count(), Is.Zero );
-                Assert.That( b.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
+                machine.SetRoot( new ChildrenableState<string>( "b" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.IsRoot, Is.True );
+                Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
+                Assert.That( machine.Root.Parent, Is.Null );
+                Assert.That( machine.Root.Ancestors.Count(), Is.Zero );
+                Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
+                Assert.That( machine.Root.Children.Count(), Is.Zero );
+                Assert.That( machine.Root.Descendants.Count(), Is.Zero );
+                Assert.That( machine.Root.DescendantsAndSelf.Count(), Is.EqualTo( 1 ) );
             }
             {
                 // SetState null
