@@ -36,6 +36,7 @@ namespace System.TreeMachine.Pro {
 
         // SetRoot
         protected virtual void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
