@@ -10,7 +10,7 @@ namespace System.StateMachine.Pro {
 
         [Test]
         public void Test_00() {
-            var machine = new StateMachine<object?>( null );
+            using var machine = new StateMachine<object?>( null );
             var a = new ChildrenableState<string>( "a" );
             var b = new ChildrenableState<string>( "b" );
             {

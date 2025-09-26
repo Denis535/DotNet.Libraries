@@ -312,6 +312,7 @@ namespace System.StateMachine.Pro {
         // AddChild
         private void AddChild(IState child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
@@ -323,6 +324,7 @@ namespace System.StateMachine.Pro {
         // RemoveChild
         private void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
             if (this.Activity == Activity.Active) {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity.Active );
@@ -332,7 +334,11 @@ namespace System.StateMachine.Pro {
             Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
             this.Child.Detach( this, argument );
             this.Child = null;
-            callback?.Invoke( child, argument );
+            if (callback != null) {
+                callback.Invoke( child, argument );
+            } else {
+                child.Dispose();
+            }
         }
 
     }
