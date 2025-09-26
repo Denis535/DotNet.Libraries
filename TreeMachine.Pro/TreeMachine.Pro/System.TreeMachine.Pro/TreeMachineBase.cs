@@ -6,11 +6,22 @@ namespace System.TreeMachine.Pro {
 
     public abstract class TreeMachineBase : IDisposable {
 
+        private INode? m_Root = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
         // Root
-        protected INode? Root { get; private set; }
+        protected INode? Root {
+            get {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Root;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_Root = value;
+            }
+        }
 
         // Constructor
         public TreeMachineBase() {
@@ -25,6 +36,7 @@ namespace System.TreeMachine.Pro {
 
         // SetRoot
         protected virtual void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
+            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );
             }
@@ -40,6 +52,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
+            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"TreeMachine {this} must have no {this.Root} root", this.Root == null );
             this.Root = root;
             this.Root.Attach( this, argument );
@@ -52,6 +65,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Parent} parent", root.Parent == null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );
+            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"TreeMachine {this} must have {root} root", this.Root == root );
             this.Root.Detach( this, argument );
             this.Root = null;

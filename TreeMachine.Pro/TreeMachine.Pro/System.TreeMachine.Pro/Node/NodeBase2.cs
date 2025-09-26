@@ -50,12 +50,14 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         protected override void OnBeforeAttach(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var ancestor in this.Ancestors.OfType<INode2>().Reverse()) {
                 ancestor.OnBeforeDescendantAttach( this, argument );
             }
             base.OnBeforeAttach( argument );
         }
         protected override void OnAfterAttach(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterAttach( argument );
             foreach (var ancestor in this.Ancestors.OfType<INode2>()) {
                 ancestor.OnAfterDescendantAttach( this, argument );
@@ -64,12 +66,14 @@ namespace System.TreeMachine.Pro {
 
         // OnDetach
         protected override void OnBeforeDetach(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var ancestor in this.Ancestors.OfType<INode2>().Reverse()) {
                 ancestor.OnBeforeDescendantDetach( this, argument );
             }
             base.OnBeforeDetach( argument );
         }
         protected override void OnAfterDetach(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterDetach( argument );
             foreach (var ancestor in this.Ancestors.OfType<INode2>()) {
                 ancestor.OnAfterDescendantDetach( this, argument );
@@ -87,12 +91,14 @@ namespace System.TreeMachine.Pro {
 
         // OnActivate
         protected override void OnBeforeActivate(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var ancestor in this.Ancestors.OfType<INode2>().Reverse()) {
                 ancestor.OnBeforeDescendantActivate( this, argument );
             }
             base.OnBeforeActivate( argument );
         }
         protected override void OnAfterActivate(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterActivate( argument );
             foreach (var ancestor in this.Ancestors.OfType<INode2>()) {
                 ancestor.OnAfterDescendantActivate( this, argument );
@@ -101,12 +107,14 @@ namespace System.TreeMachine.Pro {
 
         // OnDeactivate
         protected override void OnBeforeDeactivate(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var ancestor in this.Ancestors.OfType<INode2>().Reverse()) {
                 ancestor.OnBeforeDescendantDeactivate( this, argument );
             }
             base.OnBeforeDeactivate( argument );
         }
         protected override void OnAfterDeactivate(object? argument) {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterDeactivate( argument );
             foreach (var ancestor in this.Ancestors.OfType<INode2>()) {
                 ancestor.OnAfterDescendantDeactivate( this, argument );

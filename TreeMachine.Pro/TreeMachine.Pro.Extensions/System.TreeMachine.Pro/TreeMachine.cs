@@ -27,8 +27,19 @@ namespace System.TreeMachine.Pro {
     }
     public class TreeMachine<TUserData> : TreeMachine, IUserData<TUserData> {
 
+        private TUserData m_UserData = default!;
+
         // UserData
-        public TUserData UserData { get; }
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
 
         // Constructor
         public TreeMachine(TUserData userData) {
