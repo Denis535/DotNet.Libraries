@@ -17,6 +17,12 @@ namespace System.StateMachine.Pro {
         // Constructor
         public ChildableState() {
         }
+        public override void Dispose() {
+            if (this.Child != null) {
+                this.Child.Dispose();
+            }
+            base.Dispose();
+        }
 
         // OnAttach
         protected override void OnAttach(object? argument) {
@@ -48,6 +54,10 @@ namespace System.StateMachine.Pro {
         // Constructor
         public ChildableState(TUserData userData) {
             this.UserData = userData;
+        }
+        public override void Dispose() {
+            (this.UserData as IDisposable)?.Dispose();
+            base.Dispose();
         }
 
     }

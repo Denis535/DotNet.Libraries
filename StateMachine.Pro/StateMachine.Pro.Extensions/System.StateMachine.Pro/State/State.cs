@@ -17,6 +17,9 @@ namespace System.StateMachine.Pro {
         // Constructor
         public State() {
         }
+        public override void Dispose() {
+            base.Dispose();
+        }
 
         // OnAttach
         protected override void OnAttach(object? argument) {
@@ -43,6 +46,10 @@ namespace System.StateMachine.Pro {
         // Constructor
         public State(TUserData userData) {
             this.UserData = userData;
+        }
+        public override void Dispose() {
+            (this.UserData as IDisposable)?.Dispose();
+            base.Dispose();
         }
 
     }

@@ -12,6 +12,12 @@ namespace System.StateMachine.Pro {
         // Constructor
         public StateMachine() {
         }
+        public override void Dispose() {
+            if (this.Root != null) {
+                this.Root.Dispose();
+            }
+            base.Dispose();
+        }
 
         // SetRoot
         public new void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
@@ -27,6 +33,10 @@ namespace System.StateMachine.Pro {
         // Constructor
         public StateMachine(TUserData userData) {
             this.UserData = userData;
+        }
+        public override void Dispose() {
+            (this.UserData as IDisposable)?.Dispose();
+            base.Dispose();
         }
 
     }
