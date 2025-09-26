@@ -12,6 +12,12 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public TreeMachine() {
         }
+        public override void Dispose() {
+            if (this.Root != null) {
+                this.Root.Dispose();
+            }
+            base.Dispose();
+        }
 
         // SetRoot
         public new void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
@@ -27,6 +33,10 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public TreeMachine(TUserData userData) {
             this.UserData = userData;
+        }
+        public override void Dispose() {
+            (this.UserData as IDisposable)?.Dispose();
+            base.Dispose();
         }
 
     }

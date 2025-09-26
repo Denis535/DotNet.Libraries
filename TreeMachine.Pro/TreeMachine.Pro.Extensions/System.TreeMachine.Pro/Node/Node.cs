@@ -20,6 +20,12 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public Node() {
         }
+        public override void Dispose() {
+            foreach (var child in this.Children) {
+                child.Dispose();
+            }
+            base.Dispose();
+        }
 
         // OnAttach
         protected override void OnAttach(object? argument) {
@@ -78,6 +84,10 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public Node(TUserData userData) {
             this.UserData = userData;
+        }
+        public override void Dispose() {
+            (this.UserData as IDisposable)?.Dispose();
+            base.Dispose();
         }
 
     }
