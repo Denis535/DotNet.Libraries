@@ -18,6 +18,7 @@ namespace GameFramework.Pro {
         protected TTheme Theme {
             get {
                 Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Theme must be non-null", this.m_Theme != null );
                 return this.m_Theme;
             }
             init {
@@ -28,6 +29,7 @@ namespace GameFramework.Pro {
         protected TScreen Screen {
             get {
                 Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Screen must be non-null", this.m_Screen != null );
                 return this.m_Screen;
             }
             init {
@@ -38,6 +40,7 @@ namespace GameFramework.Pro {
         protected TRouter Router {
             get {
                 Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Router must be non-null", this.m_Router != null );
                 return this.m_Router;
             }
             init {
@@ -48,6 +51,7 @@ namespace GameFramework.Pro {
         protected TApplication Application {
             get {
                 Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Application must be non-null", this.m_Application != null );
                 return this.m_Application;
             }
             init {
@@ -63,29 +67,25 @@ namespace GameFramework.Pro {
         }
 
         Option<object?> IDependencyProvider.GetValue(Type type, object? argument) {
-            return this.GetValue( type, argument );
-        }
-        protected virtual Option<object?> GetValue(Type type, object? argument) {
             Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+            var value = this.GetValue( type, argument );
+            if (value != null) {
+                return Option.Create<object?>( value );
+            }
+            return default;
+        }
+        protected virtual object? GetValue(Type type, object? argument) {
             if (typeof( TTheme ).IsAssignableFrom( type )) {
-                Assert.Operation.Valid( $"Theme must be non-null", this.Theme != null );
-                Assert.Operation.NotDisposed( $"Theme {this.Theme} must be non-disposed", !this.Theme.IsDisposed );
-                return Option.Create<object?>( this.Theme );
+                return this.Theme;
             }
             if (typeof( TScreen ).IsAssignableFrom( type )) {
-                Assert.Operation.Valid( $"Screen must be non-null", this.Screen != null );
-                Assert.Operation.NotDisposed( $"Screen {this.Screen} must be non-disposed", !this.Screen.IsDisposed );
-                return Option.Create<object?>( this.Screen );
+                return this.Screen;
             }
             if (typeof( TRouter ).IsAssignableFrom( type )) {
-                Assert.Operation.Valid( $"Router must be non-null", this.Router != null );
-                Assert.Operation.NotDisposed( $"Router {this.Router} must be non-disposed", !this.Router.IsDisposed );
-                return Option.Create<object?>( this.Router );
+                return this.Router;
             }
             if (typeof( TApplication ).IsAssignableFrom( type )) {
-                Assert.Operation.Valid( $"Application must be non-null", this.Application != null );
-                Assert.Operation.NotDisposed( $"Application {this.Application} must be non-disposed", !this.Application.IsDisposed );
-                return Option.Create<object?>( this.Application );
+                return this.Application;
             }
             return default;
         }
