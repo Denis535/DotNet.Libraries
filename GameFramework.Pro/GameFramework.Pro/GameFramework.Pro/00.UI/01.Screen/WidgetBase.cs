@@ -21,7 +21,7 @@ namespace GameFramework.Pro {
                 return this.m_Node;
             }
         }
-        protected Node2 NodeMutable {
+        protected Node2<WidgetBase> NodeMutable {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
@@ -32,16 +32,17 @@ namespace GameFramework.Pro {
             this.m_Node = new Node2<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.m_Node.OnActivateCallback += this.OnActivate;
-            this.m_Node.OnDeactivateCallback += this.OnDeactivate;
-            this.m_Node.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
-            this.m_Node.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
-            this.m_Node.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
-            this.m_Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
+            this.NodeMutable.OnActivateCallback += this.OnActivate;
+            this.NodeMutable.OnDeactivateCallback += this.OnDeactivate;
+            this.NodeMutable.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
+            this.NodeMutable.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
+            this.NodeMutable.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
+            this.NodeMutable.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            if (!this.NodeMutable.IsDisposed) {
+            if (!this.NodeMutable.IsDisposed && this.NodeMutable.UserData != null) {
+                this.NodeMutable.UserData = null!;
                 this.NodeMutable.Dispose();
                 return;
             }

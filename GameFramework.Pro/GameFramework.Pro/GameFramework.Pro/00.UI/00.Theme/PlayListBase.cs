@@ -21,7 +21,7 @@ namespace GameFramework.Pro {
                 return this.m_State;
             }
         }
-        protected State StateMutable {
+        protected State<PlayListBase> StateMutable {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;
@@ -30,12 +30,13 @@ namespace GameFramework.Pro {
 
         public PlayListBase() {
             this.m_State = new State<PlayListBase>( this );
-            this.m_State.OnActivateCallback += this.OnActivate;
-            this.m_State.OnDeactivateCallback += this.OnDeactivate;
+            this.StateMutable.OnActivateCallback += this.OnActivate;
+            this.StateMutable.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-            if (!this.StateMutable.IsDisposed) {
+            if (!this.StateMutable.IsDisposed && this.StateMutable.UserData != null) {
+                this.StateMutable.UserData = null!;
                 this.StateMutable.Dispose();
                 return;
             }
