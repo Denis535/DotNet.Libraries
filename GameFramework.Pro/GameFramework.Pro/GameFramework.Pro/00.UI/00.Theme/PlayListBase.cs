@@ -21,7 +21,7 @@ namespace GameFramework.Pro {
                 return this.m_State;
             }
         }
-        public State StateMutable {
+        protected State StateMutable {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;

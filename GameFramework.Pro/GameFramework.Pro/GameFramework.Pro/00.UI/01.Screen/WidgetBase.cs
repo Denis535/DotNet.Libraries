@@ -22,7 +22,7 @@ namespace GameFramework.Pro {
                 return this.m_Node;
             }
         }
-        public Node2 NodeMutable {
+        protected Node2 NodeMutable {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
