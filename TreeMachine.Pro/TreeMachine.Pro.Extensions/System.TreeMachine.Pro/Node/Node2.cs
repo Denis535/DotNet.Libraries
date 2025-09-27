@@ -138,7 +138,6 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
         public override void Dispose() {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.Dispose();
             (this.m_UserData as IDisposable)?.Dispose();
         }

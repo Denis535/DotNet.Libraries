@@ -11,6 +11,7 @@ namespace System.TreeMachine.Pro {
         public NodeBase2() {
         }
         public override void Dispose() {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             base.Dispose();
         }
 
