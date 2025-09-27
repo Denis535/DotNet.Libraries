@@ -70,7 +70,7 @@ namespace GameFramework.Pro {
             Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
             var value = this.GetValue( type, argument );
             if (value != null) {
-                return Option.Create<object?>( value );
+                return Option.Some<object?>( value );
             }
             return default;
         }
