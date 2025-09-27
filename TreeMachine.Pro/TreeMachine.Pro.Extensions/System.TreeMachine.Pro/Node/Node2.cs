@@ -33,6 +33,8 @@ namespace System.TreeMachine.Pro {
         public Node2() {
         }
         public override void Dispose() {
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             foreach (var child in this.Children) {
                 child.Dispose();
             }
@@ -137,8 +139,10 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
         public override void Dispose() {
-            (this.UserData as IDisposable)?.Dispose();
+            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

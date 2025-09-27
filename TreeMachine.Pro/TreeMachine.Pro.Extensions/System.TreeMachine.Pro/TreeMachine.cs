@@ -13,6 +13,7 @@ namespace System.TreeMachine.Pro {
         public TreeMachine() {
         }
         public override void Dispose() {
+            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.Root.Dispose();
             }
@@ -46,8 +47,8 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
         public override void Dispose() {
-            (this.UserData as IDisposable)?.Dispose();
             base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

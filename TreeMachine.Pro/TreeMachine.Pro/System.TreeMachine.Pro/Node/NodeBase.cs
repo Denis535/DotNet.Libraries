@@ -6,7 +6,7 @@ namespace System.TreeMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class NodeBase : INode {
+    public abstract partial class NodeBase : INode, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
