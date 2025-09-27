@@ -119,7 +119,6 @@ namespace System.TreeMachine.Pro {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             foreach (var child in this.Children) {
                 Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
             }

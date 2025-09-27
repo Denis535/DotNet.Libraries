@@ -72,9 +72,9 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Ancestors.Count(), Is.Zero );
                 Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
                 Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( machine.Root.Children.Count, Is.Zero );
-                Assert.That( machine.Root.Descendants.Count, Is.Zero );
-                Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 1 ) );
+                Assert.That( machine.Root.Children.Count, Is.EqualTo( 2 ) );
+                Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
+                Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
             }
             {
                 // machine.SetRoot null
@@ -100,9 +100,9 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Ancestors.Count(), Is.Zero );
                 Assert.That( machine.Root.AncestorsAndSelf.Count(), Is.EqualTo( 1 ) );
                 Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
-                Assert.That( machine.Root.Children.Count, Is.Zero );
-                Assert.That( machine.Root.Descendants.Count, Is.Zero );
-                Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 1 ) );
+                Assert.That( machine.Root.Children.Count, Is.EqualTo( 2 ) );
+                Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
+                Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
             }
         }
 
