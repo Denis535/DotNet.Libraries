@@ -8,13 +8,8 @@ namespace System.StateMachine.Pro {
     public class Tests_00 {
 
         [Test]
-        public void Test_00() {
+        public void Test_00_a() {
             using var machine = new StateMachine<object?>( null );
-            {
-                // SetState null
-                machine.SetRoot( null, null, null );
-                Assert.That( machine.Root, Is.Null );
-            }
             {
                 // SetState null
                 machine.SetRoot( null, null, null );
@@ -29,7 +24,14 @@ namespace System.StateMachine.Pro {
             }
             {
                 // SetState b
-                machine.SetRoot( new State<string>( "b" ), null, null );
+                machine.SetRoot( new ChildableState<string>( "b" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
+            }
+            {
+                // SetState c
+                machine.SetRoot( new ChildrenableState<string>( "b" ), null, null );
                 Assert.That( machine.Root, Is.Not.Null );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
@@ -39,10 +41,36 @@ namespace System.StateMachine.Pro {
                 machine.SetRoot( null, null, null );
                 Assert.That( machine.Root, Is.Null );
             }
+        }
+
+        [Test]
+        public void Test_00_b() {
+            using var machine = new StateMachine<object?>( null );
             {
                 // SetState null
                 machine.SetRoot( null, null, null );
                 Assert.That( machine.Root, Is.Null );
+            }
+            {
+                // SetState a
+                machine.SetRoot( new State<string>( "a" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
+            }
+            {
+                // SetState b
+                machine.SetRoot( new ChildableState<string>( "b" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
+            }
+            {
+                // SetState c
+                machine.SetRoot( new ChildrenableState<string>( "b" ), null, null );
+                Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
+                Assert.That( machine.Root.Activity, Is.EqualTo( Activity.Active ) );
             }
         }
 
