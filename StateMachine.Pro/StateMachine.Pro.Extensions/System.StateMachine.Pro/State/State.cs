@@ -19,7 +19,6 @@ namespace System.StateMachine.Pro {
         }
         public override void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
             base.Dispose();
         }
 

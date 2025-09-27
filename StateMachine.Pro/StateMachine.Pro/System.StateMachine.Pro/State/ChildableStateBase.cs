@@ -123,7 +123,6 @@ namespace System.StateMachine.Pro {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
             if (this.Child is IState child) {
                 Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
             }
