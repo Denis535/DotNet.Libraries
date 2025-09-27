@@ -2,7 +2,6 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using System.TreeMachine.Pro;
 
@@ -41,8 +40,11 @@ namespace GameFramework.Pro {
             this.m_Node.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Widget {this} must be inactive", this.Node.Activity == Activity.Inactive );
-            Assert.Operation.Valid( $"Widget {this} must have no children", this.Node.Children.All( i => i.Widget().IsDisposed ) );
+            Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            if (!this.NodeMutable.IsDisposed) {
+                this.NodeMutable.Dispose();
+                return;
+            }
             base.Dispose();
         }
 

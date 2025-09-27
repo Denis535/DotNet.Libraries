@@ -34,7 +34,11 @@ namespace GameFramework.Pro {
             this.m_State.OnDeactivateCallback += this.OnDeactivate;
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"PlayList {this} must be inactive", this.State.Activity == Activity.Inactive );
+            Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
+            if (!this.StateMutable.IsDisposed) {
+                this.StateMutable.Dispose();
+                return;
+            }
             base.Dispose();
         }
 

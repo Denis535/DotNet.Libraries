@@ -20,7 +20,11 @@ namespace GameFramework.Pro {
             this.m_Machine = new TreeMachine<ScreenBase>( this );
         }
         public override void Dispose() {
-            Assert.Operation.Valid( $"Screen {this} must have no {this.Machine.Root} root", this.Machine.Root == null );
+            Assert.Operation.NotDisposed( $"Screen {this} must be non-disposed", !this.IsDisposed );
+            if (!this.Machine.IsDisposed) {
+                this.Machine.Dispose();
+                return;
+            }
             base.Dispose();
         }
 

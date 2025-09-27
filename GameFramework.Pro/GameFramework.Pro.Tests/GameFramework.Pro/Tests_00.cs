@@ -34,11 +34,10 @@ namespace GameFramework.Pro {
     internal class Theme : ThemeBase2<Router, Application> {
 
         public Theme(IDependencyProvider provider) : base( provider ) {
-            this.Machine.SetRoot( new MainPlayList().State, null, (state, arg) => state.PlayList().Dispose() );
-            this.Machine.SetRoot( new GamePlayList().State, null, (state, arg) => state.PlayList().Dispose() );
+            this.Machine.SetRoot( new MainPlayList().State, null, null );
+            this.Machine.SetRoot( new GamePlayList().State, null, null );
         }
         public override void Dispose() {
-            this.Machine.SetRoot( null, null, (state, arg) => state.PlayList().Dispose() );
             base.Dispose();
         }
 
@@ -77,7 +76,6 @@ namespace GameFramework.Pro {
             this.Machine.SetRoot( new RootWidget().Node, null, null );
         }
         public override void Dispose() {
-            this.Machine.SetRoot( null, null, (root, arg) => root.Widget().Dispose() );
             base.Dispose();
         }
 
@@ -89,9 +87,6 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
         public override void Dispose() {
-            foreach (var child in this.Node.Children) {
-                child.Widget().Dispose();
-            }
             base.Dispose();
         }
 
@@ -114,9 +109,6 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         public override void Dispose() {
-            foreach (var child in this.Node.Children) {
-                child.Widget().Dispose();
-            }
             this.View.Dispose();
             base.Dispose();
         }
@@ -140,9 +132,6 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         public override void Dispose() {
-            foreach (var child in this.Node.Children) {
-                child.Widget().Dispose();
-            }
             this.View.Dispose();
             base.Dispose();
         }
@@ -187,8 +176,8 @@ namespace GameFramework.Pro {
             this.Entity = new Entity();
         }
         public override void Dispose() {
-            this.Entity.Dispose();
             this.Player.Dispose();
+            this.Entity.Dispose();
             base.Dispose();
         }
 
