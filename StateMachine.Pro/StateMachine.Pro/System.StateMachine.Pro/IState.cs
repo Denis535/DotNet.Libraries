@@ -5,7 +5,7 @@ namespace System.StateMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface IState : IDisposable {
+    public interface IState {
 
         // IsDisposed
         public bool IsDisposed { get; }
@@ -30,6 +30,9 @@ namespace System.StateMachine.Pro {
         public IEnumerable<IState> Children { get; }
         public IEnumerable<IState> Descendants { get; }
         public IEnumerable<IState> DescendantsAndSelf { get; }
+
+        // Dispose
+        internal void Dispose();
 
         // Attach
         internal void Attach(StateMachineBase machine, object? argument);

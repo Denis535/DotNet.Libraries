@@ -21,6 +21,8 @@ namespace System.StateMachine.Pro {
         public ChildrenableState() {
         }
         public override void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.Valid( $"State {this} must be inactive", this.Activity == Activity.Inactive );
             foreach (var child in this.Children) {
                 child.Dispose();
             }
@@ -92,8 +94,8 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
         public override void Dispose() {
-            (this.UserData as IDisposable)?.Dispose();
             base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

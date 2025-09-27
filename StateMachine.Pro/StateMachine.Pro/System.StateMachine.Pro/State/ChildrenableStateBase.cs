@@ -6,7 +6,7 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class ChildrenableStateBase : IState {
+    public abstract partial class ChildrenableStateBase : IState, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
