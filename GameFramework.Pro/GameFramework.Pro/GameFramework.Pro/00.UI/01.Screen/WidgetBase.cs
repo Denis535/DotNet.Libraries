@@ -2,6 +2,7 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.TreeMachine.Pro;
 
@@ -34,8 +35,24 @@ namespace GameFramework.Pro {
             this.m_Node = new Node<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.Node.OnActivateCallback += this.OnActivate;
-            this.Node.OnDeactivateCallback += this.OnDeactivate;
+            this.Node.OnActivateCallback += (argument) => {
+                foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                    ((INode<WidgetBase>) ancestor).Widget().OnBeforeDescendantActivate( this.Node, argument );
+                }
+                this.OnActivate( argument );
+                foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
+                    ((INode<WidgetBase>) ancestor).Widget().OnAfterDescendantActivate( this.Node, argument );
+                }
+            };
+            this.Node.OnDeactivateCallback += (argument) => {
+                foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                    ((INode<WidgetBase>) ancestor).Widget().OnBeforeDescendantDeactivate( this.Node, argument );
+                }
+                this.OnDeactivate( argument );
+                foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
+                    ((INode<WidgetBase>) ancestor).Widget().OnAfterDescendantDeactivate( this.Node, argument );
+                }
+            };
         }
         ~WidgetBase() {
             Assert.Operation.Valid( $"Widget '{this}' must be disposed", this.IsDisposed );
@@ -51,6 +68,15 @@ namespace GameFramework.Pro {
 
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);
+
+        protected void OnBeforeDescendantActivate(INode descendant, object? argument) {
+        }
+        protected void OnAfterDescendantActivate(INode descendant, object? argument) {
+        }
+        protected void OnBeforeDescendantDeactivate(INode descendant, object? argument) {
+        }
+        protected void OnAfterDescendantDeactivate(INode descendant, object? argument) {
+        }
 
         protected virtual void Sort(List<INode> children) {
         }
