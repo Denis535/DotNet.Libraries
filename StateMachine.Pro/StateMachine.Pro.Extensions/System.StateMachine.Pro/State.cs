@@ -6,7 +6,7 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public partial class State : IState, IDisposable {
+    public sealed partial class State<TUserData> : IState<TUserData>, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
@@ -16,6 +16,8 @@ namespace System.StateMachine.Pro {
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
+
+        private TUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -36,13 +38,13 @@ namespace System.StateMachine.Pro {
         public IStateMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as StateMachine) ?? (this.Owner as IState)?.Machine;
+                return (this.Owner as IStateMachine) ?? (this.Owner as IState)?.Machine;
             }
         }
         internal IStateMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as StateMachine;
+                return this.Owner as IStateMachine;
             }
         }
 
@@ -132,16 +134,32 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Constructor
         public State() {
         }
-        public virtual void Dispose() {
+        public State(TUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            (this.UserData as IDisposable)?.Dispose();
             this.IsDisposed = true;
         }
 
     }
-    public partial class State {
+    public sealed partial class State<TUserData> {
 
         // Machine
         IStateMachine? IState.Machine => this.Machine;
@@ -166,39 +184,26 @@ namespace System.StateMachine.Pro {
 
         // OnAttach
         event Action<object?>? IState.OnAttachCallback {
-            add {
-                this.OnAttachCallback += value;
-            }
-            remove {
-                this.OnAttachCallback -= value;
-            }
+            add => this.OnAttachCallback += value;
+            remove => this.OnAttachCallback -= value;
         }
         event Action<object?>? IState.OnDetachCallback {
-            add {
-                this.OnDetachCallback += value;
-            }
-            remove {
-                this.OnDetachCallback -= value;
-            }
+            add => this.OnDetachCallback += value;
+            remove => this.OnDetachCallback -= value;
         }
 
         // OnActivate
         event Action<object?>? IState.OnActivateCallback {
-            add {
-                this.OnActivateCallback += value;
-            }
-            remove {
-                this.OnActivateCallback -= value;
-            }
+            add => this.OnActivateCallback += value;
+            remove => this.OnActivateCallback -= value;
         }
         event Action<object?>? IState.OnDeactivateCallback {
-            add {
-                this.OnDeactivateCallback += value;
-            }
-            remove {
-                this.OnDeactivateCallback -= value;
-            }
+            add => this.OnDeactivateCallback += value;
+            remove => this.OnDeactivateCallback -= value;
         }
+
+        // UserData
+        TUserData IState<TUserData>.UserData => this.UserData;
 
         // Attach
         void IState.Attach(IStateMachine machine, object? argument) {
@@ -271,7 +276,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public partial class State {
+    public sealed partial class State<TUserData> {
 
         // Attach
         private void Attach(IStateMachine machine, object? argument) {
@@ -361,7 +366,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public partial class State {
+    public sealed partial class State<TUserData> {
 
         // Activate
         private void Activate(object? argument) {
@@ -409,32 +414,6 @@ namespace System.StateMachine.Pro {
         private void OnBeforeDeactivate(object? argument) {
         }
         private void OnAfterDeactivate(object? argument) {
-        }
-
-    }
-    public sealed class State<TUserData> : State, IState<TUserData> {
-
-        private TUserData m_UserData = default!;
-
-        // UserData
-        public TUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
-        // Constructor
-        public State(TUserData userData) {
-            this.UserData = userData;
-        }
-        public override void Dispose() {
-            base.Dispose();
-            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

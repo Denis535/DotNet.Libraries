@@ -6,7 +6,7 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public partial class ChildrenableState : IState, IDisposable {
+    public sealed partial class ChildrenableState<TUserData> : IState<TUserData>, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
@@ -19,6 +19,8 @@ namespace System.StateMachine.Pro {
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
+
+        private TUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -39,13 +41,13 @@ namespace System.StateMachine.Pro {
         public IStateMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as StateMachine) ?? (this.Owner as IState)?.Machine;
+                return (this.Owner as IStateMachine) ?? (this.Owner as IState)?.Machine;
             }
         }
         internal IStateMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as StateMachine;
+                return this.Owner as IStateMachine;
             }
         }
 
@@ -170,19 +172,35 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Constructor
         public ChildrenableState() {
         }
-        public virtual void Dispose() {
+        public ChildrenableState(TUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in this.Children) {
                 child.Dispose();
             }
+            (this.UserData as IDisposable)?.Dispose();
             this.IsDisposed = true;
         }
 
     }
-    public partial class ChildrenableState {
+    public sealed partial class ChildrenableState<TUserData> {
 
         // Machine
         IStateMachine? IState.Machine => this.Machine;
@@ -207,39 +225,26 @@ namespace System.StateMachine.Pro {
 
         // OnAttach
         event Action<object?>? IState.OnAttachCallback {
-            add {
-                this.OnAttachCallback += value;
-            }
-            remove {
-                this.OnAttachCallback -= value;
-            }
+            add => this.OnAttachCallback += value;
+            remove => this.OnAttachCallback -= value;
         }
         event Action<object?>? IState.OnDetachCallback {
-            add {
-                this.OnDetachCallback += value;
-            }
-            remove {
-                this.OnDetachCallback -= value;
-            }
+            add => this.OnDetachCallback += value;
+            remove => this.OnDetachCallback -= value;
         }
 
         // OnActivate
         event Action<object?>? IState.OnActivateCallback {
-            add {
-                this.OnActivateCallback += value;
-            }
-            remove {
-                this.OnActivateCallback -= value;
-            }
+            add => this.OnActivateCallback += value;
+            remove => this.OnActivateCallback -= value;
         }
         event Action<object?>? IState.OnDeactivateCallback {
-            add {
-                this.OnDeactivateCallback += value;
-            }
-            remove {
-                this.OnDeactivateCallback -= value;
-            }
+            add => this.OnDeactivateCallback += value;
+            remove => this.OnDeactivateCallback -= value;
         }
+
+        // UserData
+        TUserData IState<TUserData>.UserData => this.UserData;
 
         // Attach
         void IState.Attach(IStateMachine machine, object? argument) {
@@ -312,7 +317,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public partial class ChildrenableState {
+    public sealed partial class ChildrenableState<TUserData> {
 
         // Attach
         internal void Attach(IStateMachine machine, object? argument) {
@@ -402,7 +407,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public partial class ChildrenableState {
+    public sealed partial class ChildrenableState<TUserData> {
 
         // Activate
         private void Activate(object? argument) {
@@ -459,7 +464,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public partial class ChildrenableState {
+    public sealed partial class ChildrenableState<TUserData> {
 
         // AddChild
         public void AddChild(IState child, object? argument) {
@@ -532,32 +537,6 @@ namespace System.StateMachine.Pro {
         private void Sort(List<IState> children) {
             this.SortDelegate?.Invoke( children );
             //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
-        }
-
-    }
-    public class ChildrenableState<TUserData> : ChildrenableState, IState<TUserData> {
-
-        private TUserData m_UserData = default!;
-
-        // UserData
-        public TUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
-        // Constructor
-        public ChildrenableState(TUserData userData) {
-            this.UserData = userData;
-        }
-        public override void Dispose() {
-            base.Dispose();
-            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

@@ -4,9 +4,11 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public partial class StateMachine : IStateMachine, IDisposable {
+    public sealed partial class StateMachine<TUserData> : IStateMachine<TUserData>, IDisposable {
 
         private IState? m_Root = null;
+
+        private TUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -23,25 +25,44 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Constructor
         public StateMachine() {
         }
-        public virtual void Dispose() {
+        public StateMachine(TUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.Root.Dispose();
             }
+            (this.UserData as IDisposable)?.Dispose();
             this.IsDisposed = true;
         }
 
     }
-    public partial class StateMachine {
+    public sealed partial class StateMachine<TUserData> {
 
         // Root
         IState? IStateMachine.Root => this.Root;
 
+        // UserData
+        TUserData IStateMachine<TUserData>.UserData => this.UserData;
+
     }
-    public partial class StateMachine {
+    public sealed partial class StateMachine<TUserData> {
 
         // SetRoot
         public void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
@@ -82,32 +103,6 @@ namespace System.StateMachine.Pro {
             } else {
                 root.Dispose();
             }
-        }
-
-    }
-    public sealed class StateMachine<TUserData> : StateMachine, IStateMachine<TUserData> {
-
-        private TUserData m_UserData = default!;
-
-        // UserData
-        public TUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
-        // Constructor
-        public StateMachine(TUserData userData) {
-            this.UserData = userData;
-        }
-        public override void Dispose() {
-            base.Dispose();
-            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }
