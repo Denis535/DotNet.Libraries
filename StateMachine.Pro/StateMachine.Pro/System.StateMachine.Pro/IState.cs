@@ -11,8 +11,8 @@ namespace System.StateMachine.Pro {
         public bool IsDisposed { get; }
 
         // Machine
-        public StateMachineBase? Machine { get; }
-        internal StateMachineBase? Machine_NoRecursive { get; }
+        public IStateMachine? Machine { get; }
+        internal IStateMachine? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
@@ -35,11 +35,11 @@ namespace System.StateMachine.Pro {
         internal void Dispose();
 
         // Attach
-        internal void Attach(StateMachineBase machine, object? argument);
+        internal void Attach(IStateMachine machine, object? argument);
         internal void Attach(IState parent, object? argument);
 
         // Detach
-        internal void Detach(StateMachineBase machine, object? argument);
+        internal void Detach(IStateMachine machine, object? argument);
         internal void Detach(IState parent, object? argument);
 
         // Activate

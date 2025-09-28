@@ -6,11 +6,11 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class ChildableStateBase : IState, IDisposable {
+    public partial class ChildrenableState : IState, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
-        private IState? m_Child = null;
+        private readonly List<IState> m_Children = new List<IState>( 0 );
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -28,16 +28,16 @@ namespace System.StateMachine.Pro {
         }
 
         // Machine
-        public StateMachineBase? Machine {
+        public IStateMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as StateMachineBase) ?? (this.Owner as IState)?.Machine;
+                return (this.Owner as StateMachine) ?? (this.Owner as IState)?.Machine;
             }
         }
-        internal StateMachineBase? Machine_NoRecursive {
+        internal IStateMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as StateMachineBase;
+                return this.Owner as StateMachine;
             }
         }
 
@@ -92,22 +92,18 @@ namespace System.StateMachine.Pro {
         }
 
         // Children
-        public IState? Child {
+        public IReadOnlyList<IState> Children {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_Child;
-            }
-            private set {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_Child = value;
+                return this.m_Children;
             }
         }
         public IEnumerable<IState> Descendants {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                if (this.Child != null) {
-                    yield return this.Child;
-                    foreach (var i in this.Child.Descendants) yield return i;
+                foreach (var child in this.Children) {
+                    yield return child;
+                    foreach (var i in child.Descendants) yield return i;
                 }
             }
         }
@@ -118,23 +114,34 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // Sort
+        public Action<List<IState>>? SortDelegate { get; init; }
+
+        // OnAttach
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // Constructor
-        public ChildableStateBase() {
+        public ChildrenableState() {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            if (this.Child is IState child) {
-                Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
+            foreach (var child in this.Children) {
+                child.Dispose();
             }
             this.IsDisposed = true;
         }
 
     }
-    public abstract partial class ChildableStateBase {
+    public partial class ChildrenableState {
 
         // Machine
-        StateMachineBase? IState.Machine => this.Machine;
-        StateMachineBase? IState.Machine_NoRecursive => this.Machine_NoRecursive;
+        IStateMachine? IState.Machine => this.Machine;
+        IStateMachine? IState.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         bool IState.IsRoot => this.IsRoot;
@@ -149,20 +156,12 @@ namespace System.StateMachine.Pro {
         Activity IState.Activity => this.Activity;
 
         // Children
-        IEnumerable<IState> IState.Children {
-            get {
-                if (this.Child != null) {
-                    return new[] { this.Child };
-                } else {
-                    return Enumerable.Empty<IState>();
-                }
-            }
-        }
+        IEnumerable<IState> IState.Children => this.Children;
         IEnumerable<IState> IState.Descendants => this.Descendants;
         IEnumerable<IState> IState.DescendantsAndSelf => this.DescendantsAndSelf;
 
         // Attach
-        void IState.Attach(StateMachineBase machine, object? argument) {
+        void IState.Attach(IStateMachine machine, object? argument) {
             this.Attach( machine, argument );
         }
         void IState.Attach(IState parent, object? argument) {
@@ -170,7 +169,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        void IState.Detach(StateMachineBase machine, object? argument) {
+        void IState.Detach(IStateMachine machine, object? argument) {
             this.Detach( machine, argument );
         }
         void IState.Detach(IState parent, object? argument) {
@@ -232,10 +231,10 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public abstract partial class ChildableStateBase {
+    public partial class ChildrenableState {
 
         // Attach
-        internal void Attach(StateMachineBase machine, object? argument) {
+        internal void Attach(IStateMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -270,7 +269,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        internal void Detach(StateMachineBase machine, object? argument) {
+        internal void Detach(IStateMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
@@ -304,21 +303,25 @@ namespace System.StateMachine.Pro {
         }
 
         // OnAttach
-        protected abstract void OnAttach(object? argument);
-        protected virtual void OnBeforeAttach(object? argument) {
+        private void OnAttach(object? argument) {
+            this.OnAttachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterAttach(object? argument) {
+        private void OnBeforeAttach(object? argument) {
+        }
+        private void OnAfterAttach(object? argument) {
         }
 
         // OnDetach
-        protected abstract void OnDetach(object? argument);
-        protected virtual void OnBeforeDetach(object? argument) {
+        private void OnDetach(object? argument) {
+            this.OnDetachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDetach(object? argument) {
+        private void OnBeforeDetach(object? argument) {
+        }
+        private void OnAfterDetach(object? argument) {
         }
 
     }
-    public abstract partial class ChildableStateBase {
+    public partial class ChildrenableState {
 
         // Activate
         private void Activate(object? argument) {
@@ -330,8 +333,8 @@ namespace System.StateMachine.Pro {
                 this.OnBeforeActivate( argument );
                 this.Activity = Activity.Activating;
                 this.OnActivate( argument );
-                if (this.Child != null) {
-                    this.Child.Activate( argument );
+                foreach (var child in this.Children) {
+                    child.Activate( argument );
                 }
                 this.Activity = Activity.Active;
                 this.OnAfterActivate( argument );
@@ -347,8 +350,8 @@ namespace System.StateMachine.Pro {
             {
                 this.OnBeforeDeactivate( argument );
                 this.Activity = Activity.Deactivating;
-                if (this.Child != null) {
-                    this.Child.Deactivate( argument );
+                foreach (var child in this.Children.Reverse()) {
+                    child.Deactivate( argument );
                 }
                 this.OnDeactivate( argument );
                 this.Activity = Activity.Inactive;
@@ -357,49 +360,49 @@ namespace System.StateMachine.Pro {
         }
 
         // OnActivate
-        protected abstract void OnActivate(object? argument);
-        protected virtual void OnBeforeActivate(object? argument) {
+        private void OnActivate(object? argument) {
+            this.OnActivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterActivate(object? argument) {
+        private void OnBeforeActivate(object? argument) {
+        }
+        private void OnAfterActivate(object? argument) {
         }
 
         // OnDeactivate
-        protected abstract void OnDeactivate(object? argument);
-        protected virtual void OnBeforeDeactivate(object? argument) {
+        private void OnDeactivate(object? argument) {
+            this.OnDeactivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDeactivate(object? argument) {
+        private void OnBeforeDeactivate(object? argument) {
+        }
+        private void OnAfterDeactivate(object? argument) {
         }
 
     }
-    public abstract partial class ChildableStateBase {
-
-        // SetChild
-        protected virtual void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", child == null || !child.IsDisposed );
-            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            if (this.Child != null) {
-                this.RemoveChild( this.Child, argument, callback );
-            }
-            if (child != null) {
-                this.AddChild( child, argument );
-            }
-        }
+    public partial class ChildrenableState {
 
         // AddChild
-        private void AddChild(IState child, object? argument) {
+        public void AddChild(IState child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"State {this} must have no {this.Child} child", this.Child == null );
-            this.Child = child;
-            this.Child.Attach( this, argument );
+            Assert.Operation.Valid( $"State {this} must have no {child} child", !this.Children.Contains( child ) );
+            this.m_Children.Add( child );
+            this.Sort( this.m_Children );
+            child.Attach( this, argument );
+        }
+        public void AddChildren(IEnumerable<IState> children, object? argument) {
+            Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            foreach (var child in children) {
+                this.AddChild( child, argument );
+            }
         }
 
         // RemoveChild
-        private void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
+        public void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
@@ -409,14 +412,71 @@ namespace System.StateMachine.Pro {
                 Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
             }
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"State {this} must have {child} child", this.Child == child );
-            this.Child.Detach( this, argument );
-            this.Child = null;
+            Assert.Operation.Valid( $"State {this} must have {child} child", this.Children.Contains( child ) );
+            child.Detach( this, argument );
+            _ = this.m_Children.Remove( child );
             if (callback != null) {
                 callback.Invoke( child, argument );
             } else {
                 child.Dispose();
             }
+        }
+        public bool RemoveChild(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            var child = this.Children.LastOrDefault( predicate );
+            if (child != null) {
+                this.RemoveChild( child, argument, callback );
+                return true;
+            }
+            return false;
+        }
+        public int RemoveChildren(Func<IState, bool> predicate, object? argument, Action<IState, object?>? callback) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            var children = this.Children.Reverse().Where( predicate ).ToList();
+            foreach (var child in children) {
+                this.RemoveChild( child, argument, callback );
+            }
+            return children.Count;
+        }
+        public int RemoveChildren(object? argument, Action<IState, object?>? callback) {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            var children = this.Children.Reverse().ToList();
+            foreach (var child in children) {
+                this.RemoveChild( child, argument, callback );
+            }
+            return children.Count;
+        }
+
+        // Sort
+        private void Sort(List<IState> children) {
+            this.SortDelegate?.Invoke( children );
+            //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
+        }
+
+    }
+    public class ChildrenableState<TUserData> : ChildrenableState, IUserData<TUserData> {
+
+        private TUserData m_UserData = default!;
+
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
+        // Constructor
+        public ChildrenableState(TUserData userData) {
+            this.UserData = userData;
+        }
+        public override void Dispose() {
+            base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

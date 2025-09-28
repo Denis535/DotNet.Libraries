@@ -8,7 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StateMachine.Pro\StateMachine.Pro.csproj" />
+        <ProjectReference Include="..\StateMachine.Pro\StateMachine.Pro.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="StateMachine.Pro.Tests" />
     </ItemGroup>
 
 </Project>

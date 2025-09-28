@@ -6,7 +6,7 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class StateBase : IState, IDisposable {
+    public partial class State : IState, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
@@ -27,16 +27,16 @@ namespace System.StateMachine.Pro {
         }
 
         // Machine
-        public StateMachineBase? Machine {
+        public IStateMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as StateMachineBase) ?? (this.Owner as IState)?.Machine;
+                return (this.Owner as StateMachine) ?? (this.Owner as IState)?.Machine;
             }
         }
-        internal StateMachineBase? Machine_NoRecursive {
+        internal IStateMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as StateMachineBase;
+                return this.Owner as StateMachine;
             }
         }
 
@@ -90,8 +90,16 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // OnAttach
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // Constructor
-        public StateBase() {
+        public State() {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
@@ -99,11 +107,11 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public abstract partial class StateBase {
+    public partial class State {
 
         // Machine
-        StateMachineBase? IState.Machine => this.Machine;
-        StateMachineBase? IState.Machine_NoRecursive => this.Machine_NoRecursive;
+        IStateMachine? IState.Machine => this.Machine;
+        IStateMachine? IState.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         bool IState.IsRoot => this.IsRoot;
@@ -123,7 +131,7 @@ namespace System.StateMachine.Pro {
         IEnumerable<IState> IState.DescendantsAndSelf => Enumerable.Empty<IState>();
 
         // Attach
-        void IState.Attach(StateMachineBase machine, object? argument) {
+        void IState.Attach(IStateMachine machine, object? argument) {
             this.Attach( machine, argument );
         }
         void IState.Attach(IState parent, object? argument) {
@@ -131,7 +139,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        void IState.Detach(StateMachineBase machine, object? argument) {
+        void IState.Detach(IStateMachine machine, object? argument) {
             this.Detach( machine, argument );
         }
         void IState.Detach(IState parent, object? argument) {
@@ -193,10 +201,10 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public abstract partial class StateBase {
+    public partial class State {
 
         // Attach
-        private void Attach(StateMachineBase machine, object? argument) {
+        private void Attach(IStateMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -231,7 +239,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        private void Detach(StateMachineBase machine, object? argument) {
+        private void Detach(IStateMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
@@ -265,21 +273,25 @@ namespace System.StateMachine.Pro {
         }
 
         // OnAttach
-        protected abstract void OnAttach(object? argument);
-        protected virtual void OnBeforeAttach(object? argument) {
+        private void OnAttach(object? argument) {
+            this.OnAttachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterAttach(object? argument) {
+        private void OnBeforeAttach(object? argument) {
+        }
+        private void OnAfterAttach(object? argument) {
         }
 
         // OnDetach
-        protected abstract void OnDetach(object? argument);
-        protected virtual void OnBeforeDetach(object? argument) {
+        private void OnDetach(object? argument) {
+            this.OnDetachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDetach(object? argument) {
+        private void OnBeforeDetach(object? argument) {
+        }
+        private void OnAfterDetach(object? argument) {
         }
 
     }
-    public abstract partial class StateBase {
+    public partial class State {
 
         // Activate
         private void Activate(object? argument) {
@@ -312,17 +324,47 @@ namespace System.StateMachine.Pro {
         }
 
         // OnActivate
-        protected abstract void OnActivate(object? argument);
-        protected virtual void OnBeforeActivate(object? argument) {
+        private void OnActivate(object? argument) {
+            this.OnActivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterActivate(object? argument) {
+        private void OnBeforeActivate(object? argument) {
+        }
+        private void OnAfterActivate(object? argument) {
         }
 
         // OnDeactivate
-        protected abstract void OnDeactivate(object? argument);
-        protected virtual void OnBeforeDeactivate(object? argument) {
+        private void OnDeactivate(object? argument) {
+            this.OnDeactivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDeactivate(object? argument) {
+        private void OnBeforeDeactivate(object? argument) {
+        }
+        private void OnAfterDeactivate(object? argument) {
+        }
+
+    }
+    public sealed class State<TUserData> : State, IUserData<TUserData> {
+
+        private TUserData m_UserData = default!;
+
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
+        // Constructor
+        public State(TUserData userData) {
+            this.UserData = userData;
+        }
+        public override void Dispose() {
+            base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }
