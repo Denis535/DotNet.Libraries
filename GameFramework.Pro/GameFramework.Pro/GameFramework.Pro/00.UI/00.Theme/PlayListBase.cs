@@ -32,13 +32,14 @@ namespace GameFramework.Pro {
 
         public PlayListBase() {
             this.m_State = new State<PlayListBase>( this );
-            this.StateMutable.OnActivateCallback += this.OnActivate;
-            this.StateMutable.OnDeactivateCallback += this.OnDeactivate;
+            this.State.OnActivateCallback += this.OnActivate;
+            this.State.OnDeactivateCallback += this.OnDeactivate;
         }
         ~PlayListBase() {
             Assert.Operation.Valid( $"PlayList '{this}' must be disposed", this.IsDisposed );
         }
         void IDisposable.Dispose() {
+            // This method can only be called from state
             this.Dispose();
         }
         protected virtual void Dispose() {

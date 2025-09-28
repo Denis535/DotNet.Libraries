@@ -34,13 +34,14 @@ namespace GameFramework.Pro {
             this.m_Node = new Node<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.NodeMutable.OnActivateCallback += this.OnActivate;
-            this.NodeMutable.OnDeactivateCallback += this.OnDeactivate;
+            this.Node.OnActivateCallback += this.OnActivate;
+            this.Node.OnDeactivateCallback += this.OnDeactivate;
         }
         ~WidgetBase() {
             Assert.Operation.Valid( $"Widget '{this}' must be disposed", this.IsDisposed );
         }
         void IDisposable.Dispose() {
+            // This method can only be called from node
             this.Dispose();
         }
         protected virtual void Dispose() {

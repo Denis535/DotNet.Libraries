@@ -103,12 +103,8 @@ namespace GameFramework.Pro {
 
     }
     internal class MainWidget : ViewableWidgetBase<MainWidget.MainWidgetView> {
-        internal class MainWidgetView : DisposableBase {
+        internal class MainWidgetView {
             public MainWidgetView() {
-            }
-            public override void Dispose() {
-                System.Assert.Operation.NotDisposed( $"View {this} must be non-disposed", !this.IsDisposed );
-                base.Dispose();
             }
         }
 
@@ -117,7 +113,6 @@ namespace GameFramework.Pro {
         }
         protected override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            this.View.Dispose();
             base.Dispose();
         }
 
@@ -128,12 +123,8 @@ namespace GameFramework.Pro {
 
     }
     internal class GameWidget : ViewableWidgetBase<GameWidget.GameWidgetView> {
-        internal class GameWidgetView : DisposableBase {
+        internal class GameWidgetView {
             public GameWidgetView() {
-            }
-            public override void Dispose() {
-                System.Assert.Operation.NotDisposed( $"View {this} must be non-disposed", !this.IsDisposed );
-                base.Dispose();
             }
         }
 
@@ -142,7 +133,6 @@ namespace GameFramework.Pro {
         }
         protected override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            this.View.Dispose();
             base.Dispose();
         }
 
