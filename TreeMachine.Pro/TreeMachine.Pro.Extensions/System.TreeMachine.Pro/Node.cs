@@ -259,6 +259,9 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // UserData
+        TUserData INode<TUserData>.UserData => this.UserData;
+
         // Attach
         void INode.Attach(ITreeMachine machine, object? argument) {
             this.Attach( machine, argument );
