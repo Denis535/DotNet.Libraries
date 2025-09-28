@@ -225,38 +225,22 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         event Action<object?>? INode.OnAttachCallback {
-            add {
-                this.OnAttachCallback += value;
-            }
-            remove {
-                this.OnAttachCallback -= value;
-            }
+            add => this.OnAttachCallback += value;
+            remove => this.OnAttachCallback -= value;
         }
         event Action<object?>? INode.OnDetachCallback {
-            add {
-                this.OnDetachCallback += value;
-            }
-            remove {
-                this.OnDetachCallback -= value;
-            }
+            add => this.OnDetachCallback += value;
+            remove => this.OnDetachCallback -= value;
         }
 
         // OnActivate
         event Action<object?>? INode.OnActivateCallback {
-            add {
-                this.OnActivateCallback += value;
-            }
-            remove {
-                this.OnActivateCallback -= value;
-            }
+            add => this.OnActivateCallback += value;
+            remove => this.OnActivateCallback -= value;
         }
         event Action<object?>? INode.OnDeactivateCallback {
-            add {
-                this.OnDeactivateCallback += value;
-            }
-            remove {
-                this.OnDeactivateCallback -= value;
-            }
+            add => this.OnDeactivateCallback += value;
+            remove => this.OnDeactivateCallback -= value;
         }
 
         // UserData
