@@ -160,6 +160,42 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode> INode.Descendants => this.Descendants;
         IEnumerable<INode> INode.DescendantsAndSelf => this.DescendantsAndSelf;
 
+        // OnAttach
+        event Action<object?>? INode.OnAttachCallback {
+            add {
+                this.OnAttachCallback += value;
+            }
+            remove {
+                this.OnAttachCallback -= value;
+            }
+        }
+        event Action<object?>? INode.OnDetachCallback {
+            add {
+                this.OnDetachCallback += value;
+            }
+            remove {
+                this.OnDetachCallback -= value;
+            }
+        }
+
+        // OnActivate
+        event Action<object?>? INode.OnActivateCallback {
+            add {
+                this.OnActivateCallback += value;
+            }
+            remove {
+                this.OnActivateCallback -= value;
+            }
+        }
+        event Action<object?>? INode.OnDeactivateCallback {
+            add {
+                this.OnDeactivateCallback += value;
+            }
+            remove {
+                this.OnDeactivateCallback -= value;
+            }
+        }
+
         // Attach
         void INode.Attach(ITreeMachine machine, object? argument) {
             this.Attach( machine, argument );

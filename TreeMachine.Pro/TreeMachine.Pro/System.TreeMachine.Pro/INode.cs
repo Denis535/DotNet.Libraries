@@ -31,6 +31,14 @@ namespace System.TreeMachine.Pro {
         public IEnumerable<INode> Descendants { get; }
         public IEnumerable<INode> DescendantsAndSelf { get; }
 
+        // OnAttach
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // Dispose
         internal void Dispose();
 
