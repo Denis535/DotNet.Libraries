@@ -12,6 +12,12 @@ namespace System.StateMachine.Pro {
         private Activity m_Activity = Activity.Inactive;
         private IState? m_Child = null;
 
+        private Action<object?>? m_OnAttachCallback = null;
+        private Action<object?>? m_OnDetachCallback = null;
+
+        private Action<object?>? m_OnActivateCallback = null;
+        private Action<object?>? m_OnDeactivateCallback = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
@@ -119,12 +125,40 @@ namespace System.StateMachine.Pro {
         }
 
         // OnAttach
-        public event Action<object?>? OnAttachCallback;
-        public event Action<object?>? OnDetachCallback;
+        public event Action<object?>? OnAttachCallback {
+            add {
+                this.m_OnAttachCallback += value;
+            }
+            remove {
+                this.m_OnAttachCallback -= value;
+            }
+        }
+        public event Action<object?>? OnDetachCallback {
+            add {
+                this.m_OnDetachCallback += value;
+            }
+            remove {
+                this.m_OnDetachCallback -= value;
+            }
+        }
 
         // OnActivate
-        public event Action<object?>? OnActivateCallback;
-        public event Action<object?>? OnDeactivateCallback;
+        public event Action<object?>? OnActivateCallback {
+            add {
+                this.m_OnActivateCallback += value;
+            }
+            remove {
+                this.m_OnActivateCallback -= value;
+            }
+        }
+        public event Action<object?>? OnDeactivateCallback {
+            add {
+                this.m_OnDeactivateCallback += value;
+            }
+            remove {
+                this.m_OnDeactivateCallback -= value;
+            }
+        }
 
         // Constructor
         public ChildableState() {
@@ -349,7 +383,7 @@ namespace System.StateMachine.Pro {
 
         // OnAttach
         private void OnAttach(object? argument) {
-            this.OnAttachCallback?.Invoke( argument );
+            this.m_OnAttachCallback?.Invoke( argument );
         }
         private void OnBeforeAttach(object? argument) {
         }
@@ -358,7 +392,7 @@ namespace System.StateMachine.Pro {
 
         // OnDetach
         private void OnDetach(object? argument) {
-            this.OnDetachCallback?.Invoke( argument );
+            this.m_OnDetachCallback?.Invoke( argument );
         }
         private void OnBeforeDetach(object? argument) {
         }
@@ -406,7 +440,7 @@ namespace System.StateMachine.Pro {
 
         // OnActivate
         private void OnActivate(object? argument) {
-            this.OnActivateCallback?.Invoke( argument );
+            this.m_OnActivateCallback?.Invoke( argument );
         }
         private void OnBeforeActivate(object? argument) {
         }
@@ -415,7 +449,7 @@ namespace System.StateMachine.Pro {
 
         // OnDeactivate
         private void OnDeactivate(object? argument) {
-            this.OnDeactivateCallback?.Invoke( argument );
+            this.m_OnDeactivateCallback?.Invoke( argument );
         }
         private void OnBeforeDeactivate(object? argument) {
         }
