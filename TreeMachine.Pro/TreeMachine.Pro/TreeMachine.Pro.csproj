@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>4.0.4</Version>
+        <Version>5.0.0</Version>
         <Description>The library that allows you to easily implement a hierarchical object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -52,23 +52,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="$(AssemblyName).Extensions" />
-        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+        <InternalsVisibleTo Include="TreeMachine.Pro.Extensions" />
+        <InternalsVisibleTo Include="TreeMachine.Pro.Tests" />
     </ItemGroup>
 
-    <!--Clean-->
     <ItemGroup>
         <Clean Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
 
-    <!--Include Builds-->
     <Target Name="IncludeBuilds">
         <ItemGroup>
             <BuildOutputInPackage Include="..\$(AssemblyName).Extensions\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).Extensions.dll" />
         </ItemGroup>
     </Target>
 
-    <!--Include Content-->
     <Target Name="IncludeContent">
         <ItemGroup>
             <TfmSpecificPackageFile Include="../README.md" PackagePath="/" />

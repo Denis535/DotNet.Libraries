@@ -6,7 +6,7 @@ namespace System.TreeMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public abstract partial class NodeBase : INode, IDisposable {
+    public partial class Node : INode, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
@@ -28,16 +28,16 @@ namespace System.TreeMachine.Pro {
         }
 
         // Machine
-        public TreeMachineBase? Machine {
+        public TreeMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as TreeMachineBase) ?? (this.Owner as INode)?.Machine;
+                return (this.Owner as TreeMachine) ?? (this.Owner as INode)?.Machine;
             }
         }
-        internal TreeMachineBase? Machine_NoRecursive {
+        internal TreeMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as TreeMachineBase;
+                return this.Owner as TreeMachine;
             }
         }
 
@@ -114,23 +114,34 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // Sort
+        public Action<List<INode>>? SortDelegate { get; init; }
+
+        // OnAttach
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // Constructor
-        public NodeBase() {
+        public Node() {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in this.Children) {
-                Assert.Operation.NotDisposed( $"Child {child} must be disposed", child.IsDisposed );
+                child.Dispose();
             }
             this.IsDisposed = true;
         }
 
     }
-    public abstract partial class NodeBase {
+    public partial class Node {
 
         // Machine
-        TreeMachineBase? INode.Machine => this.Machine;
-        TreeMachineBase? INode.Machine_NoRecursive => this.Machine_NoRecursive;
+        TreeMachine? INode.Machine => this.Machine;
+        TreeMachine? INode.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         [MemberNotNullWhen( false, nameof( INode.Parent ) )] bool INode.IsRoot => this.IsRoot;
@@ -150,7 +161,7 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode> INode.DescendantsAndSelf => this.DescendantsAndSelf;
 
         // Attach
-        void INode.Attach(TreeMachineBase machine, object? argument) {
+        void INode.Attach(TreeMachine machine, object? argument) {
             this.Attach( machine, argument );
         }
         void INode.Attach(INode parent, object? argument) {
@@ -158,7 +169,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        void INode.Detach(TreeMachineBase machine, object? argument) {
+        void INode.Detach(TreeMachine machine, object? argument) {
             this.Detach( machine, argument );
         }
         void INode.Detach(INode parent, object? argument) {
@@ -220,10 +231,10 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public abstract partial class NodeBase {
+    public partial class Node {
 
         // Attach
-        internal void Attach(TreeMachineBase machine, object? argument) {
+        internal void Attach(TreeMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -257,7 +268,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        internal void Detach(TreeMachineBase machine, object? argument) {
+        internal void Detach(TreeMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );
@@ -291,21 +302,25 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnAttach
-        protected abstract void OnAttach(object? argument);
-        protected virtual void OnBeforeAttach(object? argument) {
+        private void OnAttach(object? argument) {
+            this.OnAttachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterAttach(object? argument) {
+        private void OnBeforeAttach(object? argument) {
+        }
+        private void OnAfterAttach(object? argument) {
         }
 
         // OnDetach
-        protected abstract void OnDetach(object? argument);
-        protected virtual void OnBeforeDetach(object? argument) {
+        private void OnDetach(object? argument) {
+            this.OnDetachCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDetach(object? argument) {
+        private void OnBeforeDetach(object? argument) {
+        }
+        private void OnAfterDetach(object? argument) {
         }
 
     }
-    public abstract partial class NodeBase {
+    public partial class Node {
 
         // Activate
         private void Activate(object? argument) {
@@ -344,24 +359,28 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnActivate
-        protected abstract void OnActivate(object? argument);
-        protected virtual void OnBeforeActivate(object? argument) {
+        private void OnActivate(object? argument) {
+            this.OnActivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterActivate(object? argument) {
+        private void OnBeforeActivate(object? argument) {
+        }
+        private void OnAfterActivate(object? argument) {
         }
 
         // OnDeactivate
-        protected abstract void OnDeactivate(object? argument);
-        protected virtual void OnBeforeDeactivate(object? argument) {
+        private void OnDeactivate(object? argument) {
+            this.OnDeactivateCallback?.Invoke( argument );
         }
-        protected virtual void OnAfterDeactivate(object? argument) {
+        private void OnBeforeDeactivate(object? argument) {
+        }
+        private void OnAfterDeactivate(object? argument) {
         }
 
     }
-    public abstract partial class NodeBase {
+    public partial class Node {
 
         // AddChild
-        protected virtual void AddChild(INode child, object? argument) {
+        public void AddChild(INode child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
@@ -373,7 +392,7 @@ namespace System.TreeMachine.Pro {
             this.Sort( this.m_Children );
             child.Attach( this, argument );
         }
-        protected void AddChildren(IEnumerable<INode> children, object? argument) {
+        public void AddChildren(IEnumerable<INode> children, object? argument) {
             Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in children) {
@@ -382,7 +401,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveChild
-        protected virtual void RemoveChild(INode child, object? argument, Action<INode, object?>? callback) {
+        public void RemoveChild(INode child, object? argument, Action<INode, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
@@ -401,7 +420,7 @@ namespace System.TreeMachine.Pro {
                 child.Dispose();
             }
         }
-        protected bool RemoveChild(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
+        public bool RemoveChild(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var child = this.Children.LastOrDefault( predicate );
             if (child != null) {
@@ -410,7 +429,7 @@ namespace System.TreeMachine.Pro {
             }
             return false;
         }
-        protected int RemoveChildren(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
+        public int RemoveChildren(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().Where( predicate ).ToList();
             foreach (var child in children) {
@@ -418,7 +437,7 @@ namespace System.TreeMachine.Pro {
             }
             return children.Count;
         }
-        protected int RemoveChildren(object? argument, Action<INode, object?>? callback) {
+        public int RemoveChildren(object? argument, Action<INode, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().ToList();
             foreach (var child in children) {
@@ -428,15 +447,42 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveSelf
-        protected void RemoveSelf(object? argument, Action<INode, object?>? callback) {
+        public void RemoveSelf(object? argument, Action<INode, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have parent", this.Parent != null );
-            ((NodeBase) this.Parent).RemoveChild( this, argument, callback );
+            ((Node) this.Parent).RemoveChild( this, argument, callback );
         }
 
         // Sort
-        protected virtual void Sort(List<INode> children) {
+        private void Sort(List<INode> children) {
+            this.SortDelegate?.Invoke( children );
             //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
+        }
+
+    }
+    public sealed class Node<TUserData> : Node, IUserData<TUserData> {
+
+        private TUserData m_UserData = default!;
+
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
+        // Constructor
+        public Node(TUserData userData) {
+            this.UserData = userData;
+        }
+        public override void Dispose() {
+            base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

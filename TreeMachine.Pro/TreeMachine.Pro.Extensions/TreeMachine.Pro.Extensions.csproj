@@ -11,4 +11,8 @@
         <ProjectReference Include="..\TreeMachine.Pro\TreeMachine.Pro.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="TreeMachine.Pro.Tests" />
+    </ItemGroup>
+
 </Project>

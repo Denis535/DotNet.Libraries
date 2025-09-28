@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public abstract class TreeMachineBase : IDisposable {
+    public class TreeMachine : IDisposable {
 
         private INode? m_Root = null;
 
@@ -12,7 +12,7 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposed { get; private set; }
 
         // Root
-        protected INode? Root {
+        public INode? Root {
             get {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Root;
@@ -24,18 +24,18 @@ namespace System.TreeMachine.Pro {
         }
 
         // Constructor
-        public TreeMachineBase() {
+        public TreeMachine() {
         }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
-                Assert.Operation.NotDisposed( $"Root {this.Root} must be disposed", this.Root.IsDisposed );
+                this.Root.Dispose();
             }
             this.IsDisposed = true;
         }
 
         // SetRoot
-        protected virtual void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
+        public void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
@@ -75,6 +75,32 @@ namespace System.TreeMachine.Pro {
             } else {
                 root.Dispose();
             }
+        }
+
+    }
+    public sealed class TreeMachine<TUserData> : TreeMachine, IUserData<TUserData> {
+
+        private TUserData m_UserData = default!;
+
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
+        // Constructor
+        public TreeMachine(TUserData userData) {
+            this.UserData = userData;
+        }
+        public override void Dispose() {
+            base.Dispose();
+            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }
