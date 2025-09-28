@@ -31,6 +31,14 @@ namespace System.StateMachine.Pro {
         public IEnumerable<IState> Descendants { get; }
         public IEnumerable<IState> DescendantsAndSelf { get; }
 
+        // OnAttach
+        public event Action<object?>? OnAttachCallback;
+        public event Action<object?>? OnDetachCallback;
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback;
+        public event Action<object?>? OnDeactivateCallback;
+
         // Dispose
         internal void Dispose();
 

@@ -130,6 +130,42 @@ namespace System.StateMachine.Pro {
         IEnumerable<IState> IState.Descendants => Enumerable.Empty<IState>();
         IEnumerable<IState> IState.DescendantsAndSelf => Enumerable.Empty<IState>();
 
+        // OnAttach
+        event Action<object?>? IState.OnAttachCallback {
+            add {
+                this.OnAttachCallback += value;
+            }
+            remove {
+                this.OnAttachCallback -= value;
+            }
+        }
+        event Action<object?>? IState.OnDetachCallback {
+            add {
+                this.OnDetachCallback += value;
+            }
+            remove {
+                this.OnDetachCallback -= value;
+            }
+        }
+
+        // OnActivate
+        event Action<object?>? IState.OnActivateCallback {
+            add {
+                this.OnActivateCallback += value;
+            }
+            remove {
+                this.OnActivateCallback -= value;
+            }
+        }
+        event Action<object?>? IState.OnDeactivateCallback {
+            add {
+                this.OnDeactivateCallback += value;
+            }
+            remove {
+                this.OnDeactivateCallback -= value;
+            }
+        }
+
         // Attach
         void IState.Attach(IStateMachine machine, object? argument) {
             this.Attach( machine, argument );
