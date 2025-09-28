@@ -7,16 +7,13 @@ The library that allows you to easily implement a hierarchical object.
 
 - TreeMachineBase
 - INode
-- INode2
 - Activity
 - NodeBase
-- NodeBase2
 
 ###### System.TreeMachine.Pro
 
 - TreeMachine
 - Node
-- Node2
 - IUserData
 
 # Link
