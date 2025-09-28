@@ -4,13 +4,24 @@ namespace GameFramework.Pro {
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using System.TreeMachine.Pro;
 
     public abstract class WidgetBase : IDisposable {
 
+        private CancellationTokenSource? m_DisposeCancellationTokenSource;
         private readonly Node<WidgetBase> m_Node;
 
         public bool IsDisposed { get; private set; }
+        public CancellationToken DisposeCancellationToken {
+            get {
+                if (this.m_DisposeCancellationTokenSource == null) {
+                    this.m_DisposeCancellationTokenSource = new CancellationTokenSource();
+                    if (this.IsDisposed) this.m_DisposeCancellationTokenSource.Cancel();
+                }
+                return this.m_DisposeCancellationTokenSource.Token;
+            }
+        }
 
         protected ScreenBase? Screen {
             get {
@@ -63,6 +74,7 @@ namespace GameFramework.Pro {
         }
         protected virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            this.m_DisposeCancellationTokenSource?.Cancel();
             this.IsDisposed = true;
         }
 
