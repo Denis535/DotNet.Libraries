@@ -11,8 +11,8 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposed { get; }
 
         // Machine
-        public TreeMachine? Machine { get; }
-        internal TreeMachine? Machine_NoRecursive { get; }
+        public ITreeMachine? Machine { get; }
+        internal ITreeMachine? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
@@ -35,11 +35,11 @@ namespace System.TreeMachine.Pro {
         internal void Dispose();
 
         // Attach
-        internal void Attach(TreeMachine machine, object? argument);
+        internal void Attach(ITreeMachine machine, object? argument);
         internal void Attach(INode parent, object? argument);
 
         // Detach
-        internal void Detach(TreeMachine machine, object? argument);
+        internal void Detach(ITreeMachine machine, object? argument);
         internal void Detach(INode parent, object? argument);
 
         // Activate

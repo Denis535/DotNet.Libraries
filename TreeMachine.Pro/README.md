@@ -5,16 +5,15 @@ The library that allows you to easily implement a hierarchical object.
 
 ###### System.TreeMachine.Pro
 
-- TreeMachineBase
+- ITreeMachine
 - INode
 - Activity
-- NodeBase
 
 ###### System.TreeMachine.Pro
 
+- IUserData
 - TreeMachine
 - Node
-- IUserData
 
 # Link
 

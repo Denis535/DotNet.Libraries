@@ -28,16 +28,16 @@ namespace System.TreeMachine.Pro {
         }
 
         // Machine
-        public TreeMachine? Machine {
+        public ITreeMachine? Machine {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as TreeMachine) ?? (this.Owner as INode)?.Machine;
+                return (this.Owner as ITreeMachine) ?? (this.Owner as INode)?.Machine;
             }
         }
-        internal TreeMachine? Machine_NoRecursive {
+        internal ITreeMachine? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as TreeMachine;
+                return this.Owner as ITreeMachine;
             }
         }
 
@@ -140,8 +140,8 @@ namespace System.TreeMachine.Pro {
     public partial class Node {
 
         // Machine
-        TreeMachine? INode.Machine => this.Machine;
-        TreeMachine? INode.Machine_NoRecursive => this.Machine_NoRecursive;
+        ITreeMachine? INode.Machine => this.Machine;
+        ITreeMachine? INode.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         [MemberNotNullWhen( false, nameof( INode.Parent ) )] bool INode.IsRoot => this.IsRoot;
@@ -161,7 +161,7 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode> INode.DescendantsAndSelf => this.DescendantsAndSelf;
 
         // Attach
-        void INode.Attach(TreeMachine machine, object? argument) {
+        void INode.Attach(ITreeMachine machine, object? argument) {
             this.Attach( machine, argument );
         }
         void INode.Attach(INode parent, object? argument) {
@@ -169,7 +169,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        void INode.Detach(TreeMachine machine, object? argument) {
+        void INode.Detach(ITreeMachine machine, object? argument) {
             this.Detach( machine, argument );
         }
         void INode.Detach(INode parent, object? argument) {
@@ -234,7 +234,7 @@ namespace System.TreeMachine.Pro {
     public partial class Node {
 
         // Attach
-        internal void Attach(TreeMachine machine, object? argument) {
+        internal void Attach(ITreeMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -268,7 +268,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        internal void Detach(TreeMachine machine, object? argument) {
+        internal void Detach(ITreeMachine machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );

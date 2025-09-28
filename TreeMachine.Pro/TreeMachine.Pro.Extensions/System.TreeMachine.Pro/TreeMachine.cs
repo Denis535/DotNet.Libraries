@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public class TreeMachine : IDisposable {
+    public partial class TreeMachine : ITreeMachine, IDisposable {
 
         private INode? m_Root = null;
 
@@ -33,6 +33,15 @@ namespace System.TreeMachine.Pro {
             }
             this.IsDisposed = true;
         }
+
+    }
+    public partial class TreeMachine {
+
+        // Root
+        INode? ITreeMachine.Root => this.Root;
+
+    }
+    public partial class TreeMachine {
 
         // SetRoot
         public void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
