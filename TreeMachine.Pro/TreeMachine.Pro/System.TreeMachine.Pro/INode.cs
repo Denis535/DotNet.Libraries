@@ -77,4 +77,9 @@ namespace System.TreeMachine.Pro {
         internal void OnAfterDeactivate(object? argument);
 
     }
+    public interface INode<out TUserData> : INode {
+
+        public TUserData UserData { get; }
+
+    }
 }

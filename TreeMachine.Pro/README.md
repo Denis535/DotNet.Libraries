@@ -11,7 +11,6 @@ The library that allows you to easily implement a hierarchical object.
 
 ###### System.TreeMachine.Pro
 
-- IUserData
 - TreeMachine
 - Node
 

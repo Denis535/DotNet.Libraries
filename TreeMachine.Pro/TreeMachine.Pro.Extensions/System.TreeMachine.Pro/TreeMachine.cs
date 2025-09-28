@@ -87,7 +87,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed class TreeMachine<TUserData> : TreeMachine, IUserData<TUserData> {
+    public sealed class TreeMachine<TUserData> : TreeMachine, ITreeMachine<TUserData> {
 
         private TUserData m_UserData = default!;
 

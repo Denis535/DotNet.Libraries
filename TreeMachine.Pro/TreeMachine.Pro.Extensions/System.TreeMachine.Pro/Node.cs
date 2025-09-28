@@ -496,7 +496,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed class Node<TUserData> : Node, IUserData<TUserData> {
+    public sealed class Node<TUserData> : Node, INode<TUserData> {
 
         private TUserData m_UserData = default!;
 

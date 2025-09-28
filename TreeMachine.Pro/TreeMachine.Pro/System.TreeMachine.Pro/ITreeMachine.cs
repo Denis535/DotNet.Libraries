@@ -16,4 +16,9 @@ namespace System.TreeMachine.Pro {
         internal void Dispose();
 
     }
+    public interface ITreeMachine<out TUserData> : ITreeMachine {
+
+        public TUserData UserData { get; }
+
+    }
 }
