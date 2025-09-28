@@ -6,7 +6,7 @@ namespace System.TreeMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public partial class Node : INode, IDisposable {
+    public sealed partial class Node<TUserData> : INode<TUserData>, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
@@ -19,6 +19,8 @@ namespace System.TreeMachine.Pro {
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
+
+        private TUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -170,19 +172,35 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Constructor
         public Node() {
         }
-        public virtual void Dispose() {
+        public Node(TUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in this.Children) {
                 child.Dispose();
             }
+            (this.UserData as IDisposable)?.Dispose();
             this.IsDisposed = true;
         }
 
     }
-    public partial class Node {
+    public sealed partial class Node<TUserData> {
 
         // Machine
         ITreeMachine? INode.Machine => this.Machine;
@@ -312,7 +330,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public partial class Node {
+    public sealed partial class Node<TUserData> {
 
         // Attach
         internal void Attach(ITreeMachine machine, object? argument) {
@@ -401,7 +419,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public partial class Node {
+    public sealed partial class Node<TUserData> {
 
         // Activate
         private void Activate(object? argument) {
@@ -458,7 +476,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public partial class Node {
+    public sealed partial class Node<TUserData> {
 
         // AddChild
         public void AddChild(INode child, object? argument) {
@@ -531,39 +549,13 @@ namespace System.TreeMachine.Pro {
         public void RemoveSelf(object? argument, Action<INode, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have parent", this.Parent != null );
-            ((Node) this.Parent).RemoveChild( this, argument, callback );
+            ((Node<TUserData>) this.Parent).RemoveChild( this, argument, callback );
         }
 
         // Sort
         private void Sort(List<INode> children) {
             this.SortDelegate?.Invoke( children );
             //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
-        }
-
-    }
-    public sealed class Node<TUserData> : Node, INode<TUserData> {
-
-        private TUserData m_UserData = default!;
-
-        // UserData
-        public TUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
-        // Constructor
-        public Node(TUserData userData) {
-            this.UserData = userData;
-        }
-        public override void Dispose() {
-            base.Dispose();
-            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

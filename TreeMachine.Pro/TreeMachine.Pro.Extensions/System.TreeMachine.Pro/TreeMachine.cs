@@ -4,9 +4,11 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public partial class TreeMachine : ITreeMachine, IDisposable {
+    public sealed partial class TreeMachine<TUserData> : ITreeMachine<TUserData>, IDisposable {
 
         private INode? m_Root = null;
+
+        private TUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -23,25 +25,44 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // UserData
+        public TUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Constructor
         public TreeMachine() {
         }
-        public virtual void Dispose() {
+        public TreeMachine(TUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.Root.Dispose();
             }
+            (this.UserData as IDisposable)?.Dispose();
             this.IsDisposed = true;
         }
 
     }
-    public partial class TreeMachine {
+    public sealed partial class TreeMachine<TUserData> {
 
         // Root
         INode? ITreeMachine.Root => this.Root;
 
+        // UserData
+        TUserData ITreeMachine<TUserData>.UserData => this.UserData;
+
     }
-    public partial class TreeMachine {
+    public sealed partial class TreeMachine<TUserData> {
 
         // SetRoot
         public void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
@@ -84,32 +105,6 @@ namespace System.TreeMachine.Pro {
             } else {
                 root.Dispose();
             }
-        }
-
-    }
-    public sealed class TreeMachine<TUserData> : TreeMachine, ITreeMachine<TUserData> {
-
-        private TUserData m_UserData = default!;
-
-        // UserData
-        public TUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
-        // Constructor
-        public TreeMachine(TUserData userData) {
-            this.UserData = userData;
-        }
-        public override void Dispose() {
-            base.Dispose();
-            (this.m_UserData as IDisposable)?.Dispose();
         }
 
     }

@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00_a() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node<string>( "root" ), null, null );
@@ -36,7 +36,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00_b() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node<string>( "root" ), null, null );
@@ -57,7 +57,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01_a() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 var root = new Node<string>( "root" );
@@ -85,7 +85,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01_b() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 var root = new Node<string>( "root" );
@@ -189,7 +189,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_10() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node<string>( "root" ), null, null );
@@ -208,7 +208,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.AddChildren a, b
-                ((Node) machine.Root).AddChildren( [ new Node<string>( "a" ), new Node<string>( "b" ) ], null );
+                ((Node<string>) machine.Root).AddChildren( [ new Node<string>( "a" ), new Node<string>( "b" ) ], null );
                 Assert.That( machine.Root, Is.Not.Null );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -237,7 +237,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.RemoveChildren a, b
-                _ = ((Node) machine.Root).RemoveChildren( null, null );
+                _ = ((Node<string>) machine.Root).RemoveChildren( null, null );
                 Assert.That( machine.Root, Is.Not.Null );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
@@ -260,7 +260,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_11() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 var root = new Node<string>( "root" );
@@ -306,7 +306,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_12() {
-            using var machine = new TreeMachine<object?>( null );
+            using var machine = new TreeMachine<object?>();
             {
                 // machine.SetRoot root
                 var root = new Node<string>( "root" );
