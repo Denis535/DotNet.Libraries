@@ -16,4 +16,9 @@ namespace System.StateMachine.Pro {
         internal void Dispose();
 
     }
+    public interface IStateMachine<out TUserData> : IStateMachine {
+
+        public TUserData UserData { get; }
+
+    }
 }

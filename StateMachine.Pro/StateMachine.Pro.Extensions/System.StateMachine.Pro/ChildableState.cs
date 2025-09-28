@@ -472,7 +472,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed class ChildableState<TUserData> : ChildableState, IUserData<TUserData> {
+    public sealed class ChildableState<TUserData> : ChildableState, IState<TUserData> {
 
         private TUserData m_UserData = default!;
 

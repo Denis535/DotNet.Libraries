@@ -77,4 +77,9 @@ namespace System.StateMachine.Pro {
         internal void OnAfterDeactivate(object? argument);
 
     }
+    public interface IState<out TUserData> : IState {
+
+        public TUserData UserData { get; }
+
+    }
 }

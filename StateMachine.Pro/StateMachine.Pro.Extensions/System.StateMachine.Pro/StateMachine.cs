@@ -85,7 +85,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed class StateMachine<TUserData> : StateMachine, IUserData<TUserData> {
+    public sealed class StateMachine<TUserData> : StateMachine, IStateMachine<TUserData> {
 
         private TUserData m_UserData = default!;
 

@@ -378,7 +378,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed class State<TUserData> : State, IUserData<TUserData> {
+    public sealed class State<TUserData> : State, IState<TUserData> {
 
         private TUserData m_UserData = default!;
 

@@ -490,7 +490,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public class ChildrenableState<TUserData> : ChildrenableState, IUserData<TUserData> {
+    public class ChildrenableState<TUserData> : ChildrenableState, IState<TUserData> {
 
         private TUserData m_UserData = default!;
 
