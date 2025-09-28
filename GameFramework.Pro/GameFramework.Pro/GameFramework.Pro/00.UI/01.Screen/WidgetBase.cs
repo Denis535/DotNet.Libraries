@@ -5,23 +5,25 @@ namespace GameFramework.Pro {
     using System.Text;
     using System.TreeMachine.Pro;
 
-    public abstract class WidgetBase : DisposableBase {
+    public abstract class WidgetBase : IDisposable {
 
-        private readonly Node2<WidgetBase> m_Node;
+        private readonly Node<WidgetBase> m_Node;
+
+        public bool IsDisposed { get; private set; }
 
         protected ScreenBase? Screen {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                return ((IUserData<ScreenBase>?) this.Node.Machine)?.UserData;
+                return ((ITreeMachine<ScreenBase>?) this.Node.Machine)?.UserData;
             }
         }
-        public INode2 Node {
+        public INode Node {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
             }
         }
-        protected Node2<WidgetBase> NodeMutable {
+        protected Node<WidgetBase> NodeMutable {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
@@ -29,37 +31,25 @@ namespace GameFramework.Pro {
         }
 
         public WidgetBase() {
-            this.m_Node = new Node2<WidgetBase>( this ) {
+            this.m_Node = new Node<WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
             this.NodeMutable.OnActivateCallback += this.OnActivate;
             this.NodeMutable.OnDeactivateCallback += this.OnDeactivate;
-            this.NodeMutable.OnBeforeDescendantActivateCallback += this.OnBeforeDescendantActivate;
-            this.NodeMutable.OnAfterDescendantActivateCallback += this.OnAfterDescendantActivate;
-            this.NodeMutable.OnBeforeDescendantDeactivateCallback += this.OnBeforeDescendantDeactivate;
-            this.NodeMutable.OnAfterDescendantDeactivateCallback += this.OnAfterDescendantDeactivate;
         }
-        public override void Dispose() {
+        ~WidgetBase() {
+            Assert.Operation.Valid( $"Widget '{this}' must be disposed", this.IsDisposed );
+        }
+        void IDisposable.Dispose() {
+            this.Dispose();
+        }
+        protected virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            if (!this.NodeMutable.IsDisposed && this.NodeMutable.UserData != null) {
-                this.NodeMutable.UserData = null!;
-                this.NodeMutable.Dispose();
-                return;
-            }
-            base.Dispose();
+            this.IsDisposed = true;
         }
 
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);
-
-        protected virtual void OnBeforeDescendantActivate(INode2 descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantActivate(INode2 descendant, object? argument) {
-        }
-        protected virtual void OnBeforeDescendantDeactivate(INode2 descendant, object? argument) {
-        }
-        protected virtual void OnAfterDescendantDeactivate(INode2 descendant, object? argument) {
-        }
 
         protected virtual void Sort(List<INode> children) {
         }
@@ -82,10 +72,7 @@ namespace GameFramework.Pro {
 
         public ViewableWidgetBase() {
         }
-        public override void Dispose() {
-            if (this.View is DisposableBase view) {
-                Assert.Operation.Valid( $"View {view} must be disposed", view.IsDisposed );
-            }
+        protected override void Dispose() {
             base.Dispose();
         }
 
@@ -100,7 +87,7 @@ namespace GameFramework.Pro {
 
         public ViewableWidgetBase() {
         }
-        public override void Dispose() {
+        protected override void Dispose() {
             base.Dispose();
         }
 

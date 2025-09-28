@@ -18,7 +18,7 @@ namespace GameFramework.Pro {
         public WidgetBase2(IDependencyProvider provider) {
             this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
-        public override void Dispose() {
+        protected override void Dispose() {
             base.Dispose();
         }
 
@@ -38,7 +38,7 @@ namespace GameFramework.Pro {
         public ViewableWidgetBase2(IDependencyProvider provider) {
             this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
-        public override void Dispose() {
+        protected override void Dispose() {
             base.Dispose();
         }
 

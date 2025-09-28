@@ -5,14 +5,16 @@ namespace GameFramework.Pro {
     using System.StateMachine.Pro;
     using System.Text;
 
-    public abstract class PlayListBase : DisposableBase {
+    public abstract class PlayListBase : IDisposable {
 
         private readonly State<PlayListBase> m_State;
+
+        public bool IsDisposed { get; private set; }
 
         protected ThemeBase? Theme {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-                return ((IUserData<ThemeBase>?) this.State.Machine)?.UserData;
+                return ((IStateMachine<ThemeBase>?) this.State.Machine)?.UserData;
             }
         }
         public IState State {
@@ -33,14 +35,15 @@ namespace GameFramework.Pro {
             this.StateMutable.OnActivateCallback += this.OnActivate;
             this.StateMutable.OnDeactivateCallback += this.OnDeactivate;
         }
-        public override void Dispose() {
+        ~PlayListBase() {
+            Assert.Operation.Valid( $"PlayList '{this}' must be disposed", this.IsDisposed );
+        }
+        void IDisposable.Dispose() {
+            this.Dispose();
+        }
+        protected virtual void Dispose() {
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-            if (!this.StateMutable.IsDisposed && this.StateMutable.UserData != null) {
-                this.StateMutable.UserData = null!;
-                this.StateMutable.Dispose();
-                return;
-            }
-            base.Dispose();
+            this.IsDisposed = true;
         }
 
         protected abstract void OnActivate(object? argument);

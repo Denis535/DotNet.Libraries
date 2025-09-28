@@ -21,11 +21,8 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
-            if (!this.Machine.IsDisposed && this.Machine.UserData != null) {
-                this.Machine.UserData = null!;
-                this.Machine.Dispose();
-                return;
-            }
+            this.Machine.UserData = null!;
+            this.Machine.Dispose();
             base.Dispose();
         }
 

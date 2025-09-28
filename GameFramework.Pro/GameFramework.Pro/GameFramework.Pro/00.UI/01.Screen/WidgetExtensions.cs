@@ -8,14 +8,14 @@ namespace GameFramework.Pro {
 
     public static class WidgetExtensions {
 
-        public static WidgetBase Widget(this INode node) {
-            return ((IUserData<WidgetBase>) node).UserData;
+        public static WidgetBase Widget(this INode<WidgetBase> node) {
+            return node.UserData;
         }
-        public static T Widget<T>(this INode node) where T : notnull, WidgetBase {
-            return (T) ((IUserData<WidgetBase>) node).UserData;
+        public static T Widget<T>(this INode<WidgetBase> node) where T : notnull, WidgetBase {
+            return (T) node.UserData;
         }
 
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this Node node) {
+        public static CancellationToken GetCancellationToken_OnDetachCallback(this INode<WidgetBase> node) {
             var cts = new CancellationTokenSource();
             node.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -24,26 +24,7 @@ namespace GameFramework.Pro {
             }
             return cts.Token;
         }
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node node) {
-            var cts = new CancellationTokenSource();
-            node.OnDeactivateCallback += Callback;
-            void Callback(object? argument) {
-                cts.Cancel();
-                node.OnDeactivateCallback -= Callback;
-            }
-            return cts.Token;
-        }
-
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this Node2 node) {
-            var cts = new CancellationTokenSource();
-            node.OnDetachCallback += Callback;
-            void Callback(object? argument) {
-                cts.Cancel();
-                node.OnDetachCallback -= Callback;
-            }
-            return cts.Token;
-        }
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this Node2 node) {
+        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this INode<WidgetBase> node) {
             var cts = new CancellationTokenSource();
             node.OnDeactivateCallback += Callback;
             void Callback(object? argument) {
