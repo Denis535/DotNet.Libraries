@@ -12,6 +12,8 @@ namespace System.TreeMachine.Pro {
         private Activity m_Activity = Activity.Inactive;
         private readonly List<INode<TMachineUserData, TNodeUserData>> m_Children = new List<INode<TMachineUserData, TNodeUserData>>( 0 );
 
+        private TNodeUserData m_UserData = default!;
+
         private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
 
         private Action<object?>? m_OnAttachCallback = null;
@@ -19,8 +21,6 @@ namespace System.TreeMachine.Pro {
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
-
-        private TNodeUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -124,6 +124,18 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // UserData
+        public TNodeUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
         // Sort
         public Action<List<INode<TMachineUserData, TNodeUserData>>>? SortDelegate {
             get {
@@ -139,17 +151,21 @@ namespace System.TreeMachine.Pro {
         // OnAttach
         public event Action<object?>? OnAttachCallback {
             add {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnAttachCallback += value;
             }
             remove {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnAttachCallback -= value;
             }
         }
         public event Action<object?>? OnDetachCallback {
             add {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDetachCallback += value;
             }
             remove {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDetachCallback -= value;
             }
         }
@@ -157,30 +173,22 @@ namespace System.TreeMachine.Pro {
         // OnActivate
         public event Action<object?>? OnActivateCallback {
             add {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnActivateCallback += value;
             }
             remove {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnActivateCallback -= value;
             }
         }
         public event Action<object?>? OnDeactivateCallback {
             add {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDeactivateCallback += value;
             }
             remove {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDeactivateCallback -= value;
-            }
-        }
-
-        // UserData
-        public TNodeUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
             }
         }
 
@@ -223,6 +231,9 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Descendants => this.Descendants;
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
+        // UserData
+        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
+
         // OnAttach
         event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -242,9 +253,6 @@ namespace System.TreeMachine.Pro {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
         }
-
-        // UserData
-        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
         // Attach
         void INode<TMachineUserData, TNodeUserData>.Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {

@@ -5,7 +5,7 @@ namespace System.TreeMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface INode<TMachineUserData, TNodeUserData> {
+    public partial interface INode<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
@@ -31,6 +31,9 @@ namespace System.TreeMachine.Pro {
         public IEnumerable<INode<TMachineUserData, TNodeUserData>> Descendants { get; }
         public IEnumerable<INode<TMachineUserData, TNodeUserData>> DescendantsAndSelf { get; }
 
+        // UserData
+        public TNodeUserData UserData { get; }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -39,11 +42,11 @@ namespace System.TreeMachine.Pro {
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
-        // UserData
-        public TNodeUserData UserData { get; }
-
         // Dispose
         internal void Dispose();
+
+    }
+    public partial interface INode<TMachineUserData, TNodeUserData> {
 
         // Attach
         internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
