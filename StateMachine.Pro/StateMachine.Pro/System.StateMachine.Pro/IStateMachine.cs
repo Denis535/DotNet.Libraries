@@ -9,11 +9,11 @@ namespace System.StateMachine.Pro {
         // IsDisposed
         public bool IsDisposed { get; }
 
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
         // UserData
         public TMachineUserData UserData { get; }
+
+        // OnDispose
+        public event Action? OnDisposeCallback;
 
         // Dispose
         internal void Dispose();
