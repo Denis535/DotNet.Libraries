@@ -12,6 +12,9 @@ namespace System.TreeMachine.Pro {
 
         private Action? m_OnDisposeCallback = null;
 
+    }
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
