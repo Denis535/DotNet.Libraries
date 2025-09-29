@@ -6,6 +6,9 @@ namespace System.StateMachine.Pro {
 
     public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> {
 
+        // IsDisposed
+        bool IState<TMachineUserData, TStateUserData>.IsDisposed => this.IsDisposed;
+
         // Machine
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine => this.Machine;
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
@@ -48,6 +51,17 @@ namespace System.StateMachine.Pro {
         event Action<object?>? IState<TMachineUserData, TStateUserData>.OnDeactivateCallback {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
+        }
+
+        // OnDispose
+        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
+        // Dispose
+        void IState<TMachineUserData, TStateUserData>.Dispose() {
+            this.Dispose();
         }
 
         // Attach

@@ -19,6 +19,8 @@ namespace System.StateMachine.Pro {
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
 
+        private Action? m_OnDisposeCallback = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
@@ -154,6 +156,18 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // OnDispose
+        public event Action? OnDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback -= value;
+            }
+        }
+
         // Constructor
         public State() {
         }
@@ -162,7 +176,7 @@ namespace System.StateMachine.Pro {
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            (this.UserData as IDisposable)?.Dispose();
+            this.m_OnDisposeCallback?.Invoke();
             this.IsDisposed = true;
         }
 

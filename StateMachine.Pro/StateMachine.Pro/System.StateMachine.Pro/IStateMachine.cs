@@ -15,6 +15,9 @@ namespace System.StateMachine.Pro {
         // UserData
         public TMachineUserData UserData { get; }
 
+        // OnDispose
+        public event Action? OnDisposeCallback;
+
         // Dispose
         internal void Dispose();
 

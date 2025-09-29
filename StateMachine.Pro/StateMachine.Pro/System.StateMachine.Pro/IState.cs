@@ -42,6 +42,9 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
+        // OnDispose
+        public event Action? OnDisposeCallback;
+
         // Dispose
         internal void Dispose();
 
