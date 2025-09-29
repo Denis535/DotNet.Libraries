@@ -27,6 +27,45 @@ namespace System.StateMachine.Pro {
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
+        // UserData
+        public TStateUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+            set {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_UserData = value;
+            }
+        }
+
+        // OnDispose
+        public event Action? OnDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback -= value;
+            }
+        }
+
+        // Constructor
+        public State() {
+        }
+        public State(TStateUserData userData) {
+            this.UserData = userData;
+        }
+        public void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+            this.m_OnDisposeCallback?.Invoke();
+            this.IsDisposed = true;
+        }
+
+    }
+    public sealed partial class State<TMachineUserData, TStateUserData> {
+
         // Owner
         private object? Owner {
             get {
@@ -103,18 +142,6 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        // UserData
-        public TStateUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-            set {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
-        }
-
         // OnAttach
         public event Action<object?>? OnAttachCallback {
             add {
@@ -157,30 +184,6 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDeactivateCallback -= value;
             }
-        }
-
-        // OnDispose
-        public event Action? OnDisposeCallback {
-            add {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback += value;
-            }
-            remove {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback -= value;
-            }
-        }
-
-        // Constructor
-        public State() {
-        }
-        public State(TStateUserData userData) {
-            this.UserData = userData;
-        }
-        public void Dispose() {
-            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            this.m_OnDisposeCallback?.Invoke();
-            this.IsDisposed = true;
         }
 
     }
