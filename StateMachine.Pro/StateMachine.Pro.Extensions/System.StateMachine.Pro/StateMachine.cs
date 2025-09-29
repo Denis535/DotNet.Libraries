@@ -12,6 +12,9 @@ namespace System.StateMachine.Pro {
 
         private Action? m_OnDisposeCallback = null;
 
+    }
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
