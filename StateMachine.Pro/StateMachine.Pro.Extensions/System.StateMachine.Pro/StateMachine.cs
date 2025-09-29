@@ -55,15 +55,6 @@ namespace System.StateMachine.Pro {
     }
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 
-        // Root
-        IState<TMachineUserData, TStateUserData>? IStateMachine<TMachineUserData, TStateUserData>.Root => this.Root;
-
-        // UserData
-        TMachineUserData IStateMachine<TMachineUserData, TStateUserData>.UserData => this.UserData;
-
-    }
-    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
-
         // SetRoot
         public void SetRoot(IState<TMachineUserData, TStateUserData>? root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
