@@ -55,15 +55,6 @@ namespace System.TreeMachine.Pro {
     }
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
-        // Root
-        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
-
-        // UserData
-        TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
-
-    }
-    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
-
         // SetRoot
         public void SetRoot(INode<TMachineUserData, TNodeUserData>? root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
