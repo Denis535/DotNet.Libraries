@@ -4,17 +4,17 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed partial class StateMachine<TUserData> : IStateMachine<TUserData>, IDisposable {
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> : IStateMachine<TMachineUserData, TStateUserData>, IDisposable {
 
-        private IState? m_Root = null;
+        private IState<TMachineUserData, TStateUserData>? m_Root = null;
 
-        private TUserData m_UserData = default!;
+        private TMachineUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
         // Root
-        public IState? Root {
+        public IState<TMachineUserData, TStateUserData>? Root {
             get {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Root;
@@ -26,7 +26,7 @@ namespace System.StateMachine.Pro {
         }
 
         // UserData
-        public TUserData UserData {
+        public TMachineUserData UserData {
             get {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
@@ -40,7 +40,7 @@ namespace System.StateMachine.Pro {
         // Constructor
         public StateMachine() {
         }
-        public StateMachine(TUserData userData) {
+        public StateMachine(TMachineUserData userData) {
             this.UserData = userData;
         }
         public void Dispose() {
@@ -53,19 +53,19 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed partial class StateMachine<TUserData> {
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 
         // Root
-        IState? IStateMachine.Root => this.Root;
+        IState<TMachineUserData, TStateUserData>? IStateMachine<TMachineUserData, TStateUserData>.Root => this.Root;
 
         // UserData
-        TUserData IStateMachine<TUserData>.UserData => this.UserData;
+        TMachineUserData IStateMachine<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
     }
-    public sealed partial class StateMachine<TUserData> {
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 
         // SetRoot
-        public void SetRoot(IState? root, object? argument, Action<IState, object?>? callback) {
+        public void SetRoot(IState<TMachineUserData, TStateUserData>? root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
@@ -77,7 +77,7 @@ namespace System.StateMachine.Pro {
         }
 
         // AddRoot
-        private void AddRoot(IState root, object? argument) {
+        private void AddRoot(IState<TMachineUserData, TStateUserData> root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine} machine", root.Machine == null );
@@ -89,7 +89,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(IState root, object? argument, Action<IState, object?>? callback) {
+        private void RemoveRoot(IState<TMachineUserData, TStateUserData> root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine == this );

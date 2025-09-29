@@ -6,11 +6,11 @@ namespace System.StateMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public sealed partial class ChildableState<TUserData> : IState<TUserData>, IDisposable {
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> : IState<TMachineUserData, TStateUserData>, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
-        private IState? m_Child = null;
+        private IState<TMachineUserData, TStateUserData>? m_Child = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -18,7 +18,7 @@ namespace System.StateMachine.Pro {
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
 
-        private TUserData m_UserData = default!;
+        private TStateUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -36,16 +36,16 @@ namespace System.StateMachine.Pro {
         }
 
         // Machine
-        public IStateMachine? Machine {
+        public IStateMachine<TMachineUserData, TStateUserData>? Machine {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as IStateMachine) ?? (this.Owner as IState)?.Machine;
+                return (this.Owner as IStateMachine<TMachineUserData, TStateUserData>) ?? (this.Owner as IState<TMachineUserData, TStateUserData>)?.Machine;
             }
         }
-        internal IStateMachine? Machine_NoRecursive {
+        internal IStateMachine<TMachineUserData, TStateUserData>? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as IStateMachine;
+                return this.Owner as IStateMachine<TMachineUserData, TStateUserData>;
             }
         }
 
@@ -57,7 +57,7 @@ namespace System.StateMachine.Pro {
                 return this.Parent == null;
             }
         }
-        public IState Root {
+        public IState<TMachineUserData, TStateUserData> Root {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.Parent?.Root ?? this;
@@ -65,13 +65,13 @@ namespace System.StateMachine.Pro {
         }
 
         // Parent
-        public IState? Parent {
+        public IState<TMachineUserData, TStateUserData>? Parent {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as IState;
+                return this.Owner as IState<TMachineUserData, TStateUserData>;
             }
         }
-        public IEnumerable<IState> Ancestors {
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> Ancestors {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 if (this.Parent != null) {
@@ -80,7 +80,7 @@ namespace System.StateMachine.Pro {
                 }
             }
         }
-        public IEnumerable<IState> AncestorsAndSelf {
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> AncestorsAndSelf {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.Ancestors.Prepend( this );
@@ -100,7 +100,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Children
-        public IState? Child {
+        public IState<TMachineUserData, TStateUserData>? Child {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Child;
@@ -110,7 +110,7 @@ namespace System.StateMachine.Pro {
                 this.m_Child = value;
             }
         }
-        public IEnumerable<IState> Descendants {
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 if (this.Child != null) {
@@ -119,7 +119,7 @@ namespace System.StateMachine.Pro {
                 }
             }
         }
-        public IEnumerable<IState> DescendantsAndSelf {
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.Descendants.Prepend( this );
@@ -163,7 +163,7 @@ namespace System.StateMachine.Pro {
         }
 
         // UserData
-        public TUserData UserData {
+        public TStateUserData UserData {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
@@ -177,12 +177,12 @@ namespace System.StateMachine.Pro {
         // Constructor
         public ChildableState() {
         }
-        public ChildableState(TUserData userData) {
+        public ChildableState(TStateUserData userData) {
             this.UserData = userData;
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            if (this.Child is IState child) {
+            if (this.Child is IState<TMachineUserData, TStateUserData> child) {
                 child.Dispose();
             }
             (this.UserData as IDisposable)?.Dispose();
@@ -190,135 +190,135 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed partial class ChildableState<TUserData> {
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // Machine
-        IStateMachine? IState.Machine => this.Machine;
-        IStateMachine? IState.Machine_NoRecursive => this.Machine_NoRecursive;
+        IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine => this.Machine;
+        IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
-        bool IState.IsRoot => this.IsRoot;
-        IState IState.Root => this.Root;
+        bool IState<TMachineUserData, TStateUserData>.IsRoot => this.IsRoot;
+        IState<TMachineUserData, TStateUserData> IState<TMachineUserData, TStateUserData>.Root => this.Root;
 
         // Parent
-        IState? IState.Parent => this.Parent;
-        IEnumerable<IState> IState.Ancestors => this.Ancestors;
-        IEnumerable<IState> IState.AncestorsAndSelf => this.AncestorsAndSelf;
+        IState<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Parent => this.Parent;
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Ancestors => this.Ancestors;
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.AncestorsAndSelf => this.AncestorsAndSelf;
 
         // Activity
-        Activity IState.Activity => this.Activity;
+        Activity IState<TMachineUserData, TStateUserData>.Activity => this.Activity;
 
         // Children
-        IEnumerable<IState> IState.Children {
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children {
             get {
                 if (this.Child != null) {
                     return new[] { this.Child };
                 } else {
-                    return Enumerable.Empty<IState>();
+                    return Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
                 }
             }
         }
-        IEnumerable<IState> IState.Descendants => this.Descendants;
-        IEnumerable<IState> IState.DescendantsAndSelf => this.DescendantsAndSelf;
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => this.Descendants;
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
         // OnAttach
-        event Action<object?>? IState.OnAttachCallback {
+        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
             remove => this.OnAttachCallback -= value;
         }
-        event Action<object?>? IState.OnDetachCallback {
+        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnDetachCallback {
             add => this.OnDetachCallback += value;
             remove => this.OnDetachCallback -= value;
         }
 
         // OnActivate
-        event Action<object?>? IState.OnActivateCallback {
+        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnActivateCallback {
             add => this.OnActivateCallback += value;
             remove => this.OnActivateCallback -= value;
         }
-        event Action<object?>? IState.OnDeactivateCallback {
+        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnDeactivateCallback {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
         }
 
         // UserData
-        TUserData IState<TUserData>.UserData => this.UserData;
+        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
         // Attach
-        void IState.Attach(IStateMachine machine, object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {
             this.Attach( machine, argument );
         }
-        void IState.Attach(IState parent, object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Attach(IState<TMachineUserData, TStateUserData> parent, object? argument) {
             this.Attach( parent, argument );
         }
 
         // Detach
-        void IState.Detach(IStateMachine machine, object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Detach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {
             this.Detach( machine, argument );
         }
-        void IState.Detach(IState parent, object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Detach(IState<TMachineUserData, TStateUserData> parent, object? argument) {
             this.Detach( parent, argument );
         }
 
         // Activate
-        void IState.Activate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Activate(object? argument) {
             this.Activate( argument );
         }
 
         // Deactivate
-        void IState.Deactivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
 
         // OnAttach
-        void IState.OnAttach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnAttach(object? argument) {
             this.OnAttach( argument );
         }
-        void IState.OnBeforeAttach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnBeforeAttach(object? argument) {
             this.OnBeforeAttach( argument );
         }
-        void IState.OnAfterAttach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnAfterAttach(object? argument) {
             this.OnAfterAttach( argument );
         }
 
         // OnDetach
-        void IState.OnDetach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnDetach(object? argument) {
             this.OnDetach( argument );
         }
-        void IState.OnBeforeDetach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnBeforeDetach(object? argument) {
             this.OnBeforeDetach( argument );
         }
-        void IState.OnAfterDetach(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnAfterDetach(object? argument) {
             this.OnAfterDetach( argument );
         }
 
         // OnActivate
-        void IState.OnActivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnActivate(object? argument) {
             this.OnActivate( argument );
         }
-        void IState.OnBeforeActivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnBeforeActivate(object? argument) {
             this.OnBeforeActivate( argument );
         }
-        void IState.OnAfterActivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnAfterActivate(object? argument) {
             this.OnAfterActivate( argument );
         }
 
         // OnDeactivate
-        void IState.OnDeactivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnDeactivate(object? argument) {
             this.OnDeactivate( argument );
         }
-        void IState.OnBeforeDeactivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnBeforeDeactivate(object? argument) {
             this.OnBeforeDeactivate( argument );
         }
-        void IState.OnAfterDeactivate(object? argument) {
+        void IState<TMachineUserData, TStateUserData>.OnAfterDeactivate(object? argument) {
             this.OnAfterDeactivate( argument );
         }
 
     }
-    public sealed partial class ChildableState<TUserData> {
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // Attach
-        internal void Attach(IStateMachine machine, object? argument) {
+        internal void Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -334,7 +334,7 @@ namespace System.StateMachine.Pro {
                 this.Activate( argument );
             }
         }
-        private void Attach(IState parent, object? argument) {
+        private void Attach(IState<TMachineUserData, TStateUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -353,7 +353,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        internal void Detach(IStateMachine machine, object? argument) {
+        internal void Detach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {machine} machine", this.Machine_NoRecursive == machine );
@@ -368,7 +368,7 @@ namespace System.StateMachine.Pro {
                 this.Owner = null;
             }
         }
-        private void Detach(IState parent, object? argument) {
+        private void Detach(IState<TMachineUserData, TStateUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {parent} parent", this.Parent == parent );
@@ -405,7 +405,7 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed partial class ChildableState<TUserData> {
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // Activate
         private void Activate(object? argument) {
@@ -462,10 +462,10 @@ namespace System.StateMachine.Pro {
         }
 
     }
-    public sealed partial class ChildableState<TUserData> {
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // SetChild
-        public void SetChild(IState? child, object? argument, Action<IState, object?>? callback) {
+        public void SetChild(IState<TMachineUserData, TStateUserData>? child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", child == null || !child.IsDisposed );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             if (this.Child != null) {
@@ -477,7 +477,7 @@ namespace System.StateMachine.Pro {
         }
 
         // AddChild
-        private void AddChild(IState child, object? argument) {
+        private void AddChild(IState<TMachineUserData, TStateUserData> child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
@@ -490,7 +490,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveChild
-        private void RemoveChild(IState child, object? argument, Action<IState, object?>? callback) {
+        private void RemoveChild(IState<TMachineUserData, TStateUserData> child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );

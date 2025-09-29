@@ -5,31 +5,31 @@ namespace System.StateMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface IState {
+    public interface IState<TMachineUserData, TStateUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
 
         // Machine
-        public IStateMachine? Machine { get; }
-        internal IStateMachine? Machine_NoRecursive { get; }
+        public IStateMachine<TMachineUserData, TStateUserData>? Machine { get; }
+        internal IStateMachine<TMachineUserData, TStateUserData>? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
-        public IState Root { get; }
+        public IState<TMachineUserData, TStateUserData> Root { get; }
 
         // Parent
-        public IState? Parent { get; }
-        public IEnumerable<IState> Ancestors { get; }
-        public IEnumerable<IState> AncestorsAndSelf { get; }
+        public IState<TMachineUserData, TStateUserData>? Parent { get; }
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> Ancestors { get; }
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> AncestorsAndSelf { get; }
 
         // Activity
         public Activity Activity { get; }
 
         // Children
-        public IEnumerable<IState> Children { get; }
-        public IEnumerable<IState> Descendants { get; }
-        public IEnumerable<IState> DescendantsAndSelf { get; }
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> Children { get; }
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants { get; }
+        public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf { get; }
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -39,16 +39,19 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
+        // UserData
+        public TStateUserData UserData { get; }
+
         // Dispose
         internal void Dispose();
 
         // Attach
-        internal void Attach(IStateMachine machine, object? argument);
-        internal void Attach(IState parent, object? argument);
+        internal void Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument);
+        internal void Attach(IState<TMachineUserData, TStateUserData> parent, object? argument);
 
         // Detach
-        internal void Detach(IStateMachine machine, object? argument);
-        internal void Detach(IState parent, object? argument);
+        internal void Detach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument);
+        internal void Detach(IState<TMachineUserData, TStateUserData> parent, object? argument);
 
         // Activate
         internal void Activate(object? argument);
@@ -75,11 +78,6 @@ namespace System.StateMachine.Pro {
         internal void OnDeactivate(object? argument);
         internal void OnBeforeDeactivate(object? argument);
         internal void OnAfterDeactivate(object? argument);
-
-    }
-    public interface IState<out TUserData> : IState {
-
-        public TUserData UserData { get; }
 
     }
 }
