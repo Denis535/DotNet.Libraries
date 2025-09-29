@@ -11,13 +11,13 @@ namespace System.StateMachine.Pro {
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
 
+        private TStateUserData m_UserData = default!;
+
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
-
-        private TStateUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -98,42 +98,6 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        // OnAttach
-        public event Action<object?>? OnAttachCallback {
-            add {
-                this.m_OnAttachCallback += value;
-            }
-            remove {
-                this.m_OnAttachCallback -= value;
-            }
-        }
-        public event Action<object?>? OnDetachCallback {
-            add {
-                this.m_OnDetachCallback += value;
-            }
-            remove {
-                this.m_OnDetachCallback -= value;
-            }
-        }
-
-        // OnActivate
-        public event Action<object?>? OnActivateCallback {
-            add {
-                this.m_OnActivateCallback += value;
-            }
-            remove {
-                this.m_OnActivateCallback -= value;
-            }
-        }
-        public event Action<object?>? OnDeactivateCallback {
-            add {
-                this.m_OnDeactivateCallback += value;
-            }
-            remove {
-                this.m_OnDeactivateCallback -= value;
-            }
-        }
-
         // UserData
         public TStateUserData UserData {
             get {
@@ -143,6 +107,50 @@ namespace System.StateMachine.Pro {
             set {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 this.m_UserData = value;
+            }
+        }
+
+        // OnAttach
+        public event Action<object?>? OnAttachCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAttachCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAttachCallback -= value;
+            }
+        }
+        public event Action<object?>? OnDetachCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDetachCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDetachCallback -= value;
+            }
+        }
+
+        // OnActivate
+        public event Action<object?>? OnActivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnActivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnActivateCallback -= value;
+            }
+        }
+        public event Action<object?>? OnDeactivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDeactivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDeactivateCallback -= value;
             }
         }
 
@@ -182,6 +190,9 @@ namespace System.StateMachine.Pro {
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
 
+        // UserData
+        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
+
         // OnAttach
         event Action<object?>? IState<TMachineUserData, TStateUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -201,9 +212,6 @@ namespace System.StateMachine.Pro {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
         }
-
-        // UserData
-        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

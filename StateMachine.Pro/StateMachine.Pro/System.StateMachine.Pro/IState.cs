@@ -5,7 +5,7 @@ namespace System.StateMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface IState<TMachineUserData, TStateUserData> {
+    public partial interface IState<TMachineUserData, TStateUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
@@ -31,6 +31,9 @@ namespace System.StateMachine.Pro {
         public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants { get; }
         public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf { get; }
 
+        // UserData
+        public TStateUserData UserData { get; }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -39,11 +42,11 @@ namespace System.StateMachine.Pro {
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
-        // UserData
-        public TStateUserData UserData { get; }
-
         // Dispose
         internal void Dispose();
+
+    }
+    public partial interface IState<TMachineUserData, TStateUserData> {
 
         // Attach
         internal void Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument);
