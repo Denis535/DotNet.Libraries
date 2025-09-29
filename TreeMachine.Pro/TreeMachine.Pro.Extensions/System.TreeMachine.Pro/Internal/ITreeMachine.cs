@@ -6,11 +6,28 @@ namespace System.TreeMachine.Pro {
 
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
-        // Root
-        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
+        // IsDisposed
+        bool ITreeMachine<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
 
         // UserData
         TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
+
+        // OnDispose
+        event Action? ITreeMachine<TMachineUserData, TNodeUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
+        // Dispose
+        void ITreeMachine<TMachineUserData, TNodeUserData>.Dispose() {
+            this.Dispose();
+        }
+
+    }
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
+
+        // Root
+        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
 
     }
 }

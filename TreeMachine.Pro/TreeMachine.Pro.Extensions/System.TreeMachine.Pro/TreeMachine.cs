@@ -10,6 +10,8 @@ namespace System.TreeMachine.Pro {
 
         private TMachineUserData m_UserData = default!;
 
+        private Action? m_OnDisposeCallback = null;
+
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
@@ -37,6 +39,18 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // OnDispose
+        public event Action? OnDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback -= value;
+            }
+        }
+
         // Constructor
         public TreeMachine() {
         }
@@ -48,7 +62,7 @@ namespace System.TreeMachine.Pro {
             if (this.Root != null) {
                 this.Root.Dispose();
             }
-            (this.UserData as IDisposable)?.Dispose();
+            this.m_OnDisposeCallback?.Invoke();
             this.IsDisposed = true;
         }
 

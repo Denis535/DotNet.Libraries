@@ -4,19 +4,25 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface ITreeMachine<TMachineUserData, TNodeUserData> {
+    public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
 
-        // Root
-        public INode<TMachineUserData, TNodeUserData>? Root { get; }
+        // OnDispose
+        public event Action? OnDisposeCallback;
 
         // UserData
         public TMachineUserData UserData { get; }
 
         // Dispose
         internal void Dispose();
+
+    }
+    public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
+
+        // Root
+        public INode<TMachineUserData, TNodeUserData>? Root { get; }
 
     }
 }

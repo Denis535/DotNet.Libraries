@@ -7,6 +7,26 @@ namespace System.TreeMachine.Pro {
 
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
+        // IsDisposed
+        bool INode<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
+
+        // UserData
+        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
+
+        // OnDispose
+        event Action? INode<TMachineUserData, TNodeUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
+        // Dispose
+        void INode<TMachineUserData, TNodeUserData>.Dispose() {
+            this.Dispose();
+        }
+
+    }
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
+
         // Machine
         ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine => this.Machine;
         ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
@@ -28,9 +48,6 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Descendants => this.Descendants;
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
-        // UserData
-        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
-
         // OnAttach
         event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -50,6 +67,9 @@ namespace System.TreeMachine.Pro {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
         }
+
+    }
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Attach
         void INode<TMachineUserData, TNodeUserData>.Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
