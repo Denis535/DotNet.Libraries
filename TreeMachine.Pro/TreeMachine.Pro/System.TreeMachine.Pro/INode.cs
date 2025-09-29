@@ -10,11 +10,11 @@ namespace System.TreeMachine.Pro {
         // IsDisposed
         public bool IsDisposed { get; }
 
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
         // UserData
         public TNodeUserData UserData { get; }
+
+        // OnDispose
+        public event Action? OnDisposeCallback;
 
         // Dispose
         internal void Dispose();
