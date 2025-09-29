@@ -2,15 +2,16 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.TreeMachine.Pro;
 
-    public abstract class WidgetBase : IDisposable {
+    public abstract class WidgetBase {
 
         private CancellationTokenSource? m_DisposeCancellationTokenSource;
-        private readonly Node<WidgetBase> m_Node;
+        private readonly Node<ScreenBase, WidgetBase> m_Node;
 
         public bool IsDisposed { get; private set; }
         public CancellationToken DisposeCancellationToken {
@@ -26,16 +27,16 @@ namespace GameFramework.Pro {
         protected ScreenBase? Screen {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                return ((ITreeMachine<ScreenBase>?) this.Node.Machine)?.UserData;
+                return this.Node.Machine?.UserData;
             }
         }
-        public INode Node {
+        public INode<ScreenBase, WidgetBase> Node {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
             }
         }
-        protected Node<WidgetBase> NodeMutable {
+        protected Node<ScreenBase, WidgetBase> NodeMutable {
             get {
                 Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Node;
@@ -43,36 +44,36 @@ namespace GameFramework.Pro {
         }
 
         public WidgetBase() {
-            this.m_Node = new Node<WidgetBase>( this ) {
+            this.m_Node = new Node<ScreenBase, WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
             this.Node.OnActivateCallback += (argument) => {
                 foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
-                    ((INode<WidgetBase>) ancestor).Widget().OnBeforeDescendantActivate( this.Node, argument );
+                    ancestor.Widget().OnBeforeDescendantActivate( this.Node, argument );
                 }
                 this.OnActivate( argument );
                 foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
-                    ((INode<WidgetBase>) ancestor).Widget().OnAfterDescendantActivate( this.Node, argument );
+                    ancestor.Widget().OnAfterDescendantActivate( this.Node, argument );
                 }
             };
             this.Node.OnDeactivateCallback += (argument) => {
                 foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
-                    ((INode<WidgetBase>) ancestor).Widget().OnBeforeDescendantDeactivate( this.Node, argument );
+                    ancestor.Widget().OnBeforeDescendantDeactivate( this.Node, argument );
                 }
                 this.OnDeactivate( argument );
                 foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
-                    ((INode<WidgetBase>) ancestor).Widget().OnAfterDescendantDeactivate( this.Node, argument );
+                    ancestor.Widget().OnAfterDescendantDeactivate( this.Node, argument );
                 }
+            };
+            this.Node.OnDisposeCallback += () => {
+                this.Dispose();
             };
         }
         ~WidgetBase() {
-            Assert.Operation.Valid( $"Widget '{this}' must be disposed", this.IsDisposed );
-        }
-        void IDisposable.Dispose() {
-            // This method can only be called from node
-            this.Dispose();
+            Trace.Assert( this.IsDisposed, $"Widget '{this}' must be disposed" );
         }
         protected virtual void Dispose() {
+            // This method must only be called from node
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             this.m_DisposeCancellationTokenSource?.Cancel();
             this.IsDisposed = true;
@@ -81,16 +82,16 @@ namespace GameFramework.Pro {
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);
 
-        protected void OnBeforeDescendantActivate(INode descendant, object? argument) {
+        protected void OnBeforeDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnAfterDescendantActivate(INode descendant, object? argument) {
+        protected void OnAfterDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnBeforeDescendantDeactivate(INode descendant, object? argument) {
+        protected void OnBeforeDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnAfterDescendantDeactivate(INode descendant, object? argument) {
+        protected void OnAfterDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
 
-        protected virtual void Sort(List<INode> children) {
+        protected virtual void Sort(List<INode<ScreenBase, WidgetBase>> children) {
         }
 
     }

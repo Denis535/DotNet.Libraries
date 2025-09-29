@@ -7,9 +7,9 @@ namespace GameFramework.Pro {
 
     public abstract class ThemeBase : DisposableBase {
 
-        private readonly StateMachine<ThemeBase> m_Machine;
+        private readonly StateMachine<ThemeBase, PlayListBase> m_Machine;
 
-        protected StateMachine<ThemeBase> Machine {
+        protected StateMachine<ThemeBase, PlayListBase> Machine {
             get {
                 Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Machine;
@@ -17,11 +17,10 @@ namespace GameFramework.Pro {
         }
 
         public ThemeBase() {
-            this.m_Machine = new StateMachine<ThemeBase>( this );
+            this.m_Machine = new StateMachine<ThemeBase, PlayListBase>( this );
         }
         public override void Dispose() {
             Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
-            this.Machine.UserData = null!;
             this.Machine.Dispose();
             base.Dispose();
         }

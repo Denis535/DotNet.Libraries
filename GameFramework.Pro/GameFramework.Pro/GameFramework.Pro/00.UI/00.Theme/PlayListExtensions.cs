@@ -8,14 +8,14 @@ namespace GameFramework.Pro {
 
     public static class PlayListExtensions {
 
-        public static PlayListBase PlayList(this IState<PlayListBase> state) {
+        public static PlayListBase PlayList(this IState<ThemeBase, PlayListBase> state) {
             return state.UserData;
         }
-        public static T PlayList<T>(this IState<PlayListBase> state) where T : notnull, PlayListBase {
+        public static T PlayList<T>(this IState<ThemeBase, PlayListBase> state) where T : notnull, PlayListBase {
             return (T) state.UserData;
         }
 
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this IState<PlayListBase> state) {
+        public static CancellationToken GetCancellationToken_OnDetachCallback(this IState<ThemeBase, PlayListBase> state) {
             var cts = new CancellationTokenSource();
             state.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -24,7 +24,7 @@ namespace GameFramework.Pro {
             }
             return cts.Token;
         }
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this IState<PlayListBase> state) {
+        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this IState<ThemeBase, PlayListBase> state) {
             var cts = new CancellationTokenSource();
             state.OnDeactivateCallback += Callback;
             void Callback(object? argument) {

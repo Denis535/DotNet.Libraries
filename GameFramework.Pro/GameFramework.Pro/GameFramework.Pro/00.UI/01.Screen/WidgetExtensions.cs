@@ -8,14 +8,14 @@ namespace GameFramework.Pro {
 
     public static class WidgetExtensions {
 
-        public static WidgetBase Widget(this INode<WidgetBase> node) {
+        public static WidgetBase Widget(this INode<ScreenBase, WidgetBase> node) {
             return node.UserData;
         }
-        public static T Widget<T>(this INode<WidgetBase> node) where T : notnull, WidgetBase {
+        public static T Widget<T>(this INode<ScreenBase, WidgetBase> node) where T : notnull, WidgetBase {
             return (T) node.UserData;
         }
 
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this INode<WidgetBase> node) {
+        public static CancellationToken GetCancellationToken_OnDetachCallback(this INode<ScreenBase, WidgetBase> node) {
             var cts = new CancellationTokenSource();
             node.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -24,7 +24,7 @@ namespace GameFramework.Pro {
             }
             return cts.Token;
         }
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this INode<WidgetBase> node) {
+        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this INode<ScreenBase, WidgetBase> node) {
             var cts = new CancellationTokenSource();
             node.OnDeactivateCallback += Callback;
             void Callback(object? argument) {

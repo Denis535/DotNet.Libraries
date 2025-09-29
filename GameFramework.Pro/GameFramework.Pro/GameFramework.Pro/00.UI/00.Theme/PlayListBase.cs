@@ -2,14 +2,15 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.StateMachine.Pro;
     using System.Text;
     using System.Threading;
 
-    public abstract class PlayListBase : IDisposable {
+    public abstract class PlayListBase {
 
         private CancellationTokenSource? m_DisposeCancellationTokenSource;
-        private readonly State<PlayListBase> m_State;
+        private readonly State<ThemeBase, PlayListBase> m_State;
 
         public bool IsDisposed { get; private set; }
         public CancellationToken DisposeCancellationToken {
@@ -25,16 +26,16 @@ namespace GameFramework.Pro {
         protected ThemeBase? Theme {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-                return ((IStateMachine<ThemeBase>?) this.State.Machine)?.UserData;
+                return this.State.Machine?.UserData;
             }
         }
-        public IState State {
+        public IState<ThemeBase, PlayListBase> State {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;
             }
         }
-        protected State<PlayListBase> StateMutable {
+        protected State<ThemeBase, PlayListBase> StateMutable {
             get {
                 Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;
@@ -42,18 +43,18 @@ namespace GameFramework.Pro {
         }
 
         public PlayListBase() {
-            this.m_State = new State<PlayListBase>( this );
+            this.m_State = new State<ThemeBase, PlayListBase>( this );
             this.State.OnActivateCallback += this.OnActivate;
             this.State.OnDeactivateCallback += this.OnDeactivate;
+            this.State.OnDisposeCallback += () => {
+                this.Dispose();
+            };
         }
         ~PlayListBase() {
-            Assert.Operation.Valid( $"PlayList '{this}' must be disposed", this.IsDisposed );
-        }
-        void IDisposable.Dispose() {
-            // This method can only be called from state
-            this.Dispose();
+            Trace.Assert( this.IsDisposed, $"PlayList '{this}' must be disposed" );
         }
         protected virtual void Dispose() {
+            // This method must only be called from state
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
             this.m_DisposeCancellationTokenSource?.Cancel();
             this.IsDisposed = true;
