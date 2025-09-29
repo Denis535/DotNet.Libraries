@@ -18,18 +18,6 @@ namespace System.TreeMachine.Pro {
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
-        // Root
-        public INode<TMachineUserData, TNodeUserData>? Root {
-            get {
-                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_Root;
-            }
-            private set {
-                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_Root = value;
-            }
-        }
-
         // UserData
         public TMachineUserData UserData {
             get {
@@ -67,6 +55,21 @@ namespace System.TreeMachine.Pro {
             }
             this.m_OnDisposeCallback?.Invoke();
             this.IsDisposed = true;
+        }
+
+    }
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
+
+        // Root
+        public INode<TMachineUserData, TNodeUserData>? Root {
+            get {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Root;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_Root = value;
+            }
         }
 
     }
