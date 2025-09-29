@@ -10,6 +10,23 @@ namespace System.StateMachine.Pro {
         // IsDisposed
         bool IState<TMachineUserData, TStateUserData>.IsDisposed => this.IsDisposed;
 
+        // UserData
+        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
+
+        // OnDispose
+        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
+        // Dispose
+        void IState<TMachineUserData, TStateUserData>.Dispose() {
+            this.Dispose();
+        }
+
+    }
+    public sealed partial class State<TMachineUserData, TStateUserData> {
+
         // Machine
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine => this.Machine;
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
@@ -31,9 +48,6 @@ namespace System.StateMachine.Pro {
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
 
-        // UserData
-        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
-
         // OnAttach
         event Action<object?>? IState<TMachineUserData, TStateUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -54,16 +68,8 @@ namespace System.StateMachine.Pro {
             remove => this.OnDeactivateCallback -= value;
         }
 
-        // OnDispose
-        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
-            add => this.OnDisposeCallback += value;
-            remove => this.OnDisposeCallback -= value;
-        }
-
-        // Dispose
-        void IState<TMachineUserData, TStateUserData>.Dispose() {
-            this.Dispose();
-        }
+    }
+    public sealed partial class State<TMachineUserData, TStateUserData> {
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

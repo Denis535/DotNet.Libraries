@@ -4,22 +4,25 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IStateMachine<TMachineUserData, TStateUserData> {
+    public partial interface IStateMachine<TMachineUserData, TStateUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
 
-        // Root
-        public IState<TMachineUserData, TStateUserData>? Root { get; }
+        // OnDispose
+        public event Action? OnDisposeCallback;
 
         // UserData
         public TMachineUserData UserData { get; }
 
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
         // Dispose
         internal void Dispose();
+
+    }
+    public partial interface IStateMachine<TMachineUserData, TStateUserData> {
+
+        // Root
+        public IState<TMachineUserData, TStateUserData>? Root { get; }
 
     }
 }

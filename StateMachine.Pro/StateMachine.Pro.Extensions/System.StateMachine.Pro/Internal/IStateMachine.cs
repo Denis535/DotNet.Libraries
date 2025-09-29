@@ -9,9 +9,6 @@ namespace System.StateMachine.Pro {
         // IsDisposed
         bool IStateMachine<TMachineUserData, TStateUserData>.IsDisposed => this.IsDisposed;
 
-        // Root
-        IState<TMachineUserData, TStateUserData>? IStateMachine<TMachineUserData, TStateUserData>.Root => this.Root;
-
         // UserData
         TMachineUserData IStateMachine<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
@@ -25,6 +22,12 @@ namespace System.StateMachine.Pro {
         void IStateMachine<TMachineUserData, TStateUserData>.Dispose() {
             this.Dispose();
         }
+
+    }
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
+
+        // Root
+        IState<TMachineUserData, TStateUserData>? IStateMachine<TMachineUserData, TStateUserData>.Root => this.Root;
 
     }
 }

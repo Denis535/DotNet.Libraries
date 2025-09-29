@@ -10,6 +10,18 @@ namespace System.StateMachine.Pro {
         // IsDisposed
         public bool IsDisposed { get; }
 
+        // OnDispose
+        public event Action? OnDisposeCallback;
+
+        // UserData
+        public TStateUserData UserData { get; }
+
+        // Dispose
+        internal void Dispose();
+
+    }
+    public partial interface IState<TMachineUserData, TStateUserData> {
+
         // Machine
         public IStateMachine<TMachineUserData, TStateUserData>? Machine { get; }
         internal IStateMachine<TMachineUserData, TStateUserData>? Machine_NoRecursive { get; }
@@ -31,9 +43,6 @@ namespace System.StateMachine.Pro {
         public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants { get; }
         public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf { get; }
 
-        // UserData
-        public TStateUserData UserData { get; }
-
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -41,12 +50,6 @@ namespace System.StateMachine.Pro {
         // OnActivate
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
-
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
-        // Dispose
-        internal void Dispose();
 
     }
     public partial interface IState<TMachineUserData, TStateUserData> {
