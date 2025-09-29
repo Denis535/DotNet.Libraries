@@ -5,31 +5,31 @@ namespace System.TreeMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public interface INode {
+    public interface INode<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
         public bool IsDisposed { get; }
 
         // Machine
-        public ITreeMachine? Machine { get; }
-        internal ITreeMachine? Machine_NoRecursive { get; }
+        public ITreeMachine<TMachineUserData, TNodeUserData>? Machine { get; }
+        internal ITreeMachine<TMachineUserData, TNodeUserData>? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }
-        public INode Root { get; }
+        public INode<TMachineUserData, TNodeUserData> Root { get; }
 
         // Parent
-        public INode? Parent { get; }
-        public IEnumerable<INode> Ancestors { get; }
-        public IEnumerable<INode> AncestorsAndSelf { get; }
+        public INode<TMachineUserData, TNodeUserData>? Parent { get; }
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> Ancestors { get; }
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> AncestorsAndSelf { get; }
 
         // Activity
         public Activity Activity { get; }
 
         // Children
-        public IEnumerable<INode> Children { get; }
-        public IEnumerable<INode> Descendants { get; }
-        public IEnumerable<INode> DescendantsAndSelf { get; }
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> Children { get; }
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> Descendants { get; }
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> DescendantsAndSelf { get; }
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;
@@ -39,16 +39,19 @@ namespace System.TreeMachine.Pro {
         public event Action<object?>? OnActivateCallback;
         public event Action<object?>? OnDeactivateCallback;
 
+        // UserData
+        public TNodeUserData UserData { get; }
+
         // Dispose
         internal void Dispose();
 
         // Attach
-        internal void Attach(ITreeMachine machine, object? argument);
-        internal void Attach(INode parent, object? argument);
+        internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
+        internal void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
 
         // Detach
-        internal void Detach(ITreeMachine machine, object? argument);
-        internal void Detach(INode parent, object? argument);
+        internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
+        internal void Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
 
         // Activate
         internal void Activate(object? argument);
@@ -75,11 +78,6 @@ namespace System.TreeMachine.Pro {
         internal void OnDeactivate(object? argument);
         internal void OnBeforeDeactivate(object? argument);
         internal void OnAfterDeactivate(object? argument);
-
-    }
-    public interface INode<out TUserData> : INode {
-
-        public TUserData UserData { get; }
 
     }
 }

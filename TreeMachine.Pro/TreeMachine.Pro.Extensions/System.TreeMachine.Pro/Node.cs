@@ -6,13 +6,13 @@ namespace System.TreeMachine.Pro {
     using System.Linq;
     using System.Text;
 
-    public sealed partial class Node<TUserData> : INode<TUserData>, IDisposable {
+    public sealed partial class Node<TMachineUserData, TNodeUserData> : INode<TMachineUserData, TNodeUserData>, IDisposable {
 
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
-        private readonly List<INode> m_Children = new List<INode>( 0 );
+        private readonly List<INode<TMachineUserData, TNodeUserData>> m_Children = new List<INode<TMachineUserData, TNodeUserData>>( 0 );
 
-        private readonly Action<List<INode>>? m_SortDelegate = null;
+        private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -20,7 +20,7 @@ namespace System.TreeMachine.Pro {
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
 
-        private TUserData m_UserData = default!;
+        private TNodeUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
@@ -38,16 +38,16 @@ namespace System.TreeMachine.Pro {
         }
 
         // Machine
-        public ITreeMachine? Machine {
+        public ITreeMachine<TMachineUserData, TNodeUserData>? Machine {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as ITreeMachine) ?? (this.Owner as INode)?.Machine;
+                return (this.Owner as ITreeMachine<TMachineUserData, TNodeUserData>) ?? (this.Owner as INode<TMachineUserData, TNodeUserData>)?.Machine;
             }
         }
-        internal ITreeMachine? Machine_NoRecursive {
+        internal ITreeMachine<TMachineUserData, TNodeUserData>? Machine_NoRecursive {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as ITreeMachine;
+                return this.Owner as ITreeMachine<TMachineUserData, TNodeUserData>;
             }
         }
 
@@ -59,7 +59,7 @@ namespace System.TreeMachine.Pro {
                 return this.Parent == null;
             }
         }
-        public INode Root {
+        public INode<TMachineUserData, TNodeUserData> Root {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.Parent?.Root ?? this;
@@ -67,13 +67,13 @@ namespace System.TreeMachine.Pro {
         }
 
         // Parent
-        public INode? Parent {
+        public INode<TMachineUserData, TNodeUserData>? Parent {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as INode;
+                return this.Owner as INode<TMachineUserData, TNodeUserData>;
             }
         }
-        public IEnumerable<INode> Ancestors {
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> Ancestors {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 if (this.Parent != null) {
@@ -82,7 +82,7 @@ namespace System.TreeMachine.Pro {
                 }
             }
         }
-        public IEnumerable<INode> AncestorsAndSelf {
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> AncestorsAndSelf {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.Ancestors.Prepend( this );
@@ -102,13 +102,13 @@ namespace System.TreeMachine.Pro {
         }
 
         // Children
-        public IReadOnlyList<INode> Children {
+        public IReadOnlyList<INode<TMachineUserData, TNodeUserData>> Children {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Children;
             }
         }
-        public IEnumerable<INode> Descendants {
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> Descendants {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 foreach (var child in this.Children) {
@@ -117,7 +117,7 @@ namespace System.TreeMachine.Pro {
                 }
             }
         }
-        public IEnumerable<INode> DescendantsAndSelf {
+        public IEnumerable<INode<TMachineUserData, TNodeUserData>> DescendantsAndSelf {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.Descendants.Prepend( this );
@@ -125,7 +125,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Sort
-        public Action<List<INode>>? SortDelegate {
+        public Action<List<INode<TMachineUserData, TNodeUserData>>>? SortDelegate {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.m_SortDelegate;
@@ -173,7 +173,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // UserData
-        public TUserData UserData {
+        public TNodeUserData UserData {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
@@ -187,7 +187,7 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public Node() {
         }
-        public Node(TUserData userData) {
+        public Node(TNodeUserData userData) {
             this.UserData = userData;
         }
         public void Dispose() {
@@ -200,127 +200,127 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed partial class Node<TUserData> {
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Machine
-        ITreeMachine? INode.Machine => this.Machine;
-        ITreeMachine? INode.Machine_NoRecursive => this.Machine_NoRecursive;
+        ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine => this.Machine;
+        ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
-        [MemberNotNullWhen( false, nameof( INode.Parent ) )] bool INode.IsRoot => this.IsRoot;
-        INode INode.Root => this.Root;
+        [MemberNotNullWhen( false, nameof( INode<TMachineUserData, TNodeUserData>.Parent ) )] bool INode<TMachineUserData, TNodeUserData>.IsRoot => this.IsRoot;
+        INode<TMachineUserData, TNodeUserData> INode<TMachineUserData, TNodeUserData>.Root => this.Root;
 
         // Parent
-        INode? INode.Parent => this.Parent;
-        IEnumerable<INode> INode.Ancestors => this.Ancestors;
-        IEnumerable<INode> INode.AncestorsAndSelf => this.AncestorsAndSelf;
+        INode<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Parent => this.Parent;
+        IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Ancestors => this.Ancestors;
+        IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.AncestorsAndSelf => this.AncestorsAndSelf;
 
         // Activity
-        Activity INode.Activity => this.Activity;
+        Activity INode<TMachineUserData, TNodeUserData>.Activity => this.Activity;
 
         // Children
-        IEnumerable<INode> INode.Children => this.Children;
-        IEnumerable<INode> INode.Descendants => this.Descendants;
-        IEnumerable<INode> INode.DescendantsAndSelf => this.DescendantsAndSelf;
+        IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Children => this.Children;
+        IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Descendants => this.Descendants;
+        IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
         // OnAttach
-        event Action<object?>? INode.OnAttachCallback {
+        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
             remove => this.OnAttachCallback -= value;
         }
-        event Action<object?>? INode.OnDetachCallback {
+        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnDetachCallback {
             add => this.OnDetachCallback += value;
             remove => this.OnDetachCallback -= value;
         }
 
         // OnActivate
-        event Action<object?>? INode.OnActivateCallback {
+        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnActivateCallback {
             add => this.OnActivateCallback += value;
             remove => this.OnActivateCallback -= value;
         }
-        event Action<object?>? INode.OnDeactivateCallback {
+        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnDeactivateCallback {
             add => this.OnDeactivateCallback += value;
             remove => this.OnDeactivateCallback -= value;
         }
 
         // UserData
-        TUserData INode<TUserData>.UserData => this.UserData;
+        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
         // Attach
-        void INode.Attach(ITreeMachine machine, object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             this.Attach( machine, argument );
         }
-        void INode.Attach(INode parent, object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             this.Attach( parent, argument );
         }
 
         // Detach
-        void INode.Detach(ITreeMachine machine, object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             this.Detach( machine, argument );
         }
-        void INode.Detach(INode parent, object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             this.Detach( parent, argument );
         }
 
         // Activate
-        void INode.Activate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Activate(object? argument) {
             this.Activate( argument );
         }
 
         // Deactivate
-        void INode.Deactivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.Deactivate(object? argument) {
             this.Deactivate( argument );
         }
 
         // OnAttach
-        void INode.OnAttach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnAttach(object? argument) {
             this.OnAttach( argument );
         }
-        void INode.OnBeforeAttach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnBeforeAttach(object? argument) {
             this.OnBeforeAttach( argument );
         }
-        void INode.OnAfterAttach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnAfterAttach(object? argument) {
             this.OnAfterAttach( argument );
         }
 
         // OnDetach
-        void INode.OnDetach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnDetach(object? argument) {
             this.OnDetach( argument );
         }
-        void INode.OnBeforeDetach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnBeforeDetach(object? argument) {
             this.OnBeforeDetach( argument );
         }
-        void INode.OnAfterDetach(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnAfterDetach(object? argument) {
             this.OnAfterDetach( argument );
         }
 
         // OnActivate
-        void INode.OnActivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnActivate(object? argument) {
             this.OnActivate( argument );
         }
-        void INode.OnBeforeActivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnBeforeActivate(object? argument) {
             this.OnBeforeActivate( argument );
         }
-        void INode.OnAfterActivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnAfterActivate(object? argument) {
             this.OnAfterActivate( argument );
         }
 
         // OnDeactivate
-        void INode.OnDeactivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnDeactivate(object? argument) {
             this.OnDeactivate( argument );
         }
-        void INode.OnBeforeDeactivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnBeforeDeactivate(object? argument) {
             this.OnBeforeDeactivate( argument );
         }
-        void INode.OnAfterDeactivate(object? argument) {
+        void INode<TMachineUserData, TNodeUserData>.OnAfterDeactivate(object? argument) {
             this.OnAfterDeactivate( argument );
         }
 
     }
-    public sealed partial class Node<TUserData> {
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Attach
-        internal void Attach(ITreeMachine machine, object? argument) {
+        internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -336,7 +336,7 @@ namespace System.TreeMachine.Pro {
                 this.Activate( argument );
             }
         }
-        private void Attach(INode parent, object? argument) {
+        private void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
@@ -354,7 +354,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        internal void Detach(ITreeMachine machine, object? argument) {
+        internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );
@@ -369,7 +369,7 @@ namespace System.TreeMachine.Pro {
                 this.Owner = null;
             }
         }
-        private void Detach(INode parent, object? argument) {
+        private void Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {parent} parent", this.Parent == parent );
@@ -406,7 +406,7 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed partial class Node<TUserData> {
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Activate
         private void Activate(object? argument) {
@@ -463,10 +463,10 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed partial class Node<TUserData> {
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // AddChild
-        public void AddChild(INode child, object? argument) {
+        public void AddChild(INode<TMachineUserData, TNodeUserData> child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
@@ -478,7 +478,7 @@ namespace System.TreeMachine.Pro {
             this.Sort( this.m_Children );
             child.Attach( this, argument );
         }
-        public void AddChildren(IEnumerable<INode> children, object? argument) {
+        public void AddChildren(IEnumerable<INode<TMachineUserData, TNodeUserData>> children, object? argument) {
             Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in children) {
@@ -487,7 +487,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveChild
-        public void RemoveChild(INode child, object? argument, Action<INode, object?>? callback) {
+        public void RemoveChild(INode<TMachineUserData, TNodeUserData> child, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
@@ -506,7 +506,7 @@ namespace System.TreeMachine.Pro {
                 child.Dispose();
             }
         }
-        public bool RemoveChild(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
+        public bool RemoveChild(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var child = this.Children.LastOrDefault( predicate );
             if (child != null) {
@@ -515,7 +515,7 @@ namespace System.TreeMachine.Pro {
             }
             return false;
         }
-        public int RemoveChildren(Func<INode, bool> predicate, object? argument, Action<INode, object?>? callback) {
+        public int RemoveChildren(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().Where( predicate ).ToList();
             foreach (var child in children) {
@@ -523,7 +523,7 @@ namespace System.TreeMachine.Pro {
             }
             return children.Count;
         }
-        public int RemoveChildren(object? argument, Action<INode, object?>? callback) {
+        public int RemoveChildren(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().ToList();
             foreach (var child in children) {
@@ -533,14 +533,14 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveSelf
-        public void RemoveSelf(object? argument, Action<INode, object?>? callback) {
+        public void RemoveSelf(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have parent", this.Parent != null );
-            ((Node<TUserData>) this.Parent).RemoveChild( this, argument, callback );
+            ((Node<TMachineUserData, TNodeUserData>) this.Parent).RemoveChild( this, argument, callback );
         }
 
         // Sort
-        private void Sort(List<INode> children) {
+        private void Sort(List<INode<TMachineUserData, TNodeUserData>> children) {
             this.SortDelegate?.Invoke( children );
             //children.Sort( (a, b) => Comparer<int>.Default.Compare( GetOrderOf( a ), GetOrderOf( b ) ) );
         }

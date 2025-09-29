@@ -4,17 +4,17 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed partial class TreeMachine<TUserData> : ITreeMachine<TUserData>, IDisposable {
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> : ITreeMachine<TMachineUserData, TNodeUserData>, IDisposable {
 
-        private INode? m_Root = null;
+        private INode<TMachineUserData, TNodeUserData>? m_Root = null;
 
-        private TUserData m_UserData = default!;
+        private TMachineUserData m_UserData = default!;
 
         // IsDisposed
         public bool IsDisposed { get; private set; }
 
         // Root
-        public INode? Root {
+        public INode<TMachineUserData, TNodeUserData>? Root {
             get {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Root;
@@ -26,7 +26,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // UserData
-        public TUserData UserData {
+        public TMachineUserData UserData {
             get {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
@@ -40,7 +40,7 @@ namespace System.TreeMachine.Pro {
         // Constructor
         public TreeMachine() {
         }
-        public TreeMachine(TUserData userData) {
+        public TreeMachine(TMachineUserData userData) {
             this.UserData = userData;
         }
         public void Dispose() {
@@ -53,19 +53,19 @@ namespace System.TreeMachine.Pro {
         }
 
     }
-    public sealed partial class TreeMachine<TUserData> {
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
         // Root
-        INode? ITreeMachine.Root => this.Root;
+        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
 
         // UserData
-        TUserData ITreeMachine<TUserData>.UserData => this.UserData;
+        TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
     }
-    public sealed partial class TreeMachine<TUserData> {
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
         // SetRoot
-        public void SetRoot(INode? root, object? argument, Action<INode, object?>? callback) {
+        public void SetRoot(INode<TMachineUserData, TNodeUserData>? root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
@@ -77,7 +77,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // AddRoot
-        private void AddRoot(INode root, object? argument) {
+        private void AddRoot(INode<TMachineUserData, TNodeUserData> root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine_NoRecursive} machine", root.Machine_NoRecursive == null );
@@ -90,7 +90,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(INode root, object? argument, Action<INode, object?>? callback) {
+        private void RemoveRoot(INode<TMachineUserData, TNodeUserData> root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
