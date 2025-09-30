@@ -33,7 +33,7 @@ namespace System.StateMachine.Pro {
                 return this.m_Lifecycle == Lifecycle.Disposing;
             }
             private set {
-                Assert.Operation.Valid( $"State {this} must be alived", this.m_Lifecycle == Lifecycle.Alive );
+                Assert.Operation.Valid( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
                 this.m_Lifecycle = Lifecycle.Disposing;
             }
         }
