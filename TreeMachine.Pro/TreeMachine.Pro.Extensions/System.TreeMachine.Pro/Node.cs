@@ -8,6 +8,8 @@ namespace System.TreeMachine.Pro {
 
     public sealed partial class Node<TMachineUserData, TNodeUserData> : INode<TMachineUserData, TNodeUserData>, IDisposable {
 
+        private Lifecycle m_Lifecycle = Lifecycle.Alive;
+
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
         private readonly List<INode<TMachineUserData, TNodeUserData>> m_Children = new List<INode<TMachineUserData, TNodeUserData>>( 0 );
@@ -28,7 +30,24 @@ namespace System.TreeMachine.Pro {
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposing {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposing;
+            }
+            private set {
+                Assert.Operation.Valid( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
+                this.m_Lifecycle = Lifecycle.Disposing;
+            }
+        }
+        public bool IsDisposed {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposed;
+            }
+            private set {
+                Assert.Operation.Valid( $"Node {this} must be disposing", this.m_Lifecycle == Lifecycle.Disposing );
+                this.m_Lifecycle = Lifecycle.Disposed;
+            }
+        }
 
         // UserData
         public TNodeUserData UserData {
@@ -61,7 +80,13 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+            if (this.Machine_NoRecursive != null) {
+                Assert.Operation.Valid( $"Machine {this.Machine_NoRecursive} must be disposing", this.Machine_NoRecursive.IsDisposing );
+            }
+            if (this.Parent != null) {
+                Assert.Operation.Valid( $"Parent {this.Parent} must be disposing", this.Parent.IsDisposing );
+            }
+            this.IsDisposing = true;
             foreach (var child in this.Children) {
                 child.Dispose();
             }

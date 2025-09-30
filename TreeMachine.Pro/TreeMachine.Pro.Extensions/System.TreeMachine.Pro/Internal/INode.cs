@@ -4,10 +4,11 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-
+    
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
+        bool INode<TMachineUserData, TNodeUserData>.IsDisposing => this.IsDisposing;
         bool INode<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
 
         // UserData

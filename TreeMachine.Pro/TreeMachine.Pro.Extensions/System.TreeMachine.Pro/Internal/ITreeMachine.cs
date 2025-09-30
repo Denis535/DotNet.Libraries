@@ -7,6 +7,7 @@ namespace System.TreeMachine.Pro {
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
+        bool ITreeMachine<TMachineUserData, TNodeUserData>.IsDisposing => this.IsDisposing;
         bool ITreeMachine<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
 
         // UserData

@@ -7,6 +7,7 @@ namespace System.TreeMachine.Pro {
     public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
+        public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
         // UserData

@@ -6,6 +6,8 @@ namespace System.TreeMachine.Pro {
 
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> : ITreeMachine<TMachineUserData, TNodeUserData>, IDisposable {
 
+        private Lifecycle m_Lifecycle = Lifecycle.Alive;
+
         private INode<TMachineUserData, TNodeUserData>? m_Root = null;
 
         private TMachineUserData m_UserData = default!;
@@ -16,7 +18,24 @@ namespace System.TreeMachine.Pro {
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposing {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposing;
+            }
+            private set {
+                Assert.Operation.Valid( $"TreeMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
+                this.m_Lifecycle = Lifecycle.Disposing;
+            }
+        }
+        public bool IsDisposed {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposed;
+            }
+            private set {
+                Assert.Operation.Valid( $"TreeMachine {this} must be disposing", this.m_Lifecycle == Lifecycle.Disposing );
+                this.m_Lifecycle = Lifecycle.Disposed;
+            }
+        }
 
         // UserData
         public TMachineUserData UserData {
@@ -49,7 +68,7 @@ namespace System.TreeMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
-            Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+            this.IsDisposing = true;
             if (this.Root != null) {
                 this.Root.Dispose();
             }

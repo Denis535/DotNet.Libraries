@@ -8,6 +8,7 @@ namespace System.TreeMachine.Pro {
     public partial interface INode<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
+        public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
         // UserData
