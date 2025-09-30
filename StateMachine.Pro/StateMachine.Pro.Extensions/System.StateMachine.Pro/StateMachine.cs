@@ -22,18 +22,10 @@ namespace System.StateMachine.Pro {
             get {
                 return this.m_Lifecycle == Lifecycle.Disposing;
             }
-            private set {
-                Assert.Operation.Valid( $"StateMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-                this.m_Lifecycle = Lifecycle.Disposing;
-            }
         }
         public bool IsDisposed {
             get {
                 return this.m_Lifecycle == Lifecycle.Disposed;
-            }
-            private set {
-                Assert.Operation.Valid( $"StateMachine {this} must be disposing", this.m_Lifecycle == Lifecycle.Disposing );
-                this.m_Lifecycle = Lifecycle.Disposed;
             }
         }
 
@@ -68,12 +60,13 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
-            this.IsDisposing = true;
+            Assert.Operation.NotDisposed( $"StateMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
+            this.m_Lifecycle = Lifecycle.Disposing;
             if (this.Root != null) {
                 this.Root.Dispose();
             }
             this.m_OnDisposeCallback?.Invoke();
-            this.IsDisposed = true;
+            this.m_Lifecycle = Lifecycle.Disposed;
         }
 
     }

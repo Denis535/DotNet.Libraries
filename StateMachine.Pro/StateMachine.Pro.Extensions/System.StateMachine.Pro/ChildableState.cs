@@ -32,18 +32,10 @@ namespace System.StateMachine.Pro {
             get {
                 return this.m_Lifecycle == Lifecycle.Disposing;
             }
-            private set {
-                Assert.Operation.Valid( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-                this.m_Lifecycle = Lifecycle.Disposing;
-            }
         }
         public bool IsDisposed {
             get {
                 return this.m_Lifecycle == Lifecycle.Disposed;
-            }
-            private set {
-                Assert.Operation.Valid( $"State {this} must be disposing", this.m_Lifecycle == Lifecycle.Disposing );
-                this.m_Lifecycle = Lifecycle.Disposed;
             }
         }
 
@@ -78,18 +70,19 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             if (this.Machine_NoRecursive != null) {
                 Assert.Operation.Valid( $"Machine {this.Machine_NoRecursive} must be disposing", this.Machine_NoRecursive.IsDisposing );
             }
             if (this.Parent != null) {
                 Assert.Operation.Valid( $"Parent {this.Parent} must be disposing", this.Parent.IsDisposing );
             }
-            this.IsDisposing = true;
+            this.m_Lifecycle = Lifecycle.Disposing;
             if (this.Child is IState<TMachineUserData, TStateUserData> child) {
                 child.Dispose();
             }
             this.m_OnDisposeCallback?.Invoke();
-            this.IsDisposed = true;
+            this.m_Lifecycle = Lifecycle.Disposed;
         }
 
     }
