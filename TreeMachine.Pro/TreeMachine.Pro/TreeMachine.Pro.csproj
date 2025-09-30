@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>5.1.0</Version>
+        <Version>5.1.1</Version>
         <Description>The library that allows you to easily implement a hierarchical object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
