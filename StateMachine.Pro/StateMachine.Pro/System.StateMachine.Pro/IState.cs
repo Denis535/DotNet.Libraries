@@ -8,6 +8,7 @@ namespace System.StateMachine.Pro {
     public partial interface IState<TMachineUserData, TStateUserData> {
 
         // IsDisposed
+        public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
         // UserData

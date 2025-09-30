@@ -8,6 +8,7 @@ namespace System.StateMachine.Pro {
     public sealed partial class State<TMachineUserData, TStateUserData> {
 
         // IsDisposed
+        bool IState<TMachineUserData, TStateUserData>.IsDisposing => this.IsDisposing;
         bool IState<TMachineUserData, TStateUserData>.IsDisposed => this.IsDisposed;
 
         // UserData

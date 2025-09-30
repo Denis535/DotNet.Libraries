@@ -80,6 +80,12 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
+            if (this.Machine_NoRecursive != null) {
+                Assert.Operation.Valid( $"Machine {this.Machine_NoRecursive} must be disposed", this.Machine_NoRecursive.IsDisposing );
+            }
+            if (this.Parent != null) {
+                Assert.Operation.Valid( $"Parent {this.Parent} must be disposed", this.Parent.IsDisposing );
+            }
             this.IsDisposing = true;
             foreach (var child in this.Children) {
                 child.Dispose();
