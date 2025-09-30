@@ -6,6 +6,8 @@ namespace System.StateMachine.Pro {
 
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> : IStateMachine<TMachineUserData, TStateUserData>, IDisposable {
 
+        private Lifecycle m_Lifecycle = Lifecycle.Alive;
+
         private IState<TMachineUserData, TStateUserData>? m_Root = null;
 
         private TMachineUserData m_UserData = default!;
@@ -16,7 +18,24 @@ namespace System.StateMachine.Pro {
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 
         // IsDisposed
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposing {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposing;
+            }
+            private set {
+                Assert.Operation.Valid( $"StateMachine {this} must be alived", this.m_Lifecycle == Lifecycle.Alive );
+                this.m_Lifecycle = Lifecycle.Disposing;
+            }
+        }
+        public bool IsDisposed {
+            get {
+                return this.m_Lifecycle == Lifecycle.Disposed;
+            }
+            private set {
+                Assert.Operation.Valid( $"StateMachine {this} must be disposing", this.m_Lifecycle == Lifecycle.Disposing );
+                this.m_Lifecycle = Lifecycle.Disposed;
+            }
+        }
 
         // UserData
         public TMachineUserData UserData {
@@ -49,7 +68,7 @@ namespace System.StateMachine.Pro {
             this.UserData = userData;
         }
         public void Dispose() {
-            Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+            this.IsDisposing = true;
             if (this.Root != null) {
                 this.Root.Dispose();
             }
