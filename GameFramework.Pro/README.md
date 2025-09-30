@@ -6,9 +6,9 @@ The framework that allows you to design high-quality architecture of your game p
 
 ###### System
 
+- IDependencyProvider
 - DisposableBase
 - DisposableExtensions
-- IDependencyProvider
 
 ###### GameFramework.Pro
 
@@ -41,7 +41,7 @@ The framework that allows you to design high-quality architecture of your game p
     - RouterBase2
 - App
     - ApplicationBase2
-- Domain (Business, Game)
+- Domain
     - GameBase2
     - PlayerBase2
 
