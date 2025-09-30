@@ -10,10 +10,15 @@ namespace GameFramework.Pro {
 
     public abstract class WidgetBase {
 
+        private bool m_IsDisposed;
         private CancellationTokenSource? m_DisposeCancellationTokenSource;
         private readonly Node<ScreenBase, WidgetBase> m_Node;
 
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposed {
+            get {
+                return this.m_IsDisposed;
+            }
+        }
         public CancellationToken DisposeCancellationToken {
             get {
                 if (this.m_DisposeCancellationTokenSource == null) {
@@ -65,18 +70,16 @@ namespace GameFramework.Pro {
                     ancestor.Widget().OnAfterDescendantDeactivate( this.Node, argument );
                 }
             };
-            this.Node.OnDisposeCallback += () => {
-                this.Dispose();
-            };
+            this.Node.OnDisposeCallback += this.Dispose;
         }
         ~WidgetBase() {
             Trace.Assert( this.IsDisposed, $"Widget '{this}' must be disposed" );
         }
         protected virtual void Dispose() {
-            // This method must only be called from node
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called from node
             this.m_DisposeCancellationTokenSource?.Cancel();
-            this.IsDisposed = true;
+            this.m_IsDisposed = true;
         }
 
         protected abstract void OnActivate(object? argument);

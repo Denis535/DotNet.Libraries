@@ -58,8 +58,8 @@
     <ItemGroup>
         <PackageReference Include="FluentSyntax.Pro" Version="1.0.1" />
         <PackageReference Include="Option.Pro" Version="1.1.1" />
-        <PackageReference Include="StateMachine.Pro" Version="5.1.0" />
-        <PackageReference Include="TreeMachine.Pro" Version="5.1.0" />
+        <PackageReference Include="StateMachine.Pro" Version="5.1.1" />
+        <PackageReference Include="TreeMachine.Pro" Version="5.1.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\GameFramework.Pro.Internal\GameFramework.Pro.Internal.csproj">

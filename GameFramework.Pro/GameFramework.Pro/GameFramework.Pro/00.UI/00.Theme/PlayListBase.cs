@@ -9,10 +9,15 @@ namespace GameFramework.Pro {
 
     public abstract class PlayListBase {
 
+        private bool m_IsDisposed;
         private CancellationTokenSource? m_DisposeCancellationTokenSource;
         private readonly State<ThemeBase, PlayListBase> m_State;
 
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposed {
+            get {
+                return this.m_IsDisposed;
+            }
+        }
         public CancellationToken DisposeCancellationToken {
             get {
                 if (this.m_DisposeCancellationTokenSource == null) {
@@ -46,18 +51,16 @@ namespace GameFramework.Pro {
             this.m_State = new State<ThemeBase, PlayListBase>( this );
             this.State.OnActivateCallback += this.OnActivate;
             this.State.OnDeactivateCallback += this.OnDeactivate;
-            this.State.OnDisposeCallback += () => {
-                this.Dispose();
-            };
+            this.State.OnDisposeCallback += this.Dispose;
         }
         ~PlayListBase() {
             Trace.Assert( this.IsDisposed, $"PlayList '{this}' must be disposed" );
         }
         protected virtual void Dispose() {
-            // This method must only be called from state
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.NotDisposed( $"State {this.State} must be disposing", this.State.IsDisposing ); // This method must only be called from state
             this.m_DisposeCancellationTokenSource?.Cancel();
-            this.IsDisposed = true;
+            this.m_IsDisposed = true;
         }
 
         protected abstract void OnActivate(object? argument);
