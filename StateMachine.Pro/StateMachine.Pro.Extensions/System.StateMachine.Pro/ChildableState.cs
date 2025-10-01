@@ -386,7 +386,7 @@ namespace System.StateMachine.Pro {
     public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // SetChild
-        public void SetChild(IState<TMachineUserData, TStateUserData>? child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
+        public void SetChild(IState<TMachineUserData, TStateUserData>? child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", child == null || !child.IsDisposed );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             if (this.Child != null) {
@@ -411,7 +411,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveChild
-        private void RemoveChild(IState<TMachineUserData, TStateUserData> child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
+        private void RemoveChild(IState<TMachineUserData, TStateUserData> child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );

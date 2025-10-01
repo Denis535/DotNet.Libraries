@@ -88,7 +88,7 @@ namespace System.StateMachine.Pro {
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 
         // SetRoot
-        public void SetRoot(IState<TMachineUserData, TStateUserData>? root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
+        public void SetRoot(IState<TMachineUserData, TStateUserData>? root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
@@ -112,7 +112,7 @@ namespace System.StateMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(IState<TMachineUserData, TStateUserData> root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback) {
+        private void RemoveRoot(IState<TMachineUserData, TStateUserData> root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine == this );
