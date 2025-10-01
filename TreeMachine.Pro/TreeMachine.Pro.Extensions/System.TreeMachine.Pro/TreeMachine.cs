@@ -88,7 +88,7 @@ namespace System.TreeMachine.Pro {
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 
         // SetRoot
-        public void SetRoot(INode<TMachineUserData, TNodeUserData>? root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
+        public void SetRoot(INode<TMachineUserData, TNodeUserData>? root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
@@ -113,7 +113,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(INode<TMachineUserData, TNodeUserData> root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback) {
+        private void RemoveRoot(INode<TMachineUserData, TNodeUserData> root, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine_NoRecursive == this );
