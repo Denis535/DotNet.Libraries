@@ -247,7 +247,7 @@ namespace System.TreeMachine.Pro {
         internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} wwner", this.Owner == null );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} owner", this.Owner == null );
             {
                 this.Owner = machine;
                 this.OnBeforeAttach( argument );
@@ -261,7 +261,7 @@ namespace System.TreeMachine.Pro {
         private void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} wwner", this.Owner == null );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} owner", this.Owner == null );
             {
                 this.Owner = parent;
                 this.OnBeforeAttach( argument );
