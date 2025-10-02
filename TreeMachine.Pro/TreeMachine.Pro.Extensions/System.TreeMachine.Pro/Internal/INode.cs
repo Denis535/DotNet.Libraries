@@ -33,7 +33,6 @@ namespace System.TreeMachine.Pro {
 
         // Machine
         ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine => this.Machine;
-        ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         [MemberNotNullWhen( false, nameof( INode<TMachineUserData, TNodeUserData>.Parent ) )] bool INode<TMachineUserData, TNodeUserData>.IsRoot => this.IsRoot;

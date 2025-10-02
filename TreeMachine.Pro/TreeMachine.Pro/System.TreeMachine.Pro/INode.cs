@@ -24,11 +24,10 @@ namespace System.TreeMachine.Pro {
     public partial interface INode<TMachineUserData, TNodeUserData> {
 
         // Owner
-        internal object? Owner { get; }
+        public object? Owner { get; }
 
         // Machine
         public ITreeMachine<TMachineUserData, TNodeUserData>? Machine { get; }
-        internal ITreeMachine<TMachineUserData, TNodeUserData>? Machine_NoRecursive { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )] public bool IsRoot { get; }

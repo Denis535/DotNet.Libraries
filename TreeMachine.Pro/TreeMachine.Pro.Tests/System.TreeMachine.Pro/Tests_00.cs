@@ -17,8 +17,8 @@ namespace System.TreeMachine.Pro {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -43,8 +43,8 @@ namespace System.TreeMachine.Pro {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -66,8 +66,8 @@ namespace System.TreeMachine.Pro {
                 root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -94,8 +94,8 @@ namespace System.TreeMachine.Pro {
                 root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -114,8 +114,8 @@ namespace System.TreeMachine.Pro {
             {
                 // root.AddChildren a, b
                 root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
+                Assert.That( root.Owner, Is.Null );
                 Assert.That( root.Machine, Is.Null );
-                Assert.That( root.Machine_NoRecursive, Is.Null );
                 Assert.That( root.IsRoot, Is.True );
                 Assert.That( root.Root, Is.EqualTo( root ) );
                 Assert.That( root.Parent, Is.Null );
@@ -126,8 +126,8 @@ namespace System.TreeMachine.Pro {
                 Assert.That( root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
                 foreach (var child in root.Children) {
+                    Assert.That( child.Owner, Is.EqualTo( root ) );
                     Assert.That( child.Machine, Is.Null );
-                    Assert.That( child.Machine_NoRecursive, Is.Null );
                     Assert.That( child.IsRoot, Is.False );
                     Assert.That( child.Root, Is.EqualTo( root ) );
                     Assert.That( child.Parent, Is.EqualTo( root ) );
@@ -142,8 +142,8 @@ namespace System.TreeMachine.Pro {
             {
                 // root.RemoveChildren a, b
                 _ = root.RemoveChildren( null, null );
+                Assert.That( root.Owner, Is.Null );
                 Assert.That( root.Machine, Is.Null );
-                Assert.That( root.Machine_NoRecursive, Is.Null );
                 Assert.That( root.IsRoot, Is.True );
                 Assert.That( root.Root, Is.EqualTo( root ) );
                 Assert.That( root.Parent, Is.Null );
@@ -162,8 +162,8 @@ namespace System.TreeMachine.Pro {
             {
                 // root.AddChildren a, b
                 root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
+                Assert.That( root.Owner, Is.Null );
                 Assert.That( root.Machine, Is.Null );
-                Assert.That( root.Machine_NoRecursive, Is.Null );
                 Assert.That( root.IsRoot, Is.True );
                 Assert.That( root.Root, Is.EqualTo( root ) );
                 Assert.That( root.Parent, Is.Null );
@@ -174,8 +174,8 @@ namespace System.TreeMachine.Pro {
                 Assert.That( root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
                 foreach (var child in root.Children) {
+                    Assert.That( child.Owner, Is.EqualTo( root ) );
                     Assert.That( child.Machine, Is.Null );
-                    Assert.That( child.Machine_NoRecursive, Is.Null );
                     Assert.That( child.IsRoot, Is.False );
                     Assert.That( child.Root, Is.EqualTo( root ) );
                     Assert.That( child.Parent, Is.EqualTo( root ) );
@@ -196,8 +196,8 @@ namespace System.TreeMachine.Pro {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -212,8 +212,8 @@ namespace System.TreeMachine.Pro {
                 // machine.Root.AddChildren a, b
                 ((Node) machine.Root).AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -224,8 +224,8 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
                 foreach (var child in machine.Root.Children) {
+                    Assert.That( child.Owner, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Machine, Is.EqualTo( machine ) );
-                    Assert.That( child.Machine_NoRecursive, Is.Null );
                     Assert.That( child.IsRoot, Is.False );
                     Assert.That( child.Root, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Parent, Is.EqualTo( machine.Root ) );
@@ -241,8 +241,8 @@ namespace System.TreeMachine.Pro {
                 // machine.Root.RemoveChildren a, b
                 _ = ((Node) machine.Root).RemoveChildren( null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -274,8 +274,8 @@ namespace System.TreeMachine.Pro {
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -286,8 +286,8 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
                 foreach (var child in machine.Root.Children) {
+                    Assert.That( child.Owner, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Machine, Is.EqualTo( machine ) );
-                    Assert.That( child.Machine_NoRecursive, Is.Null );
                     Assert.That( child.IsRoot, Is.False );
                     Assert.That( child.Root, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Parent, Is.EqualTo( machine.Root ) );
@@ -320,8 +320,8 @@ namespace System.TreeMachine.Pro {
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
+                Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
-                Assert.That( machine.Root.Machine_NoRecursive, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.IsRoot, Is.True );
                 Assert.That( machine.Root.Root, Is.EqualTo( machine.Root ) );
                 Assert.That( machine.Root.Parent, Is.Null );
@@ -332,8 +332,8 @@ namespace System.TreeMachine.Pro {
                 Assert.That( machine.Root.Descendants.Count, Is.EqualTo( 2 ) );
                 Assert.That( machine.Root.DescendantsAndSelf.Count, Is.EqualTo( 3 ) );
                 foreach (var child in machine.Root.Children) {
+                    Assert.That( child.Owner, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Machine, Is.EqualTo( machine ) );
-                    Assert.That( child.Machine_NoRecursive, Is.Null );
                     Assert.That( child.IsRoot, Is.False );
                     Assert.That( child.Root, Is.EqualTo( machine.Root ) );
                     Assert.That( child.Parent, Is.EqualTo( machine.Root ) );

@@ -73,11 +73,11 @@ namespace System.TreeMachine.Pro {
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-            if (this.Machine_NoRecursive != null) {
-                Assert.Operation.Valid( $"Machine {this.Machine_NoRecursive} must be disposing", this.Machine_NoRecursive.IsDisposing );
+            if (this.Owner is TreeMachine<TMachineUserData, TNodeUserData> owner_machine) {
+                Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
             }
-            if (this.Parent != null) {
-                Assert.Operation.Valid( $"Parent {this.Parent} must be disposing", this.Parent.IsDisposing );
+            if (this.Owner is Node<TMachineUserData, TNodeUserData> owner_parent) {
+                Assert.Operation.Valid( $"Owner {this.Parent} must be disposing", owner_parent.IsDisposing );
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             foreach (var child in this.Children) {
@@ -91,13 +91,14 @@ namespace System.TreeMachine.Pro {
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Owner
-        private object? Owner {
+        public object? Owner {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.m_Owner;
             }
-            set {
+            private set {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this} must have valid {this.Activity} activity", this.Activity is Activity.Inactive or Activity.Active );
                 this.m_Owner = value;
             }
         }
@@ -107,12 +108,6 @@ namespace System.TreeMachine.Pro {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return (this.Owner as ITreeMachine<TMachineUserData, TNodeUserData>) ?? (this.Owner as INode<TMachineUserData, TNodeUserData>)?.Machine;
-            }
-        }
-        internal ITreeMachine<TMachineUserData, TNodeUserData>? Machine_NoRecursive {
-            get {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.Owner as ITreeMachine<TMachineUserData, TNodeUserData>;
             }
         }
 
@@ -252,25 +247,21 @@ namespace System.TreeMachine.Pro {
         internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Parent} parent", this.Parent == null );
-            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} wwner", this.Owner == null );
             {
                 this.Owner = machine;
                 this.OnBeforeAttach( argument );
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
             }
-            {
+            if (true) {
                 this.Activate( argument );
             }
         }
         private void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Machine_NoRecursive} machine", this.Machine_NoRecursive == null );
-            Assert.Operation.Valid( $"Node {this} must have no {this.Parent} parent", this.Parent == null );
-            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
+            Assert.Operation.Valid( $"Node {this} must have no {this.Owner} wwner", this.Owner == null );
             {
                 this.Owner = parent;
                 this.OnBeforeAttach( argument );
@@ -286,9 +277,8 @@ namespace System.TreeMachine.Pro {
         internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have {machine} machine", this.Machine_NoRecursive == machine );
-            Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
-            {
+            Assert.Operation.Valid( $"Node {this} must have {machine} owner", this.Owner == machine );
+            if (true) {
                 this.Deactivate( argument );
             }
             {
@@ -301,12 +291,9 @@ namespace System.TreeMachine.Pro {
         private void Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument) {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have {parent} parent", this.Parent == parent );
+            Assert.Operation.Valid( $"Node {this} must have {parent} owner", this.Owner == parent );
             if (parent.Activity == Activity.Active) {
-                Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
                 this.Deactivate( argument );
-            } else {
-                Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
             }
             {
                 this.OnBeforeDetach( argument );
@@ -339,38 +326,26 @@ namespace System.TreeMachine.Pro {
 
         // Activate
         private void Activate(object? argument) {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Activating );
-            Assert.Operation.Valid( $"Node {this} must be inactive", this.Activity == Activity.Inactive );
-            {
-                this.OnBeforeActivate( argument );
-                this.Activity = Activity.Activating;
-                this.OnActivate( argument );
-                foreach (var child in this.Children) {
-                    child.Activate( argument );
-                }
-                this.Activity = Activity.Active;
-                this.OnAfterActivate( argument );
+            this.OnBeforeActivate( argument );
+            this.Activity = Activity.Activating;
+            this.OnActivate( argument );
+            foreach (var child in this.Children) {
+                child.Activate( argument );
             }
+            this.Activity = Activity.Active;
+            this.OnAfterActivate( argument );
         }
 
         // Deactivate
         private void Deactivate(object? argument) {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have owner", this.Machine_NoRecursive != null || this.Parent != null );
-            Assert.Operation.Valid( $"Node {this} must have valid owner", this.Machine_NoRecursive != null || this.Parent!.Activity is Activity.Active or Activity.Deactivating );
-            Assert.Operation.Valid( $"Node {this} must be active", this.Activity == Activity.Active );
-            {
-                this.OnBeforeDeactivate( argument );
-                this.Activity = Activity.Deactivating;
-                foreach (var child in this.Children.Reverse()) {
-                    child.Deactivate( argument );
-                }
-                this.OnDeactivate( argument );
-                this.Activity = Activity.Inactive;
-                this.OnAfterDeactivate( argument );
+            this.OnBeforeDeactivate( argument );
+            this.Activity = Activity.Deactivating;
+            foreach (var child in this.Children.Reverse()) {
+                child.Deactivate( argument );
             }
+            this.OnDeactivate( argument );
+            this.Activity = Activity.Inactive;
+            this.OnAfterDeactivate( argument );
         }
 
         // OnActivate
@@ -398,9 +373,7 @@ namespace System.TreeMachine.Pro {
         public void AddChild(INode<TMachineUserData, TNodeUserData> child, object? argument) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Machine_NoRecursive} machine", child.Machine_NoRecursive == null );
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Parent} parent", child.Parent == null );
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must have no {child.Owner} owner", child.Owner == null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {child} child", !this.Children.Contains( child ) );
             this.m_Children.Add( child );
@@ -408,7 +381,6 @@ namespace System.TreeMachine.Pro {
             child.Attach( this, argument );
         }
         public void AddChildren(IEnumerable<INode<TMachineUserData, TNodeUserData>> children, object? argument) {
-            Assert.Argument.NotNull( $"Argument 'children' must be non-null", children != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             foreach (var child in children) {
                 this.AddChild( child, argument );
@@ -419,12 +391,7 @@ namespace System.TreeMachine.Pro {
         public void RemoveChild(INode<TMachineUserData, TNodeUserData> child, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Argument.NotNull( $"Argument 'child' must be non-null", child != null );
             Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", !child.IsDisposed );
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} parent", child.Parent == this );
-            if (this.Activity == Activity.Active) {
-                Assert.Argument.Valid( $"Argument 'child' ({child}) must be active", child.Activity == Activity.Active );
-            } else {
-                Assert.Argument.Valid( $"Argument 'child' ({child}) must be inactive", child.Activity == Activity.Inactive );
-            }
+            Assert.Argument.Valid( $"Argument 'child' ({child}) must have {this} owner", child.Owner == this );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {child} child", this.Children.Contains( child ) );
             child.Detach( this, argument );
@@ -464,8 +431,12 @@ namespace System.TreeMachine.Pro {
         // RemoveSelf
         public void RemoveSelf(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.Valid( $"Node {this} must have parent", this.Parent != null );
-            ((Node<TMachineUserData, TNodeUserData>) this.Parent).RemoveChild( this, argument, callback );
+            Assert.Operation.Valid( $"Node {this} must have owner", this.Owner != null );
+            if (this.Owner is Node<TMachineUserData, TNodeUserData> parent) {
+                parent.RemoveChild( this, argument, callback );
+            } else {
+                ((TreeMachine<TMachineUserData, TNodeUserData>) this.Owner).SetRoot( null, argument, callback );
+            }
         }
 
         // Sort
