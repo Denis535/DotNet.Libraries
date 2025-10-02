@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-    
+
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // IsDisposed
@@ -27,6 +27,9 @@ namespace System.TreeMachine.Pro {
 
     }
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
+
+        // Owner
+        object? INode<TMachineUserData, TNodeUserData>.Owner => this.Owner;
 
         // Machine
         ITreeMachine<TMachineUserData, TNodeUserData>? INode<TMachineUserData, TNodeUserData>.Machine => this.Machine;
