@@ -85,13 +85,13 @@ namespace GameFramework.Pro {
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);
 
-        protected void OnBeforeDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
+        protected virtual void OnBeforeDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnAfterDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
+        protected virtual void OnAfterDescendantActivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnBeforeDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
+        protected virtual void OnBeforeDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
-        protected void OnAfterDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
+        protected virtual void OnAfterDescendantDeactivate(INode<ScreenBase, WidgetBase> descendant, object? argument) {
         }
 
         protected virtual void Sort(List<INode<ScreenBase, WidgetBase>> children) {

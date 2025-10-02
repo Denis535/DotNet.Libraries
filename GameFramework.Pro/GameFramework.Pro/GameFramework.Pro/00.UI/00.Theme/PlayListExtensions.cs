@@ -16,6 +16,7 @@ namespace GameFramework.Pro {
         }
 
         public static CancellationToken GetCancellationToken_OnDetachCallback(this IState<ThemeBase, PlayListBase> state) {
+            // todo: should we trigger event if the state is already non-attached?
             var cts = new CancellationTokenSource();
             state.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -25,6 +26,7 @@ namespace GameFramework.Pro {
             return cts.Token;
         }
         public static CancellationToken GetCancellationToken_OnDeactivateCallback(this IState<ThemeBase, PlayListBase> state) {
+            // todo: should we trigger event if the state is already inactive?
             var cts = new CancellationTokenSource();
             state.OnDeactivateCallback += Callback;
             void Callback(object? argument) {
