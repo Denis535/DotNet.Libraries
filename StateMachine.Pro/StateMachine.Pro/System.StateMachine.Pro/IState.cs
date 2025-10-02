@@ -23,6 +23,9 @@ namespace System.StateMachine.Pro {
     }
     public partial interface IState<TMachineUserData, TStateUserData> {
 
+        // Owner
+        internal object? Owner { get; }
+
         // Machine
         public IStateMachine<TMachineUserData, TStateUserData>? Machine { get; }
         internal IStateMachine<TMachineUserData, TStateUserData>? Machine_NoRecursive { get; }

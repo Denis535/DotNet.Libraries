@@ -28,6 +28,9 @@ namespace System.StateMachine.Pro {
     }
     public sealed partial class State<TMachineUserData, TStateUserData> {
 
+        // Owner
+        object? IState<TMachineUserData, TStateUserData>.Owner => this.Owner;
+
         // Machine
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine => this.Machine;
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
