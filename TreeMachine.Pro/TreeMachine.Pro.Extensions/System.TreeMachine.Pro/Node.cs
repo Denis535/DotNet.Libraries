@@ -73,11 +73,11 @@ namespace System.TreeMachine.Pro {
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-            if (this.Owner is TreeMachine<TMachineUserData, TNodeUserData> owner_machine) {
+            if (this.Owner is ITreeMachine<TMachineUserData, TNodeUserData> owner_machine) {
                 Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
             }
-            if (this.Owner is Node<TMachineUserData, TNodeUserData> owner_parent) {
-                Assert.Operation.Valid( $"Owner {this.Parent} must be disposing", owner_parent.IsDisposing );
+            if (this.Owner is INode<TMachineUserData, TNodeUserData> owner_parent) {
+                Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             foreach (var child in this.Children) {
@@ -98,7 +98,7 @@ namespace System.TreeMachine.Pro {
             }
             private set {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.NotDisposed( $"Node {this} must have valid {this.Activity} activity", this.Activity is Activity.Inactive or Activity.Active );
+                Assert.Operation.NotDisposed( $"Node {this} must have valid activity", this.Activity is Activity.Inactive or Activity.Active );
                 this.m_Owner = value;
             }
         }
@@ -244,7 +244,7 @@ namespace System.TreeMachine.Pro {
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Attach
-        internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
+        private void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have no {this.Owner} owner", this.Owner == null );
@@ -274,7 +274,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
+        private void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
             Assert.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {machine} owner", this.Owner == machine );
@@ -327,24 +327,28 @@ namespace System.TreeMachine.Pro {
         // Activate
         private void Activate(object? argument) {
             this.OnBeforeActivate( argument );
-            this.Activity = Activity.Activating;
-            this.OnActivate( argument );
-            foreach (var child in this.Children) {
-                child.Activate( argument );
+            {
+                this.Activity = Activity.Activating;
+                this.OnActivate( argument );
+                foreach (var child in this.Children) {
+                    child.Activate( argument );
+                }
+                this.Activity = Activity.Active;
             }
-            this.Activity = Activity.Active;
             this.OnAfterActivate( argument );
         }
 
         // Deactivate
         private void Deactivate(object? argument) {
             this.OnBeforeDeactivate( argument );
-            this.Activity = Activity.Deactivating;
-            foreach (var child in this.Children.Reverse()) {
-                child.Deactivate( argument );
+            {
+                this.Activity = Activity.Deactivating;
+                foreach (var child in this.Children.Reverse()) {
+                    child.Deactivate( argument );
+                }
+                this.OnDeactivate( argument );
+                this.Activity = Activity.Inactive;
             }
-            this.OnDeactivate( argument );
-            this.Activity = Activity.Inactive;
             this.OnAfterDeactivate( argument );
         }
 
