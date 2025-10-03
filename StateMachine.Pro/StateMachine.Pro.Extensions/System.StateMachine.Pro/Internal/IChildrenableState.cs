@@ -32,7 +32,6 @@ namespace System.StateMachine.Pro {
 
         // Machine
         IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine => this.Machine;
-        IStateMachine<TMachineUserData, TStateUserData>? IState<TMachineUserData, TStateUserData>.Machine_NoRecursive => this.Machine_NoRecursive;
 
         // Root
         bool IState<TMachineUserData, TStateUserData>.IsRoot => this.IsRoot;

@@ -103,8 +103,7 @@ namespace System.StateMachine.Pro {
         private void AddRoot(IState<TMachineUserData, TStateUserData> root, object? argument) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Machine} machine", root.Machine == null );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must be inactive", root.Activity == Activity.Inactive );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must have no {root.Owner} owner", root.Owner == null );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"StateMachine {this} must have no {this.Root} root", this.Root == null );
             this.Root = root;
@@ -115,8 +114,7 @@ namespace System.StateMachine.Pro {
         private void RemoveRoot(IState<TMachineUserData, TStateUserData> root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} machine", root.Machine == this );
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must be active", root.Activity == Activity.Active );
+            Assert.Argument.Valid( $"Argument 'root' ({root}) must have {this} owner", root.Owner == this );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"StateMachine {this} must have {root} root", this.Root == root );
             this.Root.Detach( this, argument );
