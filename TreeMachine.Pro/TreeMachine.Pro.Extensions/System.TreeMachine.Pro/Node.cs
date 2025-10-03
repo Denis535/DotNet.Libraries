@@ -98,7 +98,13 @@ namespace System.TreeMachine.Pro {
             }
             private set {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.NotDisposed( $"Node {this} must have valid activity", this.Activity is Activity.Inactive or Activity.Active );
+                if (value != null) {
+                    Assert.Operation.NotDisposed( $"Node {this} must have no {this.m_Owner} owner", this.m_Owner == null );
+                    Assert.Operation.NotDisposed( $"Node {this} must have valid activity", this.Activity is Activity.Inactive );
+                } else {
+                    Assert.Operation.NotDisposed( $"Node {this} must have no {this.m_Owner} owner", this.m_Owner != null );
+                    Assert.Operation.NotDisposed( $"Node {this} must have valid activity", this.Activity is Activity.Active or Activity.Inactive );
+                }
                 this.m_Owner = value;
             }
         }
