@@ -14,6 +14,11 @@ namespace GameFramework.Pro {
         private CancellationTokenSource? m_DisposeCancellationTokenSource;
         private readonly Node<ScreenBase, WidgetBase> m_Node;
 
+        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantActivateCallback;
+        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantActivateCallback;
+        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantDeactivateCallback;
+        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantDeactivateCallback;
+
         public bool IsDisposed {
             get {
                 return this.m_IsDisposed;
@@ -48,36 +53,81 @@ namespace GameFramework.Pro {
             }
         }
 
+        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantActivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnBeforeDescendantActivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnBeforeDescendantActivateCallback -= value;
+            }
+        }
+        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantActivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDescendantActivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDescendantActivateCallback -= value;
+            }
+        }
+        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantDeactivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnBeforeDescendantDeactivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnBeforeDescendantDeactivateCallback -= value;
+            }
+        }
+        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantDeactivateCallback {
+            add {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDescendantDeactivateCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDescendantDeactivateCallback -= value;
+            }
+        }
+
         public WidgetBase() {
             this.m_Node = new Node<ScreenBase, WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
+            this.Node.OnDisposeCallback += this.Dispose;
             this.Node.OnActivateCallback += (argument) => {
                 foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                    ancestor.Widget().m_OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
                     ancestor.Widget().OnBeforeDescendantActivate( this.Node, argument );
                 }
                 this.OnActivate( argument );
                 foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
                     ancestor.Widget().OnAfterDescendantActivate( this.Node, argument );
+                    ancestor.Widget().m_OnAfterDescendantActivateCallback?.Invoke( this.Node, argument );
                 }
             };
             this.Node.OnDeactivateCallback += (argument) => {
                 foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                    ancestor.Widget().m_OnBeforeDescendantDeactivateCallback?.Invoke( this.Node, argument );
                     ancestor.Widget().OnBeforeDescendantDeactivate( this.Node, argument );
                 }
                 this.OnDeactivate( argument );
                 foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
                     ancestor.Widget().OnAfterDescendantDeactivate( this.Node, argument );
+                    ancestor.Widget().m_OnAfterDescendantDeactivateCallback?.Invoke( this.Node, argument );
                 }
             };
-            this.Node.OnDisposeCallback += this.Dispose;
         }
         ~WidgetBase() {
             Trace.Assert( this.IsDisposed, $"Widget '{this}' must be disposed" );
         }
         protected virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called from node
+            Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called by INode.OnDisposeCallback
             this.m_DisposeCancellationTokenSource?.Cancel();
             this.m_IsDisposed = true;
         }

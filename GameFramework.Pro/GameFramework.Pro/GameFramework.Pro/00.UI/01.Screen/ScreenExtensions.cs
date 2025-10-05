@@ -6,7 +6,7 @@ namespace GameFramework.Pro {
     using System.Threading;
     using System.TreeMachine.Pro;
 
-    public static class WidgetExtensions {
+    public static class ScreenExtensions {
 
         public static WidgetBase Widget(this INode<ScreenBase, WidgetBase> node) {
             return node.UserData;
@@ -15,6 +15,9 @@ namespace GameFramework.Pro {
             return (T) node.UserData;
         }
 
+        public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget) {
+            return widget.Node.GetCancellationToken_OnDetachCallback();
+        }
         public static CancellationToken GetCancellationToken_OnDetachCallback(this INode<ScreenBase, WidgetBase> node) {
             // todo: should we trigger event if the state is already non-attached?
             var cts = new CancellationTokenSource();
@@ -24,6 +27,10 @@ namespace GameFramework.Pro {
                 node.OnDetachCallback -= Callback;
             }
             return cts.Token;
+        }
+
+        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this WidgetBase widget) {
+            return widget.Node.GetCancellationToken_OnDeactivateCallback();
         }
         public static CancellationToken GetCancellationToken_OnDeactivateCallback(this INode<ScreenBase, WidgetBase> node) {
             // todo: should we trigger event if the state is already inactive?

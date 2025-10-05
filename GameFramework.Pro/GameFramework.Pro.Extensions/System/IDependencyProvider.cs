@@ -6,27 +6,27 @@ namespace System {
 
     public interface IDependencyProvider {
 
-        public sealed T? GetDependency<T>(object? argument = null) {
+        public sealed T? GetDependency<T>(object? argument = null) where T : notnull {
             var value = this.GetValue( typeof( T ), argument );
-            return (T?) value.ValueOrDefault;
+            return (T?) value;
         }
-        public sealed T? GetDependency<T>(Type type, object? argument = null) {
+        public sealed T? GetDependency<T>(Type type, object? argument = null) where T : notnull {
             var value = this.GetValue( type, argument );
-            return (T?) value.ValueOrDefault;
+            return (T?) value;
         }
 
-        public sealed T RequireDependency<T>(object? argument = null) {
+        public sealed T RequireDependency<T>(object? argument = null) where T : notnull {
             var value = this.GetValue( typeof( T ), argument );
-            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value.HasValue );
-            return (T) value.Value!;
+            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value != null );
+            return (T) value;
         }
-        public sealed T RequireDependency<T>(Type type, object? argument = null) {
+        public sealed T RequireDependency<T>(Type type, object? argument = null) where T : notnull {
             var value = this.GetValue( type, argument );
-            Assert.Operation.Valid( $"Dependency {type} ({argument}) was not found", value.HasValue );
-            return (T) value.Value!;
+            Assert.Operation.Valid( $"Dependency {type} ({argument}) was not found", value != null );
+            return (T) value;
         }
 
-        protected Option<object?> GetValue(Type type, object? argument);
+        protected object? GetValue(Type type, object? argument);
 
     }
 }

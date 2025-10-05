@@ -66,13 +66,9 @@ namespace GameFramework.Pro {
             base.Dispose();
         }
 
-        Option<object?> IDependencyProvider.GetValue(Type type, object? argument) {
+        object? IDependencyProvider.GetValue(Type type, object? argument) {
             Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
-            var value = this.GetValue( type, argument );
-            if (value != null) {
-                return Option.Some<object?>( value );
-            }
-            return default;
+            return this.GetValue( type, argument );
         }
         protected virtual object? GetValue(Type type, object? argument) {
             if (typeof( TTheme ).IsAssignableFrom( type )) {

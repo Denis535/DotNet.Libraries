@@ -58,7 +58,7 @@ namespace GameFramework.Pro {
         }
         protected virtual void Dispose() {
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-            Assert.Operation.NotDisposed( $"State {this.State} must be disposing", this.State.IsDisposing ); // This method must only be called from state
+            Assert.Operation.NotDisposed( $"State {this.State} must be disposing", this.State.IsDisposing ); // This method must only be called by IState.OnDisposeCallback
             this.m_DisposeCancellationTokenSource?.Cancel();
             this.m_IsDisposed = true;
         }
