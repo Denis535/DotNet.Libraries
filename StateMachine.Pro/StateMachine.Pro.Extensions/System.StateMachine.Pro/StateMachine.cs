@@ -7,9 +7,7 @@ namespace System.StateMachine.Pro {
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> : IStateMachine<TMachineUserData, TStateUserData>, IDisposable {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
-
         private IState<TMachineUserData, TStateUserData>? m_Root = null;
-
         private readonly TMachineUserData m_UserData = default!;
 
         private Action? m_OnDisposeCallback = null;

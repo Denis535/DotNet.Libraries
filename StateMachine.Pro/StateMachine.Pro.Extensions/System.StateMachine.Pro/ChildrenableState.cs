@@ -9,22 +9,19 @@ namespace System.StateMachine.Pro {
     public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> : IState<TMachineUserData, TStateUserData>, IDisposable {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
-
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
         private readonly List<IState<TMachineUserData, TStateUserData>> m_Children = new List<IState<TMachineUserData, TStateUserData>>( 0 );
-
+        private readonly Action<List<IState<TMachineUserData, TStateUserData>>>? m_SortDelegate = null;
         private readonly TStateUserData m_UserData = default!;
 
-        private readonly Action<List<IState<TMachineUserData, TStateUserData>>>? m_SortDelegate = null;
+        private Action? m_OnDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
-
-        private Action? m_OnDisposeCallback = null;
 
     }
     public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> {

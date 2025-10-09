@@ -9,20 +9,18 @@ namespace System.StateMachine.Pro {
     public sealed partial class ChildableState<TMachineUserData, TStateUserData> : IState<TMachineUserData, TStateUserData>, IDisposable {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
-
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
         private IState<TMachineUserData, TStateUserData>? m_Child = null;
-
         private readonly TStateUserData m_UserData = default!;
+
+        private Action? m_OnDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
-
-        private Action? m_OnDisposeCallback = null;
 
     }
     public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
