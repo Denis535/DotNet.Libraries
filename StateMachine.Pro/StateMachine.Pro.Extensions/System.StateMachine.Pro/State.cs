@@ -13,7 +13,7 @@ namespace System.StateMachine.Pro {
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
 
-        private TStateUserData m_UserData = default!;
+        private readonly TStateUserData m_UserData = default!;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -44,10 +44,6 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
             }
-            set {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
         }
 
         // OnDispose
@@ -63,10 +59,8 @@ namespace System.StateMachine.Pro {
         }
 
         // Constructor
-        public State() {
-        }
         public State(TStateUserData userData) {
-            this.UserData = userData;
+            this.m_UserData = userData;
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );

@@ -13,7 +13,7 @@ namespace System.StateMachine.Pro {
 
         [Test]
         public void Test_00_a() {
-            using var machine = new StateMachine();
+            using var machine = new StateMachine( null );
             {
                 // SetState null
                 machine.SetRoot( null, null, null );
@@ -49,7 +49,7 @@ namespace System.StateMachine.Pro {
 
         [Test]
         public void Test_00_b() {
-            using var machine = new StateMachine();
+            using var machine = new StateMachine( null );
             {
                 // SetState null
                 machine.SetRoot( null, null, null );

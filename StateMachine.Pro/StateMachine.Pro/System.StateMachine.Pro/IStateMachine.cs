@@ -17,7 +17,7 @@ namespace System.StateMachine.Pro {
         public event Action? OnDisposeCallback;
 
         // Dispose
-        internal void Dispose();
+        protected internal void Dispose();
 
     }
     public partial interface IStateMachine<TMachineUserData, TStateUserData> {

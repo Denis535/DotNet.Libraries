@@ -10,7 +10,7 @@ namespace System.StateMachine.Pro {
 
         private IState<TMachineUserData, TStateUserData>? m_Root = null;
 
-        private TMachineUserData m_UserData = default!;
+        private readonly TMachineUserData m_UserData = default!;
 
         private Action? m_OnDisposeCallback = null;
 
@@ -35,10 +35,6 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
             }
-            set {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
         }
 
         // OnDispose
@@ -54,10 +50,8 @@ namespace System.StateMachine.Pro {
         }
 
         // Constructor
-        public StateMachine() {
-        }
         public StateMachine(TMachineUserData userData) {
-            this.UserData = userData;
+            this.m_UserData = userData;
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"StateMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
