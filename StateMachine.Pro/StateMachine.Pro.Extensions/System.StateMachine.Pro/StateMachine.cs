@@ -27,6 +27,18 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // Root
+        public IState<TMachineUserData, TStateUserData>? Root {
+            get {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                return this.m_Root;
+            }
+            private set {
+                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_Root = value;
+            }
+        }
+
         // UserData
         public TMachineUserData UserData {
             get {
@@ -47,6 +59,9 @@ namespace System.StateMachine.Pro {
             }
         }
 
+    }
+    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
+
         // Constructor
         public StateMachine(TMachineUserData userData) {
             this.m_UserData = userData;
@@ -59,21 +74,6 @@ namespace System.StateMachine.Pro {
             }
             this.m_OnDisposeCallback?.Invoke();
             this.m_Lifecycle = Lifecycle.Disposed;
-        }
-
-    }
-    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
-
-        // Root
-        public IState<TMachineUserData, TStateUserData>? Root {
-            get {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_Root;
-            }
-            private set {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_Root = value;
-            }
         }
 
     }

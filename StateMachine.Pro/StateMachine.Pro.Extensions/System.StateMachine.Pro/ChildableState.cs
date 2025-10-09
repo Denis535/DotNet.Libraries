@@ -37,49 +37,6 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        // UserData
-        public TStateUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-        }
-
-        // OnDispose
-        public event Action? OnDisposeCallback {
-            add {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback += value;
-            }
-            remove {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback -= value;
-            }
-        }
-
-        // Constructor
-        public ChildableState(TStateUserData userData) {
-            this.m_UserData = userData;
-        }
-        public void Dispose() {
-            Assert.Operation.NotDisposed( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-            if (this.Owner is IStateMachine<TMachineUserData, TStateUserData> owner_machine) {
-                Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
-            }
-            if (this.Owner is IState<TMachineUserData, TStateUserData> owner_parent) {
-                Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
-            }
-            this.m_Lifecycle = Lifecycle.Disposing;
-            if (this.Child is IState<TMachineUserData, TStateUserData> child) {
-                child.Dispose();
-            }
-            this.m_OnDisposeCallback?.Invoke();
-            this.m_Lifecycle = Lifecycle.Disposed;
-        }
-
-    }
-    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
-
         // Owner
         public object? Owner {
             get {
@@ -184,6 +141,26 @@ namespace System.StateMachine.Pro {
             }
         }
 
+        // UserData
+        public TStateUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+        }
+
+        // OnDispose
+        public event Action? OnDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback -= value;
+            }
+        }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback {
             add {
@@ -226,6 +203,29 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDeactivateCallback -= value;
             }
+        }
+
+    }
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
+
+        // Constructor
+        public ChildableState(TStateUserData userData) {
+            this.m_UserData = userData;
+        }
+        public void Dispose() {
+            Assert.Operation.NotDisposed( $"State {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
+            if (this.Owner is IStateMachine<TMachineUserData, TStateUserData> owner_machine) {
+                Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
+            }
+            if (this.Owner is IState<TMachineUserData, TStateUserData> owner_parent) {
+                Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
+            }
+            this.m_Lifecycle = Lifecycle.Disposing;
+            if (this.Child is IState<TMachineUserData, TStateUserData> child) {
+                child.Dispose();
+            }
+            this.m_OnDisposeCallback?.Invoke();
+            this.m_Lifecycle = Lifecycle.Disposed;
         }
 
     }
