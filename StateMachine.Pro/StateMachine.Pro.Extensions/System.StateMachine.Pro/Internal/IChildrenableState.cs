@@ -99,49 +99,5 @@ namespace System.StateMachine.Pro {
             this.Deactivate( argument );
         }
 
-        // OnAttach
-        void IState<TMachineUserData, TStateUserData>.OnAttach(object? argument) {
-            this.OnAttach( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnBeforeAttach(object? argument) {
-            this.OnBeforeAttach( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnAfterAttach(object? argument) {
-            this.OnAfterAttach( argument );
-        }
-
-        // OnDetach
-        void IState<TMachineUserData, TStateUserData>.OnDetach(object? argument) {
-            this.OnDetach( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnBeforeDetach(object? argument) {
-            this.OnBeforeDetach( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnAfterDetach(object? argument) {
-            this.OnAfterDetach( argument );
-        }
-
-        // OnActivate
-        void IState<TMachineUserData, TStateUserData>.OnActivate(object? argument) {
-            this.OnActivate( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnBeforeActivate(object? argument) {
-            this.OnBeforeActivate( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnAfterActivate(object? argument) {
-            this.OnAfterActivate( argument );
-        }
-
-        // OnDeactivate
-        void IState<TMachineUserData, TStateUserData>.OnDeactivate(object? argument) {
-            this.OnDeactivate( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnBeforeDeactivate(object? argument) {
-            this.OnBeforeDeactivate( argument );
-        }
-        void IState<TMachineUserData, TStateUserData>.OnAfterDeactivate(object? argument) {
-            this.OnAfterDeactivate( argument );
-        }
-
     }
 }
