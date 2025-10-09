@@ -38,49 +38,6 @@ namespace System.TreeMachine.Pro {
             }
         }
 
-        // UserData
-        public TNodeUserData UserData {
-            get {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.m_UserData;
-            }
-        }
-
-        // OnDispose
-        public event Action? OnDisposeCallback {
-            add {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback += value;
-            }
-            remove {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback -= value;
-            }
-        }
-
-        // Constructor
-        public Node(TNodeUserData userData) {
-            this.m_UserData = userData;
-        }
-        public void Dispose() {
-            Assert.Operation.NotDisposed( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
-            if (this.Owner is ITreeMachine<TMachineUserData, TNodeUserData> owner_machine) {
-                Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
-            }
-            if (this.Owner is INode<TMachineUserData, TNodeUserData> owner_parent) {
-                Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
-            }
-            this.m_Lifecycle = Lifecycle.Disposing;
-            foreach (var child in this.Children) {
-                child.Dispose();
-            }
-            this.m_OnDisposeCallback?.Invoke();
-            this.m_Lifecycle = Lifecycle.Disposed;
-        }
-
-    }
-    public sealed partial class Node<TMachineUserData, TNodeUserData> {
-
         // Owner
         public object? Owner {
             get {
@@ -193,6 +150,26 @@ namespace System.TreeMachine.Pro {
             }
         }
 
+        // UserData
+        public TNodeUserData UserData {
+            get {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                return this.m_UserData;
+            }
+        }
+
+        // OnDispose
+        public event Action? OnDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnDisposeCallback -= value;
+            }
+        }
+
         // OnAttach
         public event Action<object?>? OnAttachCallback {
             add {
@@ -235,6 +212,29 @@ namespace System.TreeMachine.Pro {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 this.m_OnDeactivateCallback -= value;
             }
+        }
+
+    }
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
+
+        // Constructor
+        public Node(TNodeUserData userData) {
+            this.m_UserData = userData;
+        }
+        public void Dispose() {
+            Assert.Operation.NotDisposed( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
+            if (this.Owner is ITreeMachine<TMachineUserData, TNodeUserData> owner_machine) {
+                Assert.Operation.Valid( $"Owner {owner_machine} must be disposing", owner_machine.IsDisposing );
+            }
+            if (this.Owner is INode<TMachineUserData, TNodeUserData> owner_parent) {
+                Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
+            }
+            this.m_Lifecycle = Lifecycle.Disposing;
+            foreach (var child in this.Children) {
+                child.Dispose();
+            }
+            this.m_OnDisposeCallback?.Invoke();
+            this.m_Lifecycle = Lifecycle.Disposed;
         }
 
     }
