@@ -7,9 +7,7 @@ namespace System.TreeMachine.Pro {
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> : ITreeMachine<TMachineUserData, TNodeUserData>, IDisposable {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
-
         private INode<TMachineUserData, TNodeUserData>? m_Root = null;
-
         private readonly TMachineUserData m_UserData = default!;
 
         private Action? m_OnDisposeCallback = null;

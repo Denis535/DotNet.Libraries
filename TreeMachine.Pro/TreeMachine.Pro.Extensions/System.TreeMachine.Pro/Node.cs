@@ -9,22 +9,19 @@ namespace System.TreeMachine.Pro {
     public sealed partial class Node<TMachineUserData, TNodeUserData> : INode<TMachineUserData, TNodeUserData>, IDisposable {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
-
         private object? m_Owner = null;
         private Activity m_Activity = Activity.Inactive;
         private readonly List<INode<TMachineUserData, TNodeUserData>> m_Children = new List<INode<TMachineUserData, TNodeUserData>>( 0 );
-
+        private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
         private readonly TNodeUserData m_UserData = default!;
 
-        private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
+        private Action? m_OnDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
 
         private Action<object?>? m_OnActivateCallback = null;
         private Action<object?>? m_OnDeactivateCallback = null;
-
-        private Action? m_OnDisposeCallback = null;
 
     }
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
