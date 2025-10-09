@@ -11,23 +11,6 @@ namespace System.StateMachine.Pro {
         bool IState<TMachineUserData, TStateUserData>.IsDisposing => this.IsDisposing;
         bool IState<TMachineUserData, TStateUserData>.IsDisposed => this.IsDisposed;
 
-        // UserData
-        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
-
-        // OnDispose
-        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
-            add => this.OnDisposeCallback += value;
-            remove => this.OnDisposeCallback -= value;
-        }
-
-        // Dispose
-        void IState<TMachineUserData, TStateUserData>.Dispose() {
-            this.Dispose();
-        }
-
-    }
-    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
-
         // Owner
         object? IState<TMachineUserData, TStateUserData>.Owner => this.Owner;
 
@@ -59,6 +42,15 @@ namespace System.StateMachine.Pro {
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => this.Descendants;
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
+        // UserData
+        TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
+
+        // OnDispose
+        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
         // OnAttach
         event Action<object?>? IState<TMachineUserData, TStateUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -81,6 +73,11 @@ namespace System.StateMachine.Pro {
 
     }
     public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
+
+        // Dispose
+        void IState<TMachineUserData, TStateUserData>.Dispose() {
+            this.Dispose();
+        }
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

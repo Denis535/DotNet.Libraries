@@ -11,18 +11,6 @@ namespace System.StateMachine.Pro {
         public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
-        // UserData
-        public TStateUserData UserData { get; }
-
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
-        // Dispose
-        protected internal void Dispose();
-
-    }
-    public partial interface IState<TMachineUserData, TStateUserData> {
-
         // Owner
         public object? Owner { get; }
 
@@ -46,6 +34,12 @@ namespace System.StateMachine.Pro {
         public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants { get; }
         public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf { get; }
 
+        // UserData
+        public TStateUserData UserData { get; }
+
+        // OnDispose
+        public event Action? OnDisposeCallback;
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -56,6 +50,9 @@ namespace System.StateMachine.Pro {
 
     }
     public partial interface IState<TMachineUserData, TStateUserData> {
+
+        // Dispose
+        protected internal void Dispose();
 
         // Attach
         protected internal void Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument);

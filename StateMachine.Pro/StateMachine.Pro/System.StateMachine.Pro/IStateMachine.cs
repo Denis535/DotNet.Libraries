@@ -10,20 +10,20 @@ namespace System.StateMachine.Pro {
         public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
+        // Root
+        public IState<TMachineUserData, TStateUserData>? Root { get; }
+
         // UserData
         public TMachineUserData UserData { get; }
 
         // OnDispose
         public event Action? OnDisposeCallback;
 
-        // Dispose
-        protected internal void Dispose();
-
     }
     public partial interface IStateMachine<TMachineUserData, TStateUserData> {
 
-        // Root
-        public IState<TMachineUserData, TStateUserData>? Root { get; }
+        // Dispose
+        protected internal void Dispose();
 
     }
 }
