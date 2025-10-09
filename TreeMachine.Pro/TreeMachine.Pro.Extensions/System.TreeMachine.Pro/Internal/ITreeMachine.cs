@@ -10,6 +10,9 @@ namespace System.TreeMachine.Pro {
         bool ITreeMachine<TMachineUserData, TNodeUserData>.IsDisposing => this.IsDisposing;
         bool ITreeMachine<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
 
+        // Root
+        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
+
         // UserData
         TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
@@ -19,16 +22,13 @@ namespace System.TreeMachine.Pro {
             remove => this.OnDisposeCallback -= value;
         }
 
+    }
+    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
+
         // Dispose
         void ITreeMachine<TMachineUserData, TNodeUserData>.Dispose() {
             this.Dispose();
         }
-
-    }
-    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
-
-        // Root
-        INode<TMachineUserData, TNodeUserData>? ITreeMachine<TMachineUserData, TNodeUserData>.Root => this.Root;
 
     }
 }

@@ -16,14 +16,14 @@ namespace System.TreeMachine.Pro {
         // OnDispose
         public event Action? OnDisposeCallback;
 
-        // Dispose
-        protected internal void Dispose();
+        // Root
+        public INode<TMachineUserData, TNodeUserData>? Root { get; }
 
     }
     public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
 
-        // Root
-        public INode<TMachineUserData, TNodeUserData>? Root { get; }
+        // Dispose
+        protected internal void Dispose();
 
     }
 }

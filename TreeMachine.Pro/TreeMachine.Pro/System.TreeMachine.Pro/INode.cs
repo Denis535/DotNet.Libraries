@@ -11,18 +11,6 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
-        // UserData
-        public TNodeUserData UserData { get; }
-
-        // OnDispose
-        public event Action? OnDisposeCallback;
-
-        // Dispose
-        protected internal void Dispose();
-
-    }
-    public partial interface INode<TMachineUserData, TNodeUserData> {
-
         // Owner
         public object? Owner { get; }
 
@@ -46,6 +34,12 @@ namespace System.TreeMachine.Pro {
         public IEnumerable<INode<TMachineUserData, TNodeUserData>> Descendants { get; }
         public IEnumerable<INode<TMachineUserData, TNodeUserData>> DescendantsAndSelf { get; }
 
+        // UserData
+        public TNodeUserData UserData { get; }
+
+        // OnDispose
+        public event Action? OnDisposeCallback;
+
         // OnAttach
         public event Action<object?>? OnAttachCallback;
         public event Action<object?>? OnDetachCallback;
@@ -56,6 +50,9 @@ namespace System.TreeMachine.Pro {
 
     }
     public partial interface INode<TMachineUserData, TNodeUserData> {
+
+        // Dispose
+        protected internal void Dispose();
 
         // Attach
         protected internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);

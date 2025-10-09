@@ -11,23 +11,6 @@ namespace System.TreeMachine.Pro {
         bool INode<TMachineUserData, TNodeUserData>.IsDisposing => this.IsDisposing;
         bool INode<TMachineUserData, TNodeUserData>.IsDisposed => this.IsDisposed;
 
-        // UserData
-        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
-
-        // OnDispose
-        event Action? INode<TMachineUserData, TNodeUserData>.OnDisposeCallback {
-            add => this.OnDisposeCallback += value;
-            remove => this.OnDisposeCallback -= value;
-        }
-
-        // Dispose
-        void INode<TMachineUserData, TNodeUserData>.Dispose() {
-            this.Dispose();
-        }
-
-    }
-    public sealed partial class Node<TMachineUserData, TNodeUserData> {
-
         // Owner
         object? INode<TMachineUserData, TNodeUserData>.Owner => this.Owner;
 
@@ -51,6 +34,15 @@ namespace System.TreeMachine.Pro {
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.Descendants => this.Descendants;
         IEnumerable<INode<TMachineUserData, TNodeUserData>> INode<TMachineUserData, TNodeUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
 
+        // UserData
+        TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
+
+        // OnDispose
+        event Action? INode<TMachineUserData, TNodeUserData>.OnDisposeCallback {
+            add => this.OnDisposeCallback += value;
+            remove => this.OnDisposeCallback -= value;
+        }
+
         // OnAttach
         event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnAttachCallback {
             add => this.OnAttachCallback += value;
@@ -73,6 +65,11 @@ namespace System.TreeMachine.Pro {
 
     }
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
+
+        // Dispose
+        void INode<TMachineUserData, TNodeUserData>.Dispose() {
+            this.Dispose();
+        }
 
         // Attach
         void INode<TMachineUserData, TNodeUserData>.Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {
