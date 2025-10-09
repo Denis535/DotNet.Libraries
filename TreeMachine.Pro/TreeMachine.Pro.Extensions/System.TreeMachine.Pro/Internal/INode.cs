@@ -100,49 +100,5 @@ namespace System.TreeMachine.Pro {
             this.Deactivate( argument );
         }
 
-        // OnAttach
-        void INode<TMachineUserData, TNodeUserData>.OnAttach(object? argument) {
-            this.OnAttach( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnBeforeAttach(object? argument) {
-            this.OnBeforeAttach( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnAfterAttach(object? argument) {
-            this.OnAfterAttach( argument );
-        }
-
-        // OnDetach
-        void INode<TMachineUserData, TNodeUserData>.OnDetach(object? argument) {
-            this.OnDetach( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnBeforeDetach(object? argument) {
-            this.OnBeforeDetach( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnAfterDetach(object? argument) {
-            this.OnAfterDetach( argument );
-        }
-
-        // OnActivate
-        void INode<TMachineUserData, TNodeUserData>.OnActivate(object? argument) {
-            this.OnActivate( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnBeforeActivate(object? argument) {
-            this.OnBeforeActivate( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnAfterActivate(object? argument) {
-            this.OnAfterActivate( argument );
-        }
-
-        // OnDeactivate
-        void INode<TMachineUserData, TNodeUserData>.OnDeactivate(object? argument) {
-            this.OnDeactivate( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnBeforeDeactivate(object? argument) {
-            this.OnBeforeDeactivate( argument );
-        }
-        void INode<TMachineUserData, TNodeUserData>.OnAfterDeactivate(object? argument) {
-            this.OnAfterDeactivate( argument );
-        }
-
     }
 }
