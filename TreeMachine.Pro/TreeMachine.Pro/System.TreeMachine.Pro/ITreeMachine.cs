@@ -17,7 +17,7 @@ namespace System.TreeMachine.Pro {
         public event Action? OnDisposeCallback;
 
         // Dispose
-        internal void Dispose();
+        protected internal void Dispose();
 
     }
     public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {

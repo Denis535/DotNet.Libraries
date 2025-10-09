@@ -18,7 +18,7 @@ namespace System.TreeMachine.Pro {
         public event Action? OnDisposeCallback;
 
         // Dispose
-        internal void Dispose();
+        protected internal void Dispose();
 
     }
     public partial interface INode<TMachineUserData, TNodeUserData> {
@@ -58,38 +58,38 @@ namespace System.TreeMachine.Pro {
     public partial interface INode<TMachineUserData, TNodeUserData> {
 
         // Attach
-        internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
-        internal void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
+        protected internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
+        protected internal void Attach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
 
         // Detach
-        internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
-        internal void Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
+        protected internal void Detach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);
+        protected internal void Detach(INode<TMachineUserData, TNodeUserData> parent, object? argument);
 
         // Activate
-        internal void Activate(object? argument);
+        protected internal void Activate(object? argument);
 
         // Deactivate
-        internal void Deactivate(object? argument);
+        protected internal void Deactivate(object? argument);
 
         // OnAttach
-        internal void OnAttach(object? argument);
-        internal void OnBeforeAttach(object? argument);
-        internal void OnAfterAttach(object? argument);
+        protected internal void OnAttach(object? argument);
+        protected internal void OnBeforeAttach(object? argument);
+        protected internal void OnAfterAttach(object? argument);
 
         // OnDetach
-        internal void OnDetach(object? argument);
-        internal void OnBeforeDetach(object? argument);
-        internal void OnAfterDetach(object? argument);
+        protected internal void OnDetach(object? argument);
+        protected internal void OnBeforeDetach(object? argument);
+        protected internal void OnAfterDetach(object? argument);
 
         // OnActivate
-        internal void OnActivate(object? argument);
-        internal void OnBeforeActivate(object? argument);
-        internal void OnAfterActivate(object? argument);
+        protected internal void OnActivate(object? argument);
+        protected internal void OnBeforeActivate(object? argument);
+        protected internal void OnAfterActivate(object? argument);
 
         // OnDeactivate
-        internal void OnDeactivate(object? argument);
-        internal void OnBeforeDeactivate(object? argument);
-        internal void OnAfterDeactivate(object? argument);
+        protected internal void OnDeactivate(object? argument);
+        protected internal void OnBeforeDeactivate(object? argument);
+        protected internal void OnAfterDeactivate(object? argument);
 
     }
 }

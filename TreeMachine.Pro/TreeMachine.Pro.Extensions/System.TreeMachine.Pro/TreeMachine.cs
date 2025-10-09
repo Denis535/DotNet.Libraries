@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
 
         private INode<TMachineUserData, TNodeUserData>? m_Root = null;
 
-        private TMachineUserData m_UserData = default!;
+        private readonly TMachineUserData m_UserData = default!;
 
         private Action? m_OnDisposeCallback = null;
 
@@ -35,10 +35,6 @@ namespace System.TreeMachine.Pro {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
             }
-            set {
-                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
         }
 
         // OnDispose
@@ -54,10 +50,8 @@ namespace System.TreeMachine.Pro {
         }
 
         // Constructor
-        public TreeMachine() {
-        }
         public TreeMachine(TMachineUserData userData) {
-            this.UserData = userData;
+            this.m_UserData = userData;
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );

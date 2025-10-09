@@ -12,7 +12,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00_a() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
@@ -38,7 +38,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_00_b() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
@@ -59,7 +59,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01_a() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 var root = new Node( "root" );
@@ -87,7 +87,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_01_b() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 var root = new Node( "root" );
@@ -191,7 +191,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_10() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 machine.SetRoot( new Node( "root" ), null, null );
@@ -262,7 +262,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_11() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 var root = new Node( "root" );
@@ -308,7 +308,7 @@ namespace System.TreeMachine.Pro {
 
         [Test]
         public void Test_12() {
-            using var machine = new TreeMachine();
+            using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
                 var root = new Node( "root" );

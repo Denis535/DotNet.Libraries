@@ -14,7 +14,7 @@ namespace System.TreeMachine.Pro {
         private Activity m_Activity = Activity.Inactive;
         private readonly List<INode<TMachineUserData, TNodeUserData>> m_Children = new List<INode<TMachineUserData, TNodeUserData>>( 0 );
 
-        private TNodeUserData m_UserData = default!;
+        private readonly TNodeUserData m_UserData = default!;
 
         private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
 
@@ -47,10 +47,6 @@ namespace System.TreeMachine.Pro {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
                 return this.m_UserData;
             }
-            set {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_UserData = value;
-            }
         }
 
         // OnDispose
@@ -66,10 +62,8 @@ namespace System.TreeMachine.Pro {
         }
 
         // Constructor
-        public Node() {
-        }
         public Node(TNodeUserData userData) {
-            this.UserData = userData;
+            this.m_UserData = userData;
         }
         public void Dispose() {
             Assert.Operation.NotDisposed( $"Node {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
