@@ -9,6 +9,11 @@ namespace GameFramework.Pro {
 
         private readonly State<ThemeBase, PlayListBase> m_State;
 
+        public bool IsDisposing {
+            get {
+                return this.m_State.IsDisposing;
+            }
+        }
         public bool IsDisposed {
             get {
                 return this.m_State.IsDisposed;
@@ -40,8 +45,7 @@ namespace GameFramework.Pro {
             this.m_State.OnActivateCallback += this.OnActivate;
             this.m_State.OnDeactivateCallback += this.OnDeactivate;
         }
-        protected virtual void OnDispose() {
-        }
+        protected abstract void OnDispose();
 
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);

@@ -18,9 +18,6 @@ namespace GameFramework.Pro {
         public PlayListBase2(IDependencyProvider provider) {
             this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
-        protected override void OnDispose() {
-            base.OnDispose();
-        }
 
     }
 }

@@ -15,6 +15,11 @@ namespace GameFramework.Pro {
         private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantDeactivateCallback;
         private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantDeactivateCallback;
 
+        public bool IsDisposing {
+            get {
+                return this.m_Node.IsDisposing;
+            }
+        }
         public bool IsDisposed {
             get {
                 return this.m_Node.IsDisposed;
@@ -110,10 +115,8 @@ namespace GameFramework.Pro {
                 }
             };
         }
-        protected virtual void OnBeforeDispose() {
-        }
-        protected virtual void OnAfterDispose() {
-        }
+        protected abstract void OnBeforeDispose();
+        protected abstract void OnAfterDispose();
 
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);
@@ -148,12 +151,6 @@ namespace GameFramework.Pro {
 
         public ViewableWidgetBase() {
         }
-        protected override void OnBeforeDispose() {
-            base.OnBeforeDispose();
-        }
-        protected override void OnAfterDispose() {
-            base.OnAfterDispose();
-        }
 
     }
     public abstract class ViewableWidgetBase<TView> : ViewableWidgetBase
@@ -165,12 +162,6 @@ namespace GameFramework.Pro {
         }
 
         public ViewableWidgetBase() {
-        }
-        protected override void OnBeforeDispose() {
-            base.OnBeforeDispose();
-        }
-        protected override void OnAfterDispose() {
-            base.OnAfterDispose();
         }
 
     }

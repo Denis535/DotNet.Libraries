@@ -50,7 +50,6 @@ namespace GameFramework.Pro {
         public MainPlayList() {
         }
         protected override void OnDispose() {
-            base.OnDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -64,7 +63,6 @@ namespace GameFramework.Pro {
         public GamePlayList() {
         }
         protected override void OnDispose() {
-            base.OnDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -92,10 +90,8 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
         protected override void OnBeforeDispose() {
-            base.OnBeforeDispose();
         }
         protected override void OnAfterDispose() {
-            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -114,10 +110,8 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         protected override void OnBeforeDispose() {
-            base.OnBeforeDispose();
         }
         protected override void OnAfterDispose() {
-            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -136,10 +130,8 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         protected override void OnBeforeDispose() {
-            base.OnBeforeDispose();
         }
         protected override void OnAfterDispose() {
-            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
