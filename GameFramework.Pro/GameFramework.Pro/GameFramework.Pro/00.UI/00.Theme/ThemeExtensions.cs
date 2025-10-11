@@ -15,11 +15,17 @@ namespace GameFramework.Pro {
             return (T) state.UserData;
         }
 
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this PlayListBase playList) {
-            return playList.State.GetCancellationToken_OnDetachCallback();
+        public static CancellationToken GetCancellationToken_OnDisposeCallback(this IState<ThemeBase, PlayListBase> state) {
+            var cts = new CancellationTokenSource();
+            state.OnBeforeDisposeCallback += Callback;
+            void Callback() {
+                cts.Cancel();
+                state.OnBeforeDisposeCallback -= Callback;
+            }
+            return cts.Token;
         }
+
         public static CancellationToken GetCancellationToken_OnDetachCallback(this IState<ThemeBase, PlayListBase> state) {
-            // todo: should we trigger event if the state is already non-attached?
             var cts = new CancellationTokenSource();
             state.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -29,11 +35,7 @@ namespace GameFramework.Pro {
             return cts.Token;
         }
 
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this PlayListBase playList) {
-            return playList.State.GetCancellationToken_OnDeactivateCallback();
-        }
         public static CancellationToken GetCancellationToken_OnDeactivateCallback(this IState<ThemeBase, PlayListBase> state) {
-            // todo: should we trigger event if the state is already inactive?
             var cts = new CancellationTokenSource();
             state.OnDeactivateCallback += Callback;
             void Callback(object? argument) {

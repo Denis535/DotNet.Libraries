@@ -15,11 +15,26 @@ namespace GameFramework.Pro {
             return (T) node.UserData;
         }
 
-        public static CancellationToken GetCancellationToken_OnDetachCallback(this WidgetBase widget) {
-            return widget.Node.GetCancellationToken_OnDetachCallback();
+        public static CancellationToken GetCancellationToken_OnBeforeDisposeCallback(this INode<ScreenBase, WidgetBase> node) {
+            var cts = new CancellationTokenSource();
+            node.OnBeforeDisposeCallback += Callback;
+            void Callback() {
+                cts.Cancel();
+                node.OnBeforeDisposeCallback -= Callback;
+            }
+            return cts.Token;
         }
+        public static CancellationToken GetCancellationToken_OnAfterDisposeCallback(this INode<ScreenBase, WidgetBase> node) {
+            var cts = new CancellationTokenSource();
+            node.OnAfterDisposeCallback += Callback;
+            void Callback() {
+                cts.Cancel();
+                node.OnAfterDisposeCallback -= Callback;
+            }
+            return cts.Token;
+        }
+
         public static CancellationToken GetCancellationToken_OnDetachCallback(this INode<ScreenBase, WidgetBase> node) {
-            // todo: should we trigger event if the state is already non-attached?
             var cts = new CancellationTokenSource();
             node.OnDetachCallback += Callback;
             void Callback(object? argument) {
@@ -29,11 +44,7 @@ namespace GameFramework.Pro {
             return cts.Token;
         }
 
-        public static CancellationToken GetCancellationToken_OnDeactivateCallback(this WidgetBase widget) {
-            return widget.Node.GetCancellationToken_OnDeactivateCallback();
-        }
         public static CancellationToken GetCancellationToken_OnDeactivateCallback(this INode<ScreenBase, WidgetBase> node) {
-            // todo: should we trigger event if the state is already inactive?
             var cts = new CancellationTokenSource();
             node.OnDeactivateCallback += Callback;
             void Callback(object? argument) {
