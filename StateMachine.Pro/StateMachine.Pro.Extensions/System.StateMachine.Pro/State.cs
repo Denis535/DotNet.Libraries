@@ -239,7 +239,7 @@ namespace System.StateMachine.Pro {
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
             }
-            if (parent.Activity == Activity.Active) {
+            if (this.Parent!.Activity == Activity.Active) {
                 this.Activate( argument );
             }
         }
@@ -263,7 +263,7 @@ namespace System.StateMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"State {this} must have {parent} owner", this.Owner == parent );
-            if (parent.Activity == Activity.Active) {
+            if (this.Activity == Activity.Active) {
                 this.Deactivate( argument );
             }
             {
