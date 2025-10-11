@@ -38,9 +38,13 @@ namespace System.StateMachine.Pro {
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
         // OnDispose
-        event Action? IState<TMachineUserData, TStateUserData>.OnDisposeCallback {
-            add => this.OnDisposeCallback += value;
-            remove => this.OnDisposeCallback -= value;
+        event Action? IState<TMachineUserData, TStateUserData>.OnBeforeDisposeCallback {
+            add => this.OnBeforeDisposeCallback += value;
+            remove => this.OnBeforeDisposeCallback -= value;
+        }
+        event Action? IState<TMachineUserData, TStateUserData>.OnAfterDisposeCallback {
+            add => this.OnAfterDisposeCallback += value;
+            remove => this.OnAfterDisposeCallback -= value;
         }
 
         // OnAttach

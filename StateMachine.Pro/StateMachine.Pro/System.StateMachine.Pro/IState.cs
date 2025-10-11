@@ -38,7 +38,8 @@ namespace System.StateMachine.Pro {
         public TStateUserData UserData { get; }
 
         // OnDispose
-        public event Action? OnDisposeCallback;
+        public event Action? OnBeforeDisposeCallback;
+        public event Action? OnAfterDisposeCallback;
 
         // OnAttach
         public event Action<object?>? OnAttachCallback;

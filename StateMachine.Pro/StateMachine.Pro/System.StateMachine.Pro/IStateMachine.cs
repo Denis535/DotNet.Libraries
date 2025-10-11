@@ -17,7 +17,8 @@ namespace System.StateMachine.Pro {
         public TMachineUserData UserData { get; }
 
         // OnDispose
-        public event Action? OnDisposeCallback;
+        public event Action? OnBeforeDisposeCallback;
+        public event Action? OnAfterDisposeCallback;
 
     }
     public partial interface IStateMachine<TMachineUserData, TStateUserData> {

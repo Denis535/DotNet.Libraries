@@ -14,7 +14,8 @@ namespace System.StateMachine.Pro {
         private IState<TMachineUserData, TStateUserData>? m_Child = null;
         private readonly TStateUserData m_UserData = default!;
 
-        private Action? m_OnDisposeCallback = null;
+        private Action? m_OnBeforeDisposeCallback = null;
+        private Action? m_OnAfterDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -150,14 +151,24 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public event Action? OnDisposeCallback {
+        public event Action? OnBeforeDisposeCallback {
             add {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback += value;
+                this.m_OnBeforeDisposeCallback += value;
             }
             remove {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback -= value;
+                this.m_OnBeforeDisposeCallback -= value;
+            }
+        }
+        public event Action? OnAfterDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDisposeCallback -= value;
             }
         }
 
@@ -221,10 +232,11 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
             }
             this.m_Lifecycle = Lifecycle.Disposing;
+            this.m_OnBeforeDisposeCallback?.Invoke();
             if (this.Child is IState<TMachineUserData, TStateUserData> child) {
                 child.Dispose();
             }
-            this.m_OnDisposeCallback?.Invoke();
+            this.m_OnAfterDisposeCallback?.Invoke();
             this.m_Lifecycle = Lifecycle.Disposed;
         }
 
