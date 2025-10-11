@@ -50,7 +50,6 @@ namespace GameFramework.Pro {
         public MainPlayList() {
         }
         protected override void OnDispose() {
-            System.Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
             base.OnDispose();
         }
 
@@ -65,7 +64,6 @@ namespace GameFramework.Pro {
         public GamePlayList() {
         }
         protected override void OnDispose() {
-            System.Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
             base.OnDispose();
         }
 
@@ -94,7 +92,6 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
         protected override void OnAfterDispose() {
-            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             //_ = this.NodeMutable.RemoveChildren( null, null );
             base.OnAfterDispose();
         }
@@ -115,11 +112,9 @@ namespace GameFramework.Pro {
             this.View = new MainWidgetView();
         }
         protected override void OnBeforeDispose() {
-            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             base.OnBeforeDispose();
         }
         protected override void OnAfterDispose() {
-            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterDispose();
         }
 
@@ -139,11 +134,9 @@ namespace GameFramework.Pro {
             this.View = new GameWidgetView();
         }
         protected override void OnBeforeDispose() {
-            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             base.OnBeforeDispose();
         }
         protected override void OnAfterDispose() {
-            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             base.OnAfterDispose();
         }
 

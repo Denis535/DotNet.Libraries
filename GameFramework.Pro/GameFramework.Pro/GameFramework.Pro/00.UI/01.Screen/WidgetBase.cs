@@ -5,13 +5,10 @@ namespace GameFramework.Pro {
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
-    using System.Threading;
     using System.TreeMachine.Pro;
 
     public abstract class WidgetBase {
 
-        private bool m_IsDisposed;
-        private CancellationTokenSource? m_DisposeCancellationTokenSource;
         private readonly Node<ScreenBase, WidgetBase> m_Node;
 
         private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantActivateCallback;
@@ -19,77 +16,62 @@ namespace GameFramework.Pro {
         private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantDeactivateCallback;
         private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantDeactivateCallback;
 
-        public bool IsDisposed {
-            get {
-                return this.m_IsDisposed;
-            }
-        }
-        public CancellationToken DisposeCancellationToken {
-            get {
-                if (this.m_DisposeCancellationTokenSource == null) {
-                    this.m_DisposeCancellationTokenSource = new CancellationTokenSource();
-                    if (this.IsDisposed) this.m_DisposeCancellationTokenSource.Cancel();
-                }
-                return this.m_DisposeCancellationTokenSource.Token;
-            }
-        }
-
         protected ScreenBase? Screen {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 return this.Node.Machine?.UserData;
             }
         }
         public INode<ScreenBase, WidgetBase> Node {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 return this.m_Node;
             }
         }
         protected Node<ScreenBase, WidgetBase> NodeMutable {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 return this.m_Node;
             }
         }
 
         public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantActivateCallback {
             add {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnBeforeDescendantActivateCallback += value;
             }
             remove {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnBeforeDescendantActivateCallback -= value;
             }
         }
         public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantActivateCallback {
             add {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnAfterDescendantActivateCallback += value;
             }
             remove {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnAfterDescendantActivateCallback -= value;
             }
         }
         public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantDeactivateCallback {
             add {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnBeforeDescendantDeactivateCallback += value;
             }
             remove {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnBeforeDescendantDeactivateCallback -= value;
             }
         }
         public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantDeactivateCallback {
             add {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnAfterDescendantDeactivateCallback += value;
             }
             remove {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_OnAfterDescendantDeactivateCallback -= value;
             }
         }
@@ -124,17 +106,13 @@ namespace GameFramework.Pro {
             };
         }
         ~WidgetBase() {
-            Trace.Assert( this.IsDisposed, $"Widget '{this}' must be disposed" );
+            Trace.Assert( this.Node.IsDisposed, $"Node '{this.Node}' must be disposed" );
         }
         protected virtual void OnBeforeDispose() {
-            Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called by INode.OnDisposeCallback
         }
         protected virtual void OnAfterDispose() {
-            Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called by INode.OnDisposeCallback
-            this.m_DisposeCancellationTokenSource?.Cancel();
-            this.m_IsDisposed = true;
         }
 
         protected abstract void OnActivate(object? argument);
@@ -159,11 +137,11 @@ namespace GameFramework.Pro {
 
         public object View {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 return this.m_View;
             }
             protected init {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.NotDisposed( $"Node {this.Node} must be non-disposed", !this.Node.IsDisposed );
                 this.m_View = value ?? throw new ArgumentNullException( nameof( value ) );
             }
         }

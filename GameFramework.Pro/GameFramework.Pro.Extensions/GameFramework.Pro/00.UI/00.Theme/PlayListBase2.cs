@@ -10,7 +10,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"State '{this.State}' must be disposed", this.State.IsDisposed );
                 return this.m_Provider;
             }
         }

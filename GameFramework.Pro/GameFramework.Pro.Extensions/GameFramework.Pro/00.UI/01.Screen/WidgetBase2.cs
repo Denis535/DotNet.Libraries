@@ -10,7 +10,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Node '{this.Node}' must be disposed", this.Node.IsDisposed );
                 return this.m_Provider;
             }
         }
@@ -33,7 +33,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                Assert.Operation.Valid( $"Node '{this.Node}' must be disposed", this.Node.IsDisposed );
                 return this.m_Provider;
             }
         }
