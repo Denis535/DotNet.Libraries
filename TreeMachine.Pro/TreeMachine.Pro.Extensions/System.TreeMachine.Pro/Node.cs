@@ -279,7 +279,7 @@ namespace System.TreeMachine.Pro {
                 this.OnAttach( argument );
                 this.OnAfterAttach( argument );
             }
-            if (parent.Activity == Activity.Active) {
+            if (this.Parent!.Activity == Activity.Active) {
                 this.Activate( argument );
             }
         }
@@ -303,7 +303,7 @@ namespace System.TreeMachine.Pro {
             Assert.Argument.NotNull( $"Argument 'parent' must be non-null", parent != null );
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.Valid( $"Node {this} must have {parent} owner", this.Owner == parent );
-            if (parent.Activity == Activity.Active) {
+            if (this.Activity == Activity.Active) {
                 this.Deactivate( argument );
             }
             {
