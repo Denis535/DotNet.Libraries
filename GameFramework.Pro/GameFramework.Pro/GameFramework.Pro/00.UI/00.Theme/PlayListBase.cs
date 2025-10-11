@@ -49,14 +49,14 @@ namespace GameFramework.Pro {
 
         public PlayListBase() {
             this.m_State = new State<ThemeBase, PlayListBase>( this );
+            this.State.OnBeforeDisposeCallback += this.OnDispose;
             this.State.OnActivateCallback += this.OnActivate;
             this.State.OnDeactivateCallback += this.OnDeactivate;
-            this.State.OnDisposeCallback += this.Dispose;
         }
         ~PlayListBase() {
             Trace.Assert( this.IsDisposed, $"PlayList '{this}' must be disposed" );
         }
-        protected virtual void Dispose() {
+        protected virtual void OnDispose() {
             Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.NotDisposed( $"State {this.State} must be disposing", this.State.IsDisposing ); // This method must only be called by IState.OnDisposeCallback
             this.m_DisposeCancellationTokenSource?.Cancel();

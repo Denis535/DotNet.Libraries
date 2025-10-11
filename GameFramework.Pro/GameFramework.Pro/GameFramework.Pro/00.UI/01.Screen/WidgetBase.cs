@@ -98,7 +98,8 @@ namespace GameFramework.Pro {
             this.m_Node = new Node<ScreenBase, WidgetBase>( this ) {
                 SortDelegate = this.Sort,
             };
-            this.Node.OnDisposeCallback += this.Dispose;
+            this.Node.OnBeforeDisposeCallback += this.OnBeforeDispose;
+            this.Node.OnAfterDisposeCallback += this.OnAfterDispose;
             this.Node.OnActivateCallback += (argument) => {
                 foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
                     ancestor.Widget().m_OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
@@ -125,7 +126,11 @@ namespace GameFramework.Pro {
         ~WidgetBase() {
             Trace.Assert( this.IsDisposed, $"Widget '{this}' must be disposed" );
         }
-        protected virtual void Dispose() {
+        protected virtual void OnBeforeDispose() {
+            Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called by INode.OnDisposeCallback
+        }
+        protected virtual void OnAfterDispose() {
             Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             Assert.Operation.NotDisposed( $"Node {this.Node} must be disposing", this.Node.IsDisposing ); // This method must only be called by INode.OnDisposeCallback
             this.m_DisposeCancellationTokenSource?.Cancel();
@@ -165,8 +170,11 @@ namespace GameFramework.Pro {
 
         public ViewableWidgetBase() {
         }
-        protected override void Dispose() {
-            base.Dispose();
+        protected override void OnBeforeDispose() {
+            base.OnBeforeDispose();
+        }
+        protected override void OnAfterDispose() {
+            base.OnAfterDispose();
         }
 
     }
@@ -180,8 +188,11 @@ namespace GameFramework.Pro {
 
         public ViewableWidgetBase() {
         }
-        protected override void Dispose() {
-            base.Dispose();
+        protected override void OnBeforeDispose() {
+            base.OnBeforeDispose();
+        }
+        protected override void OnAfterDispose() {
+            base.OnAfterDispose();
         }
 
     }

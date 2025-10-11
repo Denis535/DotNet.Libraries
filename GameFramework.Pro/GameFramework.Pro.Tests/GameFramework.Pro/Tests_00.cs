@@ -49,9 +49,9 @@ namespace GameFramework.Pro {
 
         public MainPlayList() {
         }
-        protected override void Dispose() {
+        protected override void OnDispose() {
             System.Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+            base.OnDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -64,9 +64,9 @@ namespace GameFramework.Pro {
 
         public GamePlayList() {
         }
-        protected override void Dispose() {
+        protected override void OnDispose() {
             System.Assert.Operation.NotDisposed( $"PlayList {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+            base.OnDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -93,10 +93,10 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new MainWidget().Node, null );
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
-        protected override void Dispose() {
+        protected override void OnAfterDispose() {
             System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
             //_ = this.NodeMutable.RemoveChildren( null, null );
-            base.Dispose();
+            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -114,9 +114,13 @@ namespace GameFramework.Pro {
         public MainWidget() {
             this.View = new MainWidgetView();
         }
-        protected override void Dispose() {
+        protected override void OnBeforeDispose() {
             System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+            base.OnBeforeDispose();
+        }
+        protected override void OnAfterDispose() {
+            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
@@ -134,9 +138,13 @@ namespace GameFramework.Pro {
         public GameWidget() {
             this.View = new GameWidgetView();
         }
-        protected override void Dispose() {
+        protected override void OnBeforeDispose() {
             System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+            base.OnBeforeDispose();
+        }
+        protected override void OnAfterDispose() {
+            System.Assert.Operation.NotDisposed( $"Widget {this} must be non-disposed", !this.IsDisposed );
+            base.OnAfterDispose();
         }
 
         protected override void OnActivate(object? argument) {
