@@ -2,7 +2,6 @@
 namespace GameFramework.Pro {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.StateMachine.Pro;
     using System.Text;
 
@@ -10,36 +9,38 @@ namespace GameFramework.Pro {
 
         private readonly State<ThemeBase, PlayListBase> m_State;
 
+        public bool IsDisposed {
+            get {
+                return this.m_State.IsDisposed;
+            }
+        }
+
         protected ThemeBase? Theme {
             get {
-                Assert.Operation.Valid( $"State '{this.State}' must be disposed", this.State.IsDisposed );
-                return this.State.Machine?.UserData;
+                Assert.Operation.Valid( $"PlayList {this} must be non-disposed", !this.IsDisposed );
+                return this.m_State.Machine?.UserData;
             }
         }
         public IState<ThemeBase, PlayListBase> State {
             get {
-                Assert.Operation.Valid( $"State '{this.State}' must be disposed", this.State.IsDisposed );
+                Assert.Operation.Valid( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;
             }
         }
         protected State<ThemeBase, PlayListBase> StateMutable {
             get {
-                Assert.Operation.Valid( $"State '{this.State}' must be disposed", this.State.IsDisposed );
+                Assert.Operation.Valid( $"PlayList {this} must be non-disposed", !this.IsDisposed );
                 return this.m_State;
             }
         }
 
         public PlayListBase() {
             this.m_State = new State<ThemeBase, PlayListBase>( this );
-            this.State.OnBeforeDisposeCallback += this.OnDispose;
-            this.State.OnActivateCallback += this.OnActivate;
-            this.State.OnDeactivateCallback += this.OnDeactivate;
-        }
-        ~PlayListBase() {
-            Trace.Assert( this.State.IsDisposed, $"State '{this.State}' must be disposed" );
+            this.m_State.OnBeforeDisposeCallback += this.OnDispose;
+            this.m_State.OnActivateCallback += this.OnActivate;
+            this.m_State.OnDeactivateCallback += this.OnDeactivate;
         }
         protected virtual void OnDispose() {
-            Assert.Operation.NotDisposed( $"State {this.State} must be disposing", this.State.IsDisposing ); // This method must only be called by IState.OnDisposeCallback
         }
 
         protected abstract void OnActivate(object? argument);

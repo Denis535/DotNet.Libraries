@@ -27,9 +27,6 @@ namespace System {
 
         public DisposableBase() {
         }
-        ~DisposableBase() {
-            Assert.Operation.Valid( $"Disposable '{this}' must be disposed", this.IsDisposed );
-        }
         public virtual void Dispose() {
             Assert.Operation.NotDisposed( $"Disposable {this} must be non-disposed", !this.IsDisposed );
             this.m_DisposeCancellationTokenSource?.Cancel();
