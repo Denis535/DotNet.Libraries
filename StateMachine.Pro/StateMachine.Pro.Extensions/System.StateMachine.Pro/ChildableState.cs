@@ -232,11 +232,11 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
             }
             this.m_Lifecycle = Lifecycle.Disposing;
-            this.m_OnBeforeDisposeCallback?.Invoke();
-            if (this.Child is IState<TMachineUserData, TStateUserData> child) {
-                child.Dispose();
+            {
+                this.m_OnBeforeDisposeCallback?.Invoke();
+                this.Child?.Dispose();
+                this.m_OnAfterDisposeCallback?.Invoke();
             }
-            this.m_OnAfterDisposeCallback?.Invoke();
             this.m_Lifecycle = Lifecycle.Disposed;
         }
 

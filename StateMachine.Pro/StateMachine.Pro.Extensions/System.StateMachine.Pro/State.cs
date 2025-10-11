@@ -204,8 +204,10 @@ namespace System.StateMachine.Pro {
                 Assert.Operation.Valid( $"Owner {owner_parent} must be disposing", owner_parent.IsDisposing );
             }
             this.m_Lifecycle = Lifecycle.Disposing;
-            this.m_OnBeforeDisposeCallback?.Invoke();
-            this.m_OnAfterDisposeCallback?.Invoke();
+            {
+                this.m_OnBeforeDisposeCallback?.Invoke();
+                this.m_OnAfterDisposeCallback?.Invoke();
+            }
             this.m_Lifecycle = Lifecycle.Disposed;
         }
 

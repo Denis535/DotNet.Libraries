@@ -80,11 +80,11 @@ namespace System.StateMachine.Pro {
         public void Dispose() {
             Assert.Operation.NotDisposed( $"StateMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
-            this.m_OnBeforeDisposeCallback?.Invoke();
-            if (this.Root != null) {
-                this.Root.Dispose();
+            {
+                this.m_OnBeforeDisposeCallback?.Invoke();
+                this.Root?.Dispose();
+                this.m_OnAfterDisposeCallback?.Invoke();
             }
-            this.m_OnAfterDisposeCallback?.Invoke();
             this.m_Lifecycle = Lifecycle.Disposed;
         }
 
