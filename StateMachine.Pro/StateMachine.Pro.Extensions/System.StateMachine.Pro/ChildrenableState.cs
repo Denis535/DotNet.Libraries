@@ -403,15 +403,15 @@ namespace System.StateMachine.Pro {
                 child.Dispose();
             }
         }
-        public bool RemoveChild(Func<IState<TMachineUserData, TStateUserData>, bool> predicate, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
-            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            var child = this.Children.LastOrDefault( predicate );
-            if (child != null) {
-                this.RemoveChild( child, argument, callback );
-                return true;
-            }
-            return false;
-        }
+        //public bool RemoveChild(Func<IState<TMachineUserData, TStateUserData>, bool> predicate, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
+        //    Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+        //    var child = this.Children.LastOrDefault( predicate );
+        //    if (child != null) {
+        //        this.RemoveChild( child, argument, callback );
+        //        return true;
+        //    }
+        //    return false;
+        //}
         public int RemoveChildren(Func<IState<TMachineUserData, TStateUserData>, bool> predicate, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().Where( predicate ).ToList();
@@ -420,14 +420,14 @@ namespace System.StateMachine.Pro {
             }
             return children.Count;
         }
-        public int RemoveChildren(object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
-            Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-            var children = this.Children.Reverse().ToList();
-            foreach (var child in children) {
-                this.RemoveChild( child, argument, callback );
-            }
-            return children.Count;
-        }
+        //public int RemoveChildren(object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
+        //    Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+        //    var children = this.Children.Reverse().ToList();
+        //    foreach (var child in children) {
+        //        this.RemoveChild( child, argument, callback );
+        //    }
+        //    return children.Count;
+        //}
 
         // Sort
         private void Sort(List<IState<TMachineUserData, TStateUserData>> children) {
