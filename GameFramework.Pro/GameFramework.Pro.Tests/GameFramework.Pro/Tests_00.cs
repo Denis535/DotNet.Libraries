@@ -91,8 +91,10 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new MainWidget().Node, null );
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
+        protected override void OnBeforeDispose() {
+            base.OnBeforeDispose();
+        }
         protected override void OnAfterDispose() {
-            //_ = this.NodeMutable.RemoveChildren( null, null );
             base.OnAfterDispose();
         }
 
