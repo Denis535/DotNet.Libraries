@@ -38,9 +38,13 @@ namespace System.TreeMachine.Pro {
         TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
         // OnDispose
-        event Action? INode<TMachineUserData, TNodeUserData>.OnDisposeCallback {
-            add => this.OnDisposeCallback += value;
-            remove => this.OnDisposeCallback -= value;
+        event Action? INode<TMachineUserData, TNodeUserData>.OnBeforeDisposeCallback {
+            add => this.OnBeforeDisposeCallback += value;
+            remove => this.OnBeforeDisposeCallback -= value;
+        }
+        event Action? INode<TMachineUserData, TNodeUserData>.OnAfterDisposeCallback {
+            add => this.OnAfterDisposeCallback += value;
+            remove => this.OnAfterDisposeCallback -= value;
         }
 
         // OnAttach

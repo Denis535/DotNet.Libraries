@@ -10,7 +10,8 @@ namespace System.TreeMachine.Pro {
         private INode<TMachineUserData, TNodeUserData>? m_Root = null;
         private readonly TMachineUserData m_UserData = default!;
 
-        private Action? m_OnDisposeCallback = null;
+        private Action? m_OnBeforeDisposeCallback = null;
+        private Action? m_OnAfterDisposeCallback = null;
 
     }
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
@@ -48,14 +49,24 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnDispose
-        public event Action? OnDisposeCallback {
+        public event Action? OnBeforeDisposeCallback {
             add {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback += value;
+                this.m_OnBeforeDisposeCallback += value;
             }
             remove {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDisposeCallback -= value;
+                this.m_OnBeforeDisposeCallback -= value;
+            }
+        }
+        public event Action? OnAfterDisposeCallback {
+            add {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDisposeCallback += value;
+            }
+            remove {
+                Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDisposeCallback -= value;
             }
         }
 
@@ -69,10 +80,11 @@ namespace System.TreeMachine.Pro {
         public void Dispose() {
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
+            this.m_OnBeforeDisposeCallback?.Invoke();
             if (this.Root != null) {
                 this.Root.Dispose();
             }
-            this.m_OnDisposeCallback?.Invoke();
+            this.m_OnAfterDisposeCallback?.Invoke();
             this.m_Lifecycle = Lifecycle.Disposed;
         }
 

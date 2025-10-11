@@ -14,7 +14,8 @@ namespace System.TreeMachine.Pro {
         public TMachineUserData UserData { get; }
 
         // OnDispose
-        public event Action? OnDisposeCallback;
+        public event Action? OnBeforeDisposeCallback;
+        public event Action? OnAfterDisposeCallback;
 
         // Root
         public INode<TMachineUserData, TNodeUserData>? Root { get; }
