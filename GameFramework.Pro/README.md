@@ -8,7 +8,6 @@ The framework that allows you to design high-quality architecture of your game p
 
 - IDependencyProvider
 - DisposableBase
-- DisposableExtensions
 
 ###### GameFramework.Pro
 
