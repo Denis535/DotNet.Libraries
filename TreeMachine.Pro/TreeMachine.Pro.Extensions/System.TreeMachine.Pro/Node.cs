@@ -403,15 +403,15 @@ namespace System.TreeMachine.Pro {
                 child.Dispose();
             }
         }
-        public bool RemoveChild(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            var child = this.Children.LastOrDefault( predicate );
-            if (child != null) {
-                this.RemoveChild( child, argument, callback );
-                return true;
-            }
-            return false;
-        }
+        //public bool RemoveChild(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
+        //    Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+        //    var child = this.Children.LastOrDefault( predicate );
+        //    if (child != null) {
+        //        this.RemoveChild( child, argument, callback );
+        //        return true;
+        //    }
+        //    return false;
+        //}
         public int RemoveChildren(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var children = this.Children.Reverse().Where( predicate ).ToList();
@@ -420,14 +420,14 @@ namespace System.TreeMachine.Pro {
             }
             return children.Count;
         }
-        public int RemoveChildren(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
-            Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-            var children = this.Children.Reverse().ToList();
-            foreach (var child in children) {
-                this.RemoveChild( child, argument, callback );
-            }
-            return children.Count;
-        }
+        //public int RemoveChildren(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
+        //    Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
+        //    var children = this.Children.Reverse().ToList();
+        //    foreach (var child in children) {
+        //        this.RemoveChild( child, argument, callback );
+        //    }
+        //    return children.Count;
+        //}
 
         // RemoveSelf
         public void RemoveSelf(object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {

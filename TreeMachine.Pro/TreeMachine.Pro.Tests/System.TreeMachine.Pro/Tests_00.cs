@@ -141,7 +141,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // root.RemoveChildren a, b
-                _ = root.RemoveChildren( null, null );
+                _ = root.RemoveChildren( i => true, null, null );
                 Assert.That( root.Owner, Is.Null );
                 Assert.That( root.Machine, Is.Null );
                 Assert.That( root.IsRoot, Is.True );
@@ -239,7 +239,7 @@ namespace System.TreeMachine.Pro {
             }
             {
                 // machine.Root.RemoveChildren a, b
-                _ = ((Node) machine.Root).RemoveChildren( null, null );
+                _ = ((Node) machine.Root).RemoveChildren( i => true, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
                 Assert.That( machine.Root.Owner, Is.EqualTo( machine ) );
                 Assert.That( machine.Root.Machine, Is.EqualTo( machine ) );
@@ -270,7 +270,7 @@ namespace System.TreeMachine.Pro {
                     root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
                 };
                 root.OnDetachCallback += arg => {
-                    _ = root.RemoveChildren( null, null );
+                    _ = root.RemoveChildren( i => true, null, null );
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
@@ -316,7 +316,7 @@ namespace System.TreeMachine.Pro {
                     root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
                 };
                 root.OnDeactivateCallback += arg => {
-                    _ = root.RemoveChildren( null, null );
+                    _ = root.RemoveChildren( i => true, null, null );
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
