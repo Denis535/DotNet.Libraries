@@ -37,18 +37,6 @@ namespace System.StateMachine.Pro {
         // UserData
         public TStateUserData UserData { get; }
 
-        // OnDispose
-        public event Action? OnBeforeDisposeCallback;
-        public event Action? OnAfterDisposeCallback;
-
-        // OnAttach
-        public event Action<object?>? OnAttachCallback;
-        public event Action<object?>? OnDetachCallback;
-
-        // OnActivate
-        public event Action<object?>? OnActivateCallback;
-        public event Action<object?>? OnDeactivateCallback;
-
     }
     public partial interface IState<TMachineUserData, TStateUserData> {
 

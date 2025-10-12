@@ -156,68 +156,74 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public event Action? OnBeforeDisposeCallback {
-            add {
+        public Action? OnBeforeDisposeCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback += value;
+                return this.m_OnBeforeDisposeCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnBeforeDisposeCallback", this.OnBeforeDisposeCallback == null );
+                this.m_OnBeforeDisposeCallback = value;
             }
         }
-        public event Action? OnAfterDisposeCallback {
-            add {
+        public Action? OnAfterDisposeCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback += value;
+                return this.m_OnAfterDisposeCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnAfterDisposeCallback", this.OnAfterDisposeCallback == null );
+                this.m_OnAfterDisposeCallback = value;
             }
         }
 
         // OnAttach
-        public event Action<object?>? OnAttachCallback {
-            add {
+        public Action<object?>? OnAttachCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAttachCallback += value;
+                return this.m_OnAttachCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAttachCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnAttachCallback", this.OnAttachCallback == null );
+                this.m_OnAttachCallback = value;
             }
         }
-        public event Action<object?>? OnDetachCallback {
-            add {
+        public Action<object?>? OnDetachCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDetachCallback += value;
+                return this.m_OnDetachCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDetachCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnDetachCallback", this.OnDetachCallback == null );
+                this.m_OnDetachCallback = value;
             }
         }
 
         // OnActivate
-        public event Action<object?>? OnActivateCallback {
-            add {
+        public Action<object?>? OnActivateCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnActivateCallback += value;
+                return this.m_OnActivateCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnActivateCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnActivateCallback", this.OnActivateCallback == null );
+                this.m_OnActivateCallback = value;
             }
         }
-        public event Action<object?>? OnDeactivateCallback {
-            add {
+        public Action<object?>? OnDeactivateCallback {
+            get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDeactivateCallback += value;
+                return this.m_OnDeactivateCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnDeactivateCallback -= value;
+                Assert.Operation.Valid( $"State {this} must have no OnDeactivateCallback", this.OnDeactivateCallback == null );
+                this.m_OnDeactivateCallback = value;
             }
         }
 

@@ -37,36 +37,6 @@ namespace System.StateMachine.Pro {
         // UserData
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-        // OnDispose
-        event Action? IState<TMachineUserData, TStateUserData>.OnBeforeDisposeCallback {
-            add => this.OnBeforeDisposeCallback += value;
-            remove => this.OnBeforeDisposeCallback -= value;
-        }
-        event Action? IState<TMachineUserData, TStateUserData>.OnAfterDisposeCallback {
-            add => this.OnAfterDisposeCallback += value;
-            remove => this.OnAfterDisposeCallback -= value;
-        }
-
-        // OnAttach
-        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnAttachCallback {
-            add => this.OnAttachCallback += value;
-            remove => this.OnAttachCallback -= value;
-        }
-        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnDetachCallback {
-            add => this.OnDetachCallback += value;
-            remove => this.OnDetachCallback -= value;
-        }
-
-        // OnActivate
-        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnActivateCallback {
-            add => this.OnActivateCallback += value;
-            remove => this.OnActivateCallback -= value;
-        }
-        event Action<object?>? IState<TMachineUserData, TStateUserData>.OnDeactivateCallback {
-            add => this.OnDeactivateCallback += value;
-            remove => this.OnDeactivateCallback -= value;
-        }
-
     }
     public sealed partial class State<TMachineUserData, TStateUserData> {
 

@@ -16,16 +16,6 @@ namespace System.StateMachine.Pro {
         // UserData
         TMachineUserData IStateMachine<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-        // OnDispose
-        event Action? IStateMachine<TMachineUserData, TStateUserData>.OnBeforeDisposeCallback {
-            add => this.OnBeforeDisposeCallback += value;
-            remove => this.OnBeforeDisposeCallback -= value;
-        }
-        event Action? IStateMachine<TMachineUserData, TStateUserData>.OnAfterDisposeCallback {
-            add => this.OnAfterDisposeCallback += value;
-            remove => this.OnAfterDisposeCallback -= value;
-        }
-
     }
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
 

@@ -49,24 +49,26 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public event Action? OnBeforeDisposeCallback {
-            add {
+        public Action? OnBeforeDisposeCallback {
+            get {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback += value;
+                return this.m_OnBeforeDisposeCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback -= value;
+                Assert.Operation.Valid( $"StateMachine {this} must have no OnBeforeDisposeCallback", this.OnBeforeDisposeCallback == null );
+                this.m_OnBeforeDisposeCallback = value;
             }
         }
-        public event Action? OnAfterDisposeCallback {
-            add {
+        public Action? OnAfterDisposeCallback {
+            get {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback += value;
+                return this.m_OnAfterDisposeCallback;
             }
-            remove {
+            init {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback -= value;
+                Assert.Operation.Valid( $"StateMachine {this} must have no OnAfterDisposeCallback", this.OnAfterDisposeCallback == null );
+                this.m_OnAfterDisposeCallback = value;
             }
         }
 
