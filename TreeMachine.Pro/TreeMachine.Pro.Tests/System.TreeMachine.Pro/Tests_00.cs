@@ -265,12 +265,14 @@ namespace System.TreeMachine.Pro {
             using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
-                var root = new Node( "root" );
-                root.OnAttachCallback += arg => {
-                    root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
-                };
-                root.OnDetachCallback += arg => {
-                    _ = root.RemoveChildren( i => true, null, null );
+                var root = (Node?) default;
+                root = new Node( "root" ) {
+                    OnAttachCallback = arg => {
+                        root!.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
+                    },
+                    OnDetachCallback = arg => {
+                        _ = root!.RemoveChildren( i => true, null, null );
+                    }
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );
@@ -311,12 +313,14 @@ namespace System.TreeMachine.Pro {
             using var machine = new TreeMachine( null );
             {
                 // machine.SetRoot root
-                var root = new Node( "root" );
-                root.OnActivateCallback += arg => {
-                    root.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
-                };
-                root.OnDeactivateCallback += arg => {
-                    _ = root.RemoveChildren( i => true, null, null );
+                var root = (Node?) default;
+                root = new Node( "root" ) {
+                    OnActivateCallback = arg => {
+                        root!.AddChildren( [ new Node( "a" ), new Node( "b" ) ], null );
+                    },
+                    OnDeactivateCallback = arg => {
+                        _ = root!.RemoveChildren( i => true, null, null );
+                    }
                 };
                 machine.SetRoot( root, null, null );
                 Assert.That( machine.Root, Is.Not.Null );

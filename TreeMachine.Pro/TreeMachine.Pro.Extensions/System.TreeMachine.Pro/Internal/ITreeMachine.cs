@@ -16,16 +16,6 @@ namespace System.TreeMachine.Pro {
         // UserData
         TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
-        // OnDispose
-        event Action? ITreeMachine<TMachineUserData, TNodeUserData>.OnBeforeDisposeCallback {
-            add => this.OnBeforeDisposeCallback += value;
-            remove => this.OnBeforeDisposeCallback -= value;
-        }
-        event Action? ITreeMachine<TMachineUserData, TNodeUserData>.OnAfterDisposeCallback {
-            add => this.OnAfterDisposeCallback += value;
-            remove => this.OnAfterDisposeCallback -= value;
-        }
-
     }
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
 

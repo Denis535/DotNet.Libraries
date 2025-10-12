@@ -10,15 +10,11 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposing { get; }
         public bool IsDisposed { get; }
 
-        // UserData
-        public TMachineUserData UserData { get; }
-
-        // OnDispose
-        public event Action? OnBeforeDisposeCallback;
-        public event Action? OnAfterDisposeCallback;
-
         // Root
         public INode<TMachineUserData, TNodeUserData>? Root { get; }
+
+        // UserData
+        public TMachineUserData UserData { get; }
 
     }
     public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {

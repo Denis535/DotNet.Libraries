@@ -37,36 +37,6 @@ namespace System.TreeMachine.Pro {
         // UserData
         TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
-        // OnDispose
-        event Action? INode<TMachineUserData, TNodeUserData>.OnBeforeDisposeCallback {
-            add => this.OnBeforeDisposeCallback += value;
-            remove => this.OnBeforeDisposeCallback -= value;
-        }
-        event Action? INode<TMachineUserData, TNodeUserData>.OnAfterDisposeCallback {
-            add => this.OnAfterDisposeCallback += value;
-            remove => this.OnAfterDisposeCallback -= value;
-        }
-
-        // OnAttach
-        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnAttachCallback {
-            add => this.OnAttachCallback += value;
-            remove => this.OnAttachCallback -= value;
-        }
-        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnDetachCallback {
-            add => this.OnDetachCallback += value;
-            remove => this.OnDetachCallback -= value;
-        }
-
-        // OnActivate
-        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnActivateCallback {
-            add => this.OnActivateCallback += value;
-            remove => this.OnActivateCallback -= value;
-        }
-        event Action<object?>? INode<TMachineUserData, TNodeUserData>.OnDeactivateCallback {
-            add => this.OnDeactivateCallback += value;
-            remove => this.OnDeactivateCallback -= value;
-        }
-
     }
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
