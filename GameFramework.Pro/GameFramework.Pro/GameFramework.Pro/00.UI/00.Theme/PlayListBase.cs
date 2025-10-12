@@ -40,10 +40,11 @@ namespace GameFramework.Pro {
         }
 
         public PlayListBase() {
-            this.m_State = new State<ThemeBase, PlayListBase>( this );
-            this.m_State.OnBeforeDisposeCallback += this.OnDispose;
-            this.m_State.OnActivateCallback += this.OnActivate;
-            this.m_State.OnDeactivateCallback += this.OnDeactivate;
+            this.m_State = new State<ThemeBase, PlayListBase>( this ) {
+                OnBeforeDisposeCallback = this.OnDispose,
+                OnActivateCallback = this.OnActivate,
+                OnDeactivateCallback = this.OnDeactivate
+            };
         }
         protected abstract void OnDispose();
 

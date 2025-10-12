@@ -89,30 +89,30 @@ namespace GameFramework.Pro {
         public WidgetBase() {
             this.m_Node = new Node<ScreenBase, WidgetBase>( this ) {
                 SortDelegate = this.Sort,
-            };
-            this.m_Node.OnBeforeDisposeCallback += this.OnBeforeDispose;
-            this.m_Node.OnAfterDisposeCallback += this.OnAfterDispose;
-            this.m_Node.OnActivateCallback += (argument) => {
-                foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
-                    ancestor.Widget().m_OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
-                    ancestor.Widget().OnBeforeDescendantActivate( this.Node, argument );
-                }
-                this.OnActivate( argument );
-                foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
-                    ancestor.Widget().OnAfterDescendantActivate( this.Node, argument );
-                    ancestor.Widget().m_OnAfterDescendantActivateCallback?.Invoke( this.Node, argument );
-                }
-            };
-            this.m_Node.OnDeactivateCallback += (argument) => {
-                foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
-                    ancestor.Widget().m_OnBeforeDescendantDeactivateCallback?.Invoke( this.Node, argument );
-                    ancestor.Widget().OnBeforeDescendantDeactivate( this.Node, argument );
-                }
-                this.OnDeactivate( argument );
-                foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
-                    ancestor.Widget().OnAfterDescendantDeactivate( this.Node, argument );
-                    ancestor.Widget().m_OnAfterDescendantDeactivateCallback?.Invoke( this.Node, argument );
-                }
+                OnBeforeDisposeCallback = this.OnBeforeDispose,
+                OnAfterDisposeCallback = this.OnAfterDispose,
+                OnActivateCallback = (argument) => {
+                    foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                        ancestor.Widget().m_OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
+                        ancestor.Widget().OnBeforeDescendantActivate( this.Node, argument );
+                    }
+                    this.OnActivate( argument );
+                    foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
+                        ancestor.Widget().OnAfterDescendantActivate( this.Node, argument );
+                        ancestor.Widget().m_OnAfterDescendantActivateCallback?.Invoke( this.Node, argument );
+                    }
+                },
+                OnDeactivateCallback = (argument) => {
+                    foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
+                        ancestor.Widget().m_OnBeforeDescendantDeactivateCallback?.Invoke( this.Node, argument );
+                        ancestor.Widget().OnBeforeDescendantDeactivate( this.Node, argument );
+                    }
+                    this.OnDeactivate( argument );
+                    foreach (var ancestor in this.Node.Ancestors.ToList()) { // down-root
+                        ancestor.Widget().OnAfterDescendantDeactivate( this.Node, argument );
+                        ancestor.Widget().m_OnAfterDescendantDeactivateCallback?.Invoke( this.Node, argument );
+                    }
+                },
             };
         }
         protected abstract void OnBeforeDispose();
