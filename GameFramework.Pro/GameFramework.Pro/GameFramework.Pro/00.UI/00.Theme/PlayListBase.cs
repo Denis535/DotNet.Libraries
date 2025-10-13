@@ -41,7 +41,7 @@ namespace GameFramework.Pro {
 
         public PlayListBase() {
             this.m_State = new State<ThemeBase, PlayListBase>( this ) {
-                OnBeforeDisposeCallback = this.OnDispose,
+                OnDisposeCallback = this.OnDispose,
                 OnActivateCallback = this.OnActivate,
                 OnDeactivateCallback = this.OnDeactivate
             };
