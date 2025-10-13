@@ -13,8 +13,7 @@ namespace System.StateMachine.Pro {
         private Activity m_Activity = Activity.Inactive;
         private readonly TStateUserData m_UserData = default!;
 
-        private Action? m_OnBeforeDisposeCallback = null;
-        private Action? m_OnAfterDisposeCallback = null;
+        private Action? m_OnDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -128,26 +127,14 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public Action? OnBeforeDisposeCallback {
+        public Action? OnDisposeCallback {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnBeforeDisposeCallback;
+                return this.m_OnDisposeCallback;
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnBeforeDisposeCallback", this.OnBeforeDisposeCallback == null );
-                this.m_OnBeforeDisposeCallback = value;
-            }
-        }
-        public Action? OnAfterDisposeCallback {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnAfterDisposeCallback;
-            }
-            init {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnAfterDisposeCallback", this.OnAfterDisposeCallback == null );
-                this.m_OnAfterDisposeCallback = value;
+                this.m_OnDisposeCallback = value;
             }
         }
 
@@ -159,7 +146,6 @@ namespace System.StateMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnAttachCallback", this.OnAttachCallback == null );
                 this.m_OnAttachCallback = value;
             }
         }
@@ -170,7 +156,6 @@ namespace System.StateMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnDetachCallback", this.OnDetachCallback == null );
                 this.m_OnDetachCallback = value;
             }
         }
@@ -183,7 +168,6 @@ namespace System.StateMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnActivateCallback", this.OnActivateCallback == null );
                 this.m_OnActivateCallback = value;
             }
         }
@@ -194,7 +178,6 @@ namespace System.StateMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"State {this} must have no OnDeactivateCallback", this.OnDeactivateCallback == null );
                 this.m_OnDeactivateCallback = value;
             }
         }
@@ -216,8 +199,7 @@ namespace System.StateMachine.Pro {
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.m_OnBeforeDisposeCallback?.Invoke();
-                this.m_OnAfterDisposeCallback?.Invoke();
+                this.OnDisposeCallback?.Invoke();
             }
             this.m_Lifecycle = Lifecycle.Disposed;
         }
@@ -287,7 +269,7 @@ namespace System.StateMachine.Pro {
 
         // OnAttach
         private void OnAttach(object? argument) {
-            this.m_OnAttachCallback?.Invoke( argument );
+            this.OnAttachCallback?.Invoke( argument );
         }
         private void OnBeforeAttach(object? argument) {
         }
@@ -296,7 +278,7 @@ namespace System.StateMachine.Pro {
 
         // OnDetach
         private void OnDetach(object? argument) {
-            this.m_OnDetachCallback?.Invoke( argument );
+            this.OnDetachCallback?.Invoke( argument );
         }
         private void OnBeforeDetach(object? argument) {
         }
@@ -330,7 +312,7 @@ namespace System.StateMachine.Pro {
 
         // OnActivate
         private void OnActivate(object? argument) {
-            this.m_OnActivateCallback?.Invoke( argument );
+            this.OnActivateCallback?.Invoke( argument );
         }
         private void OnBeforeActivate(object? argument) {
         }
@@ -339,7 +321,7 @@ namespace System.StateMachine.Pro {
 
         // OnDeactivate
         private void OnDeactivate(object? argument) {
-            this.m_OnDeactivateCallback?.Invoke( argument );
+            this.OnDeactivateCallback?.Invoke( argument );
         }
         private void OnBeforeDeactivate(object? argument) {
         }
