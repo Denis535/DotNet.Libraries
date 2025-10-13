@@ -172,7 +172,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnBeforeDisposeCallback", this.OnBeforeDisposeCallback == null );
                 this.m_OnBeforeDisposeCallback = value;
             }
         }
@@ -183,7 +182,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnAfterDisposeCallback", this.OnAfterDisposeCallback == null );
                 this.m_OnAfterDisposeCallback = value;
             }
         }
@@ -196,7 +194,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnAttachCallback", this.OnAttachCallback == null );
                 this.m_OnAttachCallback = value;
             }
         }
@@ -207,7 +204,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnDetachCallback", this.OnDetachCallback == null );
                 this.m_OnDetachCallback = value;
             }
         }
@@ -220,7 +216,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnActivateCallback", this.OnActivateCallback == null );
                 this.m_OnActivateCallback = value;
             }
         }
@@ -231,7 +226,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"Node {this} must have no OnDeactivateCallback", this.OnDeactivateCallback == null );
                 this.m_OnDeactivateCallback = value;
             }
         }
@@ -253,11 +247,11 @@ namespace System.TreeMachine.Pro {
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.m_OnBeforeDisposeCallback?.Invoke();
+                this.OnBeforeDisposeCallback?.Invoke();
                 foreach (var child in this.Children.Reverse()) {
                     child.Dispose();
                 }
-                this.m_OnAfterDisposeCallback?.Invoke();
+                this.OnAfterDisposeCallback?.Invoke();
             }
             this.m_Lifecycle = Lifecycle.Disposed;
         }
@@ -327,7 +321,7 @@ namespace System.TreeMachine.Pro {
 
         // OnAttach
         private void OnAttach(object? argument) {
-            this.m_OnAttachCallback?.Invoke( argument );
+            this.OnAttachCallback?.Invoke( argument );
         }
         private void OnBeforeAttach(object? argument) {
         }
@@ -336,7 +330,7 @@ namespace System.TreeMachine.Pro {
 
         // OnDetach
         private void OnDetach(object? argument) {
-            this.m_OnDetachCallback?.Invoke( argument );
+            this.OnDetachCallback?.Invoke( argument );
         }
         private void OnBeforeDetach(object? argument) {
         }
@@ -376,7 +370,7 @@ namespace System.TreeMachine.Pro {
 
         // OnActivate
         private void OnActivate(object? argument) {
-            this.m_OnActivateCallback?.Invoke( argument );
+            this.OnActivateCallback?.Invoke( argument );
         }
         private void OnBeforeActivate(object? argument) {
         }
@@ -385,7 +379,7 @@ namespace System.TreeMachine.Pro {
 
         // OnDeactivate
         private void OnDeactivate(object? argument) {
-            this.m_OnDeactivateCallback?.Invoke( argument );
+            this.OnDeactivateCallback?.Invoke( argument );
         }
         private void OnBeforeDeactivate(object? argument) {
         }

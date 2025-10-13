@@ -56,7 +56,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"TreeMachine {this} must have no OnBeforeDisposeCallback", this.OnBeforeDisposeCallback == null );
                 this.m_OnBeforeDisposeCallback = value;
             }
         }
@@ -67,7 +66,6 @@ namespace System.TreeMachine.Pro {
             }
             init {
                 Assert.Operation.NotDisposed( $"TreeMachine {this} must be non-disposed", !this.IsDisposed );
-                Assert.Operation.Valid( $"TreeMachine {this} must have no OnAfterDisposeCallback", this.OnAfterDisposeCallback == null );
                 this.m_OnAfterDisposeCallback = value;
             }
         }
@@ -83,9 +81,9 @@ namespace System.TreeMachine.Pro {
             Assert.Operation.NotDisposed( $"TreeMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.m_OnBeforeDisposeCallback?.Invoke();
+                this.OnBeforeDisposeCallback?.Invoke();
                 this.Root?.Dispose();
-                this.m_OnAfterDisposeCallback?.Invoke();
+                this.OnAfterDisposeCallback?.Invoke();
             }
             this.m_Lifecycle = Lifecycle.Disposed;
         }
