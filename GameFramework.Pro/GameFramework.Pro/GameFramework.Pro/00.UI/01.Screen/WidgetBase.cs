@@ -45,44 +45,44 @@ namespace GameFramework.Pro {
             }
         }
 
-        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantActivateCallback {
-            add {
+        public Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantActivateCallback {
+            get {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDescendantActivateCallback += value;
+                return this.m_OnBeforeDescendantActivateCallback;
             }
-            remove {
+            init {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDescendantActivateCallback -= value;
-            }
-        }
-        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantActivateCallback {
-            add {
-                Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDescendantActivateCallback += value;
-            }
-            remove {
-                Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDescendantActivateCallback -= value;
+                this.m_OnBeforeDescendantActivateCallback = value;
             }
         }
-        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantDeactivateCallback {
-            add {
+        public Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantActivateCallback {
+            get {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDescendantDeactivateCallback += value;
+                return this.m_OnAfterDescendantActivateCallback;
             }
-            remove {
+            init {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDescendantDeactivateCallback -= value;
+                this.m_OnAfterDescendantActivateCallback = value;
             }
         }
-        public event Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantDeactivateCallback {
-            add {
+        public Action<INode<ScreenBase, WidgetBase>, object?>? OnBeforeDescendantDeactivateCallback {
+            get {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDescendantDeactivateCallback += value;
+                return this.m_OnBeforeDescendantDeactivateCallback;
             }
-            remove {
+            init {
                 Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDescendantDeactivateCallback -= value;
+                this.m_OnBeforeDescendantDeactivateCallback = value;
+            }
+        }
+        public Action<INode<ScreenBase, WidgetBase>, object?>? OnAfterDescendantDeactivateCallback {
+            get {
+                Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                return this.m_OnAfterDescendantDeactivateCallback;
+            }
+            init {
+                Assert.Operation.Valid( $"Widget {this} must be non-disposed", !this.IsDisposed );
+                this.m_OnAfterDescendantDeactivateCallback = value;
             }
         }
 
