@@ -40,7 +40,7 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
-            //this.Machine.SetRoot( null, null, null );
+            this.Machine.SetRoot( null, null, null );
             base.Dispose();
         }
 
@@ -78,7 +78,7 @@ namespace GameFramework.Pro {
         }
         public override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Screen {this} must be non-disposed", !this.IsDisposed );
-            //this.Machine.SetRoot( null, null, null );
+            this.Machine.SetRoot( null, null, null );
             base.Dispose();
         }
 
@@ -90,6 +90,7 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
         protected override void OnBeforeDispose() {
+            _ = this.NodeMutable.RemoveChildren( i => true, null, null );
         }
         protected override void OnAfterDispose() {
         }
