@@ -10,10 +10,10 @@ namespace GameFramework.Pro {
 
         private readonly Node<ScreenBase, WidgetBase> m_Node;
 
-        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantActivateCallback;
-        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantActivateCallback;
-        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantDeactivateCallback;
-        private Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantDeactivateCallback;
+        private readonly Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantActivateCallback;
+        private readonly Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantActivateCallback;
+        private readonly Action<INode<ScreenBase, WidgetBase>, object?>? m_OnBeforeDescendantDeactivateCallback;
+        private readonly Action<INode<ScreenBase, WidgetBase>, object?>? m_OnAfterDescendantDeactivateCallback;
 
         public bool IsDisposing {
             get {
