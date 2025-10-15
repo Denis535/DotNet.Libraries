@@ -15,14 +15,13 @@ namespace System.StateMachine.Pro {
         private readonly Action<List<IState<TMachineUserData, TStateUserData>>>? m_SortDelegate = null;
         private readonly TStateUserData m_UserData = default!;
 
-        private Action? m_OnBeforeDisposeCallback = null;
-        private Action? m_OnAfterDisposeCallback = null;
+        private readonly Action? m_OnDisposeCallback = null;
 
-        private Action<object?>? m_OnAttachCallback = null;
-        private Action<object?>? m_OnDetachCallback = null;
+        private readonly Action<object?>? m_OnAttachCallback = null;
+        private readonly Action<object?>? m_OnDetachCallback = null;
 
-        private Action<object?>? m_OnActivateCallback = null;
-        private Action<object?>? m_OnDeactivateCallback = null;
+        private readonly Action<object?>? m_OnActivateCallback = null;
+        private readonly Action<object?>? m_OnDeactivateCallback = null;
 
     }
     public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> {
@@ -165,24 +164,14 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public Action? OnBeforeDisposeCallback {
+        public Action? OnDisposeCallback {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnBeforeDisposeCallback;
+                return this.m_OnDisposeCallback;
             }
             init {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback = value;
-            }
-        }
-        public Action? OnAfterDisposeCallback {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnAfterDisposeCallback;
-            }
-            init {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback = value;
+                this.m_OnDisposeCallback = value;
             }
         }
 
@@ -247,13 +236,15 @@ namespace System.StateMachine.Pro {
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.OnBeforeDisposeCallback?.Invoke();
-                foreach (var child in this.Children.Reverse()) {
-                    child.Dispose();
-                }
-                this.OnAfterDisposeCallback?.Invoke();
+                this.OnDisposeCallback?.Invoke();
+                Assert.Operation.Valid( $"State {this} must have no {this.Children.Count( i => !i.IsDisposed )} children", this.Children.All( i => i.IsDisposed ) );
             }
             this.m_Lifecycle = Lifecycle.Disposed;
+        }
+
+        // Utils
+        public override string ToString() {
+            return "State: " + this.UserData?.ToString() ?? "Null";
         }
 
     }

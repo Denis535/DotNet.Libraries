@@ -13,13 +13,13 @@ namespace System.StateMachine.Pro {
         private Activity m_Activity = Activity.Inactive;
         private readonly TStateUserData m_UserData = default!;
 
-        private Action? m_OnDisposeCallback = null;
+        private readonly Action? m_OnDisposeCallback = null;
 
-        private Action<object?>? m_OnAttachCallback = null;
-        private Action<object?>? m_OnDetachCallback = null;
+        private readonly Action<object?>? m_OnAttachCallback = null;
+        private readonly Action<object?>? m_OnDetachCallback = null;
 
-        private Action<object?>? m_OnActivateCallback = null;
-        private Action<object?>? m_OnDeactivateCallback = null;
+        private readonly Action<object?>? m_OnActivateCallback = null;
+        private readonly Action<object?>? m_OnDeactivateCallback = null;
 
     }
     public sealed partial class State<TMachineUserData, TStateUserData> {
@@ -202,6 +202,11 @@ namespace System.StateMachine.Pro {
                 this.OnDisposeCallback?.Invoke();
             }
             this.m_Lifecycle = Lifecycle.Disposed;
+        }
+
+        // Utils
+        public override string ToString() {
+            return "State: " + this.UserData?.ToString() ?? "Null";
         }
 
     }

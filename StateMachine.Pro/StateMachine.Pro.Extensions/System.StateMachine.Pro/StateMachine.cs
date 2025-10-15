@@ -10,8 +10,7 @@ namespace System.StateMachine.Pro {
         private IState<TMachineUserData, TStateUserData>? m_Root = null;
         private readonly TMachineUserData m_UserData = default!;
 
-        private Action? m_OnBeforeDisposeCallback = null;
-        private Action? m_OnAfterDisposeCallback = null;
+        private readonly Action? m_OnDisposeCallback = null;
 
     }
     public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
@@ -49,24 +48,14 @@ namespace System.StateMachine.Pro {
         }
 
         // OnDispose
-        public Action? OnBeforeDisposeCallback {
+        public Action? OnDisposeCallback {
             get {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnBeforeDisposeCallback;
+                return this.m_OnDisposeCallback;
             }
             init {
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback = value;
-            }
-        }
-        public Action? OnAfterDisposeCallback {
-            get {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnAfterDisposeCallback;
-            }
-            init {
-                Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback = value;
+                this.m_OnDisposeCallback = value;
             }
         }
 
@@ -81,11 +70,15 @@ namespace System.StateMachine.Pro {
             Assert.Operation.NotDisposed( $"StateMachine {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.OnBeforeDisposeCallback?.Invoke();
-                this.Root?.Dispose();
-                this.OnAfterDisposeCallback?.Invoke();
+                this.OnDisposeCallback?.Invoke();
+                Assert.Operation.Valid( $"StateMachine {this} must have no {this.Root} root", this.Root == null || this.Root.IsDisposed );
             }
             this.m_Lifecycle = Lifecycle.Disposed;
+        }
+
+        // Utils
+        public override string ToString() {
+            return "StateMachine: " + this.UserData?.ToString() ?? "Null";
         }
 
     }
