@@ -89,10 +89,8 @@ namespace GameFramework.Pro {
             this.NodeMutable.AddChild( new MainWidget().Node, null );
             this.NodeMutable.AddChild( new GameWidget().Node, null );
         }
-        protected override void OnBeforeDispose() {
+        protected override void OnDispose() {
             _ = this.NodeMutable.RemoveChildren( i => true, null, null );
-        }
-        protected override void OnAfterDispose() {
         }
 
         protected override void OnActivate(object? argument) {
@@ -110,9 +108,8 @@ namespace GameFramework.Pro {
         public MainWidget() {
             this.View = new MainWidgetView();
         }
-        protected override void OnBeforeDispose() {
-        }
-        protected override void OnAfterDispose() {
+        protected override void OnDispose() {
+            _ = this.NodeMutable.RemoveChildren( i => true, null, null );
         }
 
         protected override void OnActivate(object? argument) {
@@ -130,9 +127,8 @@ namespace GameFramework.Pro {
         public GameWidget() {
             this.View = new GameWidgetView();
         }
-        protected override void OnBeforeDispose() {
-        }
-        protected override void OnAfterDispose() {
+        protected override void OnDispose() {
+            _ = this.NodeMutable.RemoveChildren( i => true, null, null );
         }
 
         protected override void OnActivate(object? argument) {

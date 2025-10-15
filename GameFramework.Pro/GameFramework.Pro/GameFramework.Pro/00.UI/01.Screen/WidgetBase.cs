@@ -89,8 +89,7 @@ namespace GameFramework.Pro {
         public WidgetBase() {
             this.m_Node = new Node<ScreenBase, WidgetBase>( this ) {
                 SortDelegate = this.Sort,
-                OnBeforeDisposeCallback = this.OnBeforeDispose,
-                OnAfterDisposeCallback = this.OnAfterDispose,
+                OnDisposeCallback = this.OnDispose,
                 OnActivateCallback = (argument) => {
                     foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
                         ancestor.Widget().m_OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
@@ -115,8 +114,7 @@ namespace GameFramework.Pro {
                 },
             };
         }
-        protected abstract void OnBeforeDispose();
-        protected abstract void OnAfterDispose();
+        protected abstract void OnDispose();
 
         protected abstract void OnActivate(object? argument);
         protected abstract void OnDeactivate(object? argument);

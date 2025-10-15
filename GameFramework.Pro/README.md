@@ -44,6 +44,6 @@ The framework that allows you to design high-quality architecture of your game p
 
 # Links
 
-- https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro
 - https://nuget.org/packages/GameFramework.Pro
-- https://youtu.be/u7wjaaMr6wQ
+- https://github.com/Denis535/DotNet.Libraries/tree/main/GameFramework.Pro
+- https://medium.com/@Denis535/gameframework-pro-6d00c75ff491
