@@ -10,7 +10,7 @@ namespace System.TreeMachine.Pro {
         private INode<TMachineUserData, TNodeUserData>? m_Root = null;
         private readonly TMachineUserData m_UserData = default!;
 
-        private Action? m_OnDisposeCallback = null;
+        private readonly Action? m_OnDisposeCallback = null;
 
     }
     public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {

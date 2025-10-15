@@ -85,15 +85,13 @@ namespace System.TreeMachine.Pro {
             var machine = (TreeMachine?) default;
             machine = new TreeMachine( null ) {
                 OnDisposeCallback = () => {
-                    machine!.Root!.Dispose();
+                    machine!.SetRoot( null, null, null );
                 }
             };
             var root = (Node?) default;
             root = new Node( "root" ) {
                 OnDisposeCallback = () => {
-                    foreach (var child in root!.Children) {
-                        child.Dispose();
-                    }
+                    _ = root!.RemoveChildren( i => true, null, null );
                 }
             };
             using (machine) {
@@ -148,13 +146,15 @@ namespace System.TreeMachine.Pro {
             var machine = (TreeMachine?) default;
             machine = new TreeMachine( null ) {
                 OnDisposeCallback = () => {
-                    machine!.SetRoot( null, null, null );
+                    machine!.Root!.Dispose();
                 }
             };
             var root = (Node?) default;
             root = new Node( "root" ) {
                 OnDisposeCallback = () => {
-                    _ = root!.RemoveChildren( i => true, null, null );
+                    foreach (var child in root!.Children) {
+                        child.Dispose();
+                    }
                 }
             };
             using (machine) {

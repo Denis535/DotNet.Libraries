@@ -15,13 +15,13 @@ namespace System.TreeMachine.Pro {
         private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
         private readonly TNodeUserData m_UserData = default!;
 
-        private Action? m_OnDisposeCallback = null;
+        private readonly Action? m_OnDisposeCallback = null;
 
-        private Action<object?>? m_OnAttachCallback = null;
-        private Action<object?>? m_OnDetachCallback = null;
+        private readonly Action<object?>? m_OnAttachCallback = null;
+        private readonly Action<object?>? m_OnDetachCallback = null;
 
-        private Action<object?>? m_OnActivateCallback = null;
-        private Action<object?>? m_OnDeactivateCallback = null;
+        private readonly Action<object?>? m_OnActivateCallback = null;
+        private readonly Action<object?>? m_OnDeactivateCallback = null;
 
     }
     public sealed partial class Node<TMachineUserData, TNodeUserData> {
