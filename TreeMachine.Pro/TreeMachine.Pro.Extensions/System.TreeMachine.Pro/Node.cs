@@ -15,8 +15,7 @@ namespace System.TreeMachine.Pro {
         private readonly Action<List<INode<TMachineUserData, TNodeUserData>>>? m_SortDelegate = null;
         private readonly TNodeUserData m_UserData = default!;
 
-        private Action? m_OnBeforeDisposeCallback = null;
-        private Action? m_OnAfterDisposeCallback = null;
+        private Action? m_OnDisposeCallback = null;
 
         private Action<object?>? m_OnAttachCallback = null;
         private Action<object?>? m_OnDetachCallback = null;
@@ -165,24 +164,14 @@ namespace System.TreeMachine.Pro {
         }
 
         // OnDispose
-        public Action? OnBeforeDisposeCallback {
+        public Action? OnDisposeCallback {
             get {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnBeforeDisposeCallback;
+                return this.m_OnDisposeCallback;
             }
             init {
                 Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnBeforeDisposeCallback = value;
-            }
-        }
-        public Action? OnAfterDisposeCallback {
-            get {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return this.m_OnAfterDisposeCallback;
-            }
-            init {
-                Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
-                this.m_OnAfterDisposeCallback = value;
+                this.m_OnDisposeCallback = value;
             }
         }
 
@@ -247,13 +236,15 @@ namespace System.TreeMachine.Pro {
             }
             this.m_Lifecycle = Lifecycle.Disposing;
             {
-                this.OnBeforeDisposeCallback?.Invoke();
-                foreach (var child in this.Children.Reverse()) {
-                    child.Dispose();
-                }
-                this.OnAfterDisposeCallback?.Invoke();
+                this.OnDisposeCallback?.Invoke();
+                Assert.Operation.Valid( $"Node {this} must have no {this.Children.Count( i => !i.IsDisposed )} children", this.Children.All( i => i.IsDisposed ) );
             }
             this.m_Lifecycle = Lifecycle.Disposed;
+        }
+
+        // Utils
+        public override string ToString() {
+            return "Node: " + this.UserData?.ToString() ?? "Null";
         }
 
     }
