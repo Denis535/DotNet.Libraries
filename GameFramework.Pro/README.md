@@ -24,7 +24,7 @@ The framework that allows you to design high-quality architecture of your game p
 - Domain (Business, Game)
     - GameBase
     - PlayerBase
-    - EntityBase (Character, Vehicle, Thing, Environment)
+    - EntityBase (Character, Thing, Vehicle, Environment)
 
 ###### GameFramework.Pro
 
