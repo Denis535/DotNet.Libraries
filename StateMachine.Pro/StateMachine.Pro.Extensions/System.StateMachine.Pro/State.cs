@@ -43,7 +43,7 @@ namespace System.StateMachine.Pro {
                 return this.m_Owner;
             }
             private set {
-                if (this.Owner != null) {
+                if (this.m_Owner != null) {
                     Assert.Argument.Valid( $"Argument 'value' ({value}) must be null", value == null );
                 } else {
                     Assert.Argument.Valid( $"Argument 'value' must be non-null", value != null );
@@ -111,7 +111,7 @@ namespace System.StateMachine.Pro {
                 return this.m_Activity;
             }
             private set {
-                Assert.Argument.Valid( $"Argument 'value' ({value}) must be valid", value != this.Activity );
+                Assert.Argument.Valid( $"Argument 'value' ({value}) must be valid", value != this.m_Activity );
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 Assert.Operation.Valid( $"State {this} must have owner", this.Owner != null );
                 this.m_Activity = value;
