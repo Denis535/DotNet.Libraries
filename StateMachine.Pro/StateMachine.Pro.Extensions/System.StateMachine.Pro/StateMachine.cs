@@ -34,6 +34,11 @@ namespace System.StateMachine.Pro {
                 return this.m_Root;
             }
             private set {
+                if (this.m_Root != null) {
+                    Assert.Argument.Valid( $"Argument 'value' ({value}) must be null", value == null );
+                } else {
+                    Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
+                }
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
                 this.m_Root = value;
             }
@@ -86,7 +91,6 @@ namespace System.StateMachine.Pro {
 
         // SetRoot
         public void SetRoot(IState<TMachineUserData, TStateUserData>? root, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
-            Assert.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", root == null || !root.IsDisposed );
             Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
             if (this.Root != null) {
                 this.RemoveRoot( this.Root, argument, callback );

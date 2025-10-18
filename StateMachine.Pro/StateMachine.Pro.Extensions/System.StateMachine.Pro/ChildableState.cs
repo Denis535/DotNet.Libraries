@@ -126,6 +126,11 @@ namespace System.StateMachine.Pro {
                 return this.m_Child;
             }
             private set {
+                if (this.m_Child != null) {
+                    Assert.Argument.Valid( $"Argument 'value' ({value}) must be null", value == null );
+                } else {
+                    Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
+                }
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 this.m_Child = value;
             }
@@ -373,7 +378,6 @@ namespace System.StateMachine.Pro {
 
         // SetChild
         public void SetChild(IState<TMachineUserData, TStateUserData>? child, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
-            Assert.Argument.Valid( $"Argument 'child' ({child}) must be non-disposed", child == null || !child.IsDisposed );
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             if (this.Child != null) {
                 this.RemoveChild( this.Child, argument, callback );
