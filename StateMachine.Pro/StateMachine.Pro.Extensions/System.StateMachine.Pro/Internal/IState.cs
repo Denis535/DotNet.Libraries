@@ -32,16 +32,22 @@ namespace System.StateMachine.Pro {
         // Children
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children {
             get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
             }
         }
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants {
             get {
-                return ((IState<TMachineUserData, TStateUserData>) this).Children;
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
+                foreach (var child in ((IState<TMachineUserData, TStateUserData>) this).Children) {
+                    yield return child;
+                    foreach (var i in child.Descendants) yield return i;
+                }
             }
         }
         IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf {
             get {
+                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 return ((IState<TMachineUserData, TStateUserData>) this).Descendants.Prepend( this );
             }
         }
