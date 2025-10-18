@@ -30,9 +30,21 @@ namespace System.StateMachine.Pro {
         Activity IState<TMachineUserData, TStateUserData>.Activity => this.Activity;
 
         // Children
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children {
+            get {
+                return Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
+            }
+        }
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants {
+            get {
+                return ((IState<TMachineUserData, TStateUserData>) this).Children;
+            }
+        }
+        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf {
+            get {
+                return ((IState<TMachineUserData, TStateUserData>) this).Descendants.Prepend( this );
+            }
+        }
 
         // UserData
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
