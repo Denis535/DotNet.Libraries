@@ -43,15 +43,12 @@ namespace System.StateMachine.Pro {
                 return this.m_Owner;
             }
             private set {
-                if (this.m_Owner != null) {
-                    Assert.Argument.Valid( $"Argument 'value' ({value}) must be null", value == null );
-                } else {
-                    Assert.Argument.Valid( $"Argument 'value' must be non-null", value != null );
-                }
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 if (value != null) {
+                    Assert.Operation.Valid( $"State {this} must have no {this.m_Owner} owner", this.m_Owner == null );
                     Assert.Operation.Valid( $"State {this} must have valid activity", this.Activity is Activity.Inactive );
                 } else {
+                    Assert.Operation.Valid( $"State {this} must have owner", this.m_Owner != null );
                     Assert.Operation.Valid( $"State {this} must have valid activity", this.Activity is Activity.Active or Activity.Inactive );
                 }
                 this.m_Owner = value;
@@ -111,9 +108,9 @@ namespace System.StateMachine.Pro {
                 return this.m_Activity;
             }
             private set {
-                Assert.Argument.Valid( $"Argument 'value' ({value}) must be valid", value != this.m_Activity );
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
                 Assert.Operation.Valid( $"State {this} must have owner", this.Owner != null );
+                Assert.Operation.Valid( $"State {this} must have valid activity", this.m_Activity != value );
                 this.m_Activity = value;
             }
         }

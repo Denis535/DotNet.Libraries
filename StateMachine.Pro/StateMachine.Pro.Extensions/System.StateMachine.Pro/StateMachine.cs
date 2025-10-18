@@ -34,12 +34,12 @@ namespace System.StateMachine.Pro {
                 return this.m_Root;
             }
             private set {
-                if (this.m_Root != null) {
-                    Assert.Argument.Valid( $"Argument 'value' ({value}) must be null", value == null );
-                } else {
-                    Assert.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
-                }
                 Assert.Operation.NotDisposed( $"StateMachine {this} must be non-disposed", !this.IsDisposed );
+                if (value != null) {
+                    Assert.Operation.Valid( $"StateMachine {this} must have no {this.m_Root} root", this.m_Root == null );
+                } else {
+                    Assert.Operation.Valid( $"StateMachine {this} must have root", this.m_Root != null );
+                }
                 this.m_Root = value;
             }
         }
