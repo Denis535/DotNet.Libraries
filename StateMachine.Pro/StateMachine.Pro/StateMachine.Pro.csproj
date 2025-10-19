@@ -7,7 +7,7 @@
         <RootNamespace />
 
         <!--Assembly attributes-->
-        <Version>5.3.3</Version>
+        <Version>5.3.4</Version>
         <Description>The library that allows you to easily implement a stateful object.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>
@@ -25,7 +25,7 @@
         <PackageIconUrl></PackageIconUrl>
         <PackageDescription>$(Description)</PackageDescription>
         <PackageProjectUrl>https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro</PackageProjectUrl>
-        <PackageTags>state-machine stateful state pattern</PackageTags>
+        <PackageTags>state-machine stateful state design-pattern pattern</PackageTags>
 
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageLicenseUrl></PackageLicenseUrl>
