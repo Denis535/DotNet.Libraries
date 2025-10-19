@@ -5,7 +5,7 @@ namespace System.TreeMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public partial interface INode<TMachineUserData, TNodeUserData> {
+    public partial interface INode<TMachineUserData, TNodeUserData> : IDisposable {
 
         // IsDisposed
         public bool IsDisposing { get; }
@@ -39,9 +39,6 @@ namespace System.TreeMachine.Pro {
 
     }
     public partial interface INode<TMachineUserData, TNodeUserData> {
-
-        // Dispose
-        protected internal void Dispose();
 
         // Attach
         protected internal void Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument);

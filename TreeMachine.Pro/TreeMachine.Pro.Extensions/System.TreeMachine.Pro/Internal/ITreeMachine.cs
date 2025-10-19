@@ -16,11 +16,8 @@ namespace System.TreeMachine.Pro {
         // UserData
         TMachineUserData ITreeMachine<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class TreeMachine<TMachineUserData, TNodeUserData> {
-
         // Dispose
-        void ITreeMachine<TMachineUserData, TNodeUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
 

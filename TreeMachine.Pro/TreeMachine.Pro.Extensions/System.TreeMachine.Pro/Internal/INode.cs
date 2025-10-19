@@ -37,13 +37,13 @@ namespace System.TreeMachine.Pro {
         // UserData
         TNodeUserData INode<TMachineUserData, TNodeUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class Node<TMachineUserData, TNodeUserData> {
-
         // Dispose
-        void INode<TMachineUserData, TNodeUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
+
+    }
+    public sealed partial class Node<TMachineUserData, TNodeUserData> {
 
         // Attach
         void INode<TMachineUserData, TNodeUserData>.Attach(ITreeMachine<TMachineUserData, TNodeUserData> machine, object? argument) {

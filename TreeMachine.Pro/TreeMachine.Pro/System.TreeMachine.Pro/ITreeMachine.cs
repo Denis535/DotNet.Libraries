@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
+    public interface ITreeMachine<TMachineUserData, TNodeUserData> : IDisposable {
 
         // IsDisposed
         public bool IsDisposing { get; }
@@ -15,12 +15,6 @@ namespace System.TreeMachine.Pro {
 
         // UserData
         public TMachineUserData UserData { get; }
-
-    }
-    public partial interface ITreeMachine<TMachineUserData, TNodeUserData> {
-
-        // Dispose
-        protected internal void Dispose();
 
     }
 }
