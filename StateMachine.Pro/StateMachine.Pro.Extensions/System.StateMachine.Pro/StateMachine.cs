@@ -83,7 +83,7 @@ namespace System.StateMachine.Pro {
 
         // Utils
         public override string ToString() {
-            return "StateMachine: " + this.UserData?.ToString() ?? "Null";
+            return this.UserData?.ToString() ?? base.ToString();
         }
 
     }

@@ -226,7 +226,7 @@ namespace System.StateMachine.Pro {
 
         // Utils
         public override string ToString() {
-            return "State: " + this.UserData?.ToString() ?? "Null";
+            return this.UserData?.ToString() ?? base.ToString();
         }
 
     }
@@ -319,7 +319,7 @@ namespace System.StateMachine.Pro {
             {
                 this.Activity = Activity.Activating;
                 this.OnActivate( argument );
-                foreach (var child in this.Children) {
+                foreach (var child in this.Children.ToArray()) {
                     child.Activate( argument );
                 }
                 this.Activity = Activity.Active;
@@ -398,7 +398,7 @@ namespace System.StateMachine.Pro {
         public int RemoveChildren(Func<IState<TMachineUserData, TStateUserData>, bool> predicate, object? argument, Action<IState<TMachineUserData, TStateUserData>, object?>? callback = null) {
             Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
             var count = 0;
-            foreach (var child in this.Children.Where( predicate ).Reverse()) {
+            foreach (var child in this.Children.Reverse().Where( predicate )) {
                 this.RemoveChild( child, argument, callback );
                 count++;
             }

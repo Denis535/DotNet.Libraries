@@ -222,7 +222,7 @@ namespace System.StateMachine.Pro {
 
         // Utils
         public override string ToString() {
-            return "State: " + this.UserData?.ToString() ?? "Null";
+            return this.UserData?.ToString() ?? base.ToString();
         }
 
     }
