@@ -5,7 +5,7 @@ namespace System.StateMachine.Pro {
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public partial interface IState<TMachineUserData, TStateUserData> {
+    public partial interface IState<TMachineUserData, TStateUserData> : IDisposable {
 
         // IsDisposed
         public bool IsDisposing { get; }
@@ -29,19 +29,11 @@ namespace System.StateMachine.Pro {
         // Activity
         public Activity Activity { get; }
 
-        // Children
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> Children { get; }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants { get; }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf { get; }
-
         // UserData
         public TStateUserData UserData { get; }
 
     }
     public partial interface IState<TMachineUserData, TStateUserData> {
-
-        // Dispose
-        protected internal void Dispose();
 
         // Attach
         protected internal void Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument);

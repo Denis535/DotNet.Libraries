@@ -124,21 +124,6 @@ namespace System.StateMachine.Pro {
                 return this.m_Children;
             }
         }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                foreach (var child in this.Children) {
-                    yield return child;
-                    foreach (var i in child.Descendants) yield return i;
-                }
-            }
-        }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Descendants.Prepend( this );
-            }
-        }
 
         // Sort
         public Action<List<IState<TMachineUserData, TStateUserData>>>? SortDelegate {

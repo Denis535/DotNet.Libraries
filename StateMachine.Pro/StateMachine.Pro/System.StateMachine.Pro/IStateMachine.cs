@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public partial interface IStateMachine<TMachineUserData, TStateUserData> {
+    public interface IStateMachine<TMachineUserData, TStateUserData> : IDisposable {
 
         // IsDisposed
         public bool IsDisposing { get; }
@@ -15,12 +15,6 @@ namespace System.StateMachine.Pro {
 
         // UserData
         public TMachineUserData UserData { get; }
-
-    }
-    public partial interface IStateMachine<TMachineUserData, TStateUserData> {
-
-        // Dispose
-        protected internal void Dispose();
 
     }
 }

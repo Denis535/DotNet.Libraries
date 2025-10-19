@@ -2,7 +2,6 @@
 namespace System.StateMachine.Pro {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
 
     public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
@@ -29,29 +28,16 @@ namespace System.StateMachine.Pro {
         // Activity
         Activity IState<TMachineUserData, TStateUserData>.Activity => this.Activity;
 
-        // Children
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children {
-            get {
-                if (this.Child != null) {
-                    return new[] { this.Child };
-                } else {
-                    return Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
-                }
-            }
-        }
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => this.Descendants;
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
-
         // UserData
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
-
         // Dispose
-        void IState<TMachineUserData, TStateUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
+
+    }
+    public sealed partial class ChildableState<TMachineUserData, TStateUserData> {
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

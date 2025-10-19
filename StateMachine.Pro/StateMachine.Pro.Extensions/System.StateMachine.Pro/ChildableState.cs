@@ -116,7 +116,7 @@ namespace System.StateMachine.Pro {
             }
         }
 
-        // Children
+        // Child
         public IState<TMachineUserData, TStateUserData>? Child {
             get {
                 Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
@@ -130,21 +130,6 @@ namespace System.StateMachine.Pro {
                     Assert.Operation.Valid( $"State {this} must have child", this.m_Child != null );
                 }
                 this.m_Child = value;
-            }
-        }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> Descendants {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                if (this.Child != null) {
-                    yield return this.Child;
-                    foreach (var i in this.Child.Descendants) yield return i;
-                }
-            }
-        }
-        public IEnumerable<IState<TMachineUserData, TStateUserData>> DescendantsAndSelf {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return this.Descendants.Prepend( this );
             }
         }
 

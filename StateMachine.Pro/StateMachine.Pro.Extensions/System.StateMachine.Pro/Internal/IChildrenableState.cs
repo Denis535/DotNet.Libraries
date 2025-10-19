@@ -28,21 +28,16 @@ namespace System.StateMachine.Pro {
         // Activity
         Activity IState<TMachineUserData, TStateUserData>.Activity => this.Activity;
 
-        // Children
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children => this.Children;
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants => this.Descendants;
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf => this.DescendantsAndSelf;
-
         // UserData
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> {
-
         // Dispose
-        void IState<TMachineUserData, TStateUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
+
+    }
+    public sealed partial class ChildrenableState<TMachineUserData, TStateUserData> {
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

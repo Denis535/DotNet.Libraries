@@ -2,7 +2,6 @@
 namespace System.StateMachine.Pro {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
 
     public sealed partial class State<TMachineUserData, TStateUserData> {
@@ -29,39 +28,16 @@ namespace System.StateMachine.Pro {
         // Activity
         Activity IState<TMachineUserData, TStateUserData>.Activity => this.Activity;
 
-        // Children
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Children {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return Enumerable.Empty<IState<TMachineUserData, TStateUserData>>();
-            }
-        }
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.Descendants {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                foreach (var child in ((IState<TMachineUserData, TStateUserData>) this).Children) {
-                    yield return child;
-                    foreach (var i in child.Descendants) yield return i;
-                }
-            }
-        }
-        IEnumerable<IState<TMachineUserData, TStateUserData>> IState<TMachineUserData, TStateUserData>.DescendantsAndSelf {
-            get {
-                Assert.Operation.NotDisposed( $"State {this} must be non-disposed", !this.IsDisposed );
-                return ((IState<TMachineUserData, TStateUserData>) this).Descendants.Prepend( this );
-            }
-        }
-
         // UserData
         TStateUserData IState<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class State<TMachineUserData, TStateUserData> {
-
         // Dispose
-        void IState<TMachineUserData, TStateUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
+
+    }
+    public sealed partial class State<TMachineUserData, TStateUserData> {
 
         // Attach
         void IState<TMachineUserData, TStateUserData>.Attach(IStateMachine<TMachineUserData, TStateUserData> machine, object? argument) {

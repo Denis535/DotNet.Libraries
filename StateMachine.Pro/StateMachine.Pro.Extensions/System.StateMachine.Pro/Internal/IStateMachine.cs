@@ -16,11 +16,8 @@ namespace System.StateMachine.Pro {
         // UserData
         TMachineUserData IStateMachine<TMachineUserData, TStateUserData>.UserData => this.UserData;
 
-    }
-    public sealed partial class StateMachine<TMachineUserData, TStateUserData> {
-
         // Dispose
-        void IStateMachine<TMachineUserData, TStateUserData>.Dispose() {
+        void IDisposable.Dispose() {
             this.Dispose();
         }
 
