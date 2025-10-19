@@ -83,7 +83,7 @@ namespace System.TreeMachine.Pro {
 
         // Utils
         public override string ToString() {
-            return "TreeMachine: " + this.UserData?.ToString() ?? "Null";
+            return this.UserData?.ToString() ?? base.ToString();
         }
 
     }

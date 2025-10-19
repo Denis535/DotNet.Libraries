@@ -241,7 +241,7 @@ namespace System.TreeMachine.Pro {
 
         // Utils
         public override string ToString() {
-            return "Node: " + this.UserData?.ToString() ?? "Null";
+            return this.UserData?.ToString() ?? base.ToString();
         }
 
     }
@@ -334,7 +334,7 @@ namespace System.TreeMachine.Pro {
             {
                 this.Activity = Activity.Activating;
                 this.OnActivate( argument );
-                foreach (var child in this.Children) {
+                foreach (var child in this.Children.ToList()) {
                     child.Activate( argument );
                 }
                 this.Activity = Activity.Active;
@@ -413,7 +413,7 @@ namespace System.TreeMachine.Pro {
         public int RemoveChildren(Func<INode<TMachineUserData, TNodeUserData>, bool> predicate, object? argument, Action<INode<TMachineUserData, TNodeUserData>, object?>? callback = null) {
             Assert.Operation.NotDisposed( $"Node {this} must be non-disposed", !this.IsDisposed );
             var count = 0;
-            foreach (var child in this.Children.Where( predicate ).Reverse()) {
+            foreach (var child in this.Children.Reverse().Where( predicate )) {
                 this.RemoveChild( child, argument, callback );
                 count++;
             }
