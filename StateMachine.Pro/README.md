@@ -16,7 +16,7 @@ The library that allows you to easily implement a stateful object.
 - ChildableState
 - ChildrenableState
 
-# Link
+# Links
 
 - https://nuget.org/packages/StateMachine.Pro
 - https://github.com/Denis535/DotNet.Libraries/tree/main/StateMachine.Pro
