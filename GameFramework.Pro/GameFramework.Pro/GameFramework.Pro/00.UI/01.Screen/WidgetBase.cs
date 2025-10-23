@@ -91,7 +91,7 @@ namespace GameFramework.Pro {
                 SortDelegate = this.Sort,
                 OnDisposeCallback = this.OnDispose,
                 OnActivateCallback = (argument) => {
-                    foreach (var ancestor in this.Node.Ancestors.Reverse()) { // root-down
+                    foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
                         ancestor.UserData.OnBeforeDescendantActivateCallback?.Invoke( this.Node, argument );
                         ancestor.UserData.OnBeforeDescendantActivate( this.Node, argument );
                     }
@@ -102,7 +102,7 @@ namespace GameFramework.Pro {
                     }
                 },
                 OnDeactivateCallback = (argument) => {
-                    foreach (var ancestor in this.Node.Ancestors.Reverse()) { // root-down
+                    foreach (var ancestor in this.Node.Ancestors.ToList().AsEnumerable().Reverse()) { // root-down
                         ancestor.UserData.OnBeforeDescendantDeactivateCallback?.Invoke( this.Node, argument );
                         ancestor.UserData.OnBeforeDescendantDeactivate( this.Node, argument );
                     }
