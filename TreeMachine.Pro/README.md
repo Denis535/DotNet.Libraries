@@ -14,7 +14,7 @@ The library that allows you to easily implement a hierarchical object.
 - TreeMachine
 - Node
 
-# Link
+# Links
 
 - https://nuget.org/packages/TreeMachine.Pro
 - https://github.com/Denis535/DotNet.Libraries/tree/main/TreeMachine.Pro
