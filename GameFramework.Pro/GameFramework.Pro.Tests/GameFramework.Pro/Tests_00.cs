@@ -71,6 +71,7 @@ namespace GameFramework.Pro {
         }
 
     }
+    // UI
     internal class Screen : ScreenBase2<Router, Application> {
 
         public Screen(IDependencyProvider provider) : base( provider ) {
@@ -137,6 +138,7 @@ namespace GameFramework.Pro {
         }
 
     }
+    // UI
     internal class Router : RouterBase2<Theme, Screen, Application> {
 
         public Router(IDependencyProvider provider) : base( provider ) {
