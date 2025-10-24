@@ -16,7 +16,7 @@ namespace GameFramework.Pro {
     internal class Program : ProgramBase2<Theme, Screen, Router, Application> {
 
         public Program() {
-            this.Application = new Application();
+            this.Application = new Application( this );
             this.Router = new Router( this );
             this.Screen = new Screen( this );
             this.Theme = new Theme( this );
@@ -148,12 +148,12 @@ namespace GameFramework.Pro {
 
     }
     // App
-    internal class Application : ApplicationBase {
+    internal class Application : ApplicationBase2 {
 
         private Game Game { get; init; }
 
-        public Application() {
-            this.Game = new Game();
+        public Application(IDependencyProvider provider) : base( provider ) {
+            this.Game = new Game( provider );
         }
         public override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Application {this} must be non-disposed", !this.IsDisposed );
@@ -163,13 +163,13 @@ namespace GameFramework.Pro {
 
     }
     // Domain
-    internal class Game : GameBase {
+    internal class Game : GameBase2 {
 
         private Player Player { get; init; }
         private Entity Entity { get; init; }
 
-        public Game() {
-            this.Player = new Player();
+        public Game(IDependencyProvider provider) : base( provider ) {
+            this.Player = new Player( provider );
             this.Entity = new Entity();
         }
         public override void Dispose() {
@@ -180,9 +180,9 @@ namespace GameFramework.Pro {
         }
 
     }
-    internal class Player : PlayerBase {
+    internal class Player : PlayerBase2 {
 
-        public Player() {
+        public Player(IDependencyProvider provider) : base( provider ) {
         }
         public override void Dispose() {
             System.Assert.Operation.NotDisposed( $"Player {this} must be non-disposed", !this.IsDisposed );

@@ -71,16 +71,16 @@ namespace GameFramework.Pro {
             return this.GetValue( type, argument );
         }
         protected virtual object? GetValue(Type type, object? argument) {
-            if (typeof( TTheme ).IsAssignableFrom( type )) {
+            if (type.IsAssignableFrom( this.Theme.GetType() )) {
                 return this.Theme;
             }
-            if (typeof( TScreen ).IsAssignableFrom( type )) {
+            if (type.IsAssignableFrom( this.Screen.GetType() )) {
                 return this.Screen;
             }
-            if (typeof( TRouter ).IsAssignableFrom( type )) {
+            if (type.IsAssignableFrom( this.Router.GetType() )) {
                 return this.Router;
             }
-            if (typeof( TApplication ).IsAssignableFrom( type )) {
+            if (type.IsAssignableFrom( this.Application.GetType() )) {
                 return this.Application;
             }
             return default;
