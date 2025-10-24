@@ -8,8 +8,7 @@ namespace GameFramework.Pro {
 
         public RouterBase() {
         }
-        public override void Dispose() {
-            base.Dispose();
+        protected override void OnDispose() {
         }
 
     }

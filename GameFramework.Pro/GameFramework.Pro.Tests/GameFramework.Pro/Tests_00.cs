@@ -21,13 +21,12 @@ namespace GameFramework.Pro {
             this.Screen = new Screen( this );
             this.Theme = new Theme( this );
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Program {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Theme.Dispose();
             this.Screen.Dispose();
             this.Router.Dispose();
             this.Application.Dispose();
-            base.Dispose();
+            base.OnDispose();
         }
 
     }
@@ -38,10 +37,9 @@ namespace GameFramework.Pro {
             this.Machine.SetRoot( new MainPlayList( this.Provider ).State, null, null );
             this.Machine.SetRoot( new GamePlayList( this.Provider ).State, null, null );
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Machine.SetRoot( null, null, null );
-            base.Dispose();
+            base.OnDispose();
         }
 
     }
@@ -77,10 +75,9 @@ namespace GameFramework.Pro {
         public Screen(IDependencyProvider provider) : base( provider ) {
             this.Machine.SetRoot( new RootWidget( this.Provider ).Node, null, null );
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Screen {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Machine.SetRoot( null, null, null );
-            base.Dispose();
+            base.OnDispose();
         }
 
     }
@@ -143,9 +140,8 @@ namespace GameFramework.Pro {
 
         public Router(IDependencyProvider provider) : base( provider ) {
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Router {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
     }
@@ -157,10 +153,9 @@ namespace GameFramework.Pro {
         public Application(IDependencyProvider provider) : base( provider ) {
             this.Game = new Game( provider );
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Application {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Game.Dispose();
-            base.Dispose();
+            base.OnDispose();
         }
 
     }
@@ -174,11 +169,10 @@ namespace GameFramework.Pro {
             this.Player = new Player( provider );
             this.Entity = new Entity();
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Game {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Entity.Dispose();
             this.Player.Dispose();
-            base.Dispose();
+            base.OnDispose();
         }
 
     }
@@ -186,9 +180,8 @@ namespace GameFramework.Pro {
 
         public Player(IDependencyProvider provider) : base( provider ) {
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Player {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
     }
@@ -196,9 +189,8 @@ namespace GameFramework.Pro {
 
         public Entity() {
         }
-        public override void Dispose() {
-            System.Assert.Operation.NotDisposed( $"Entity {this} must be non-disposed", !this.IsDisposed );
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
     }

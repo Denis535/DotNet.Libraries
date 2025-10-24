@@ -31,8 +31,8 @@ namespace GameFramework.Pro {
             this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
             this.m_Application = provider.RequireDependency<TApplication>();
         }
-        public override void Dispose() {
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
     }

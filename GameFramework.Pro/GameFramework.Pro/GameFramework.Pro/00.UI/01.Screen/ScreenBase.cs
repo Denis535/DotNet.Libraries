@@ -19,10 +19,8 @@ namespace GameFramework.Pro {
         public ScreenBase() {
             this.m_Machine = new TreeMachine<ScreenBase, WidgetBase>( this );
         }
-        public override void Dispose() {
-            Assert.Operation.NotDisposed( $"Screen {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Machine.Dispose();
-            base.Dispose();
         }
 
     }

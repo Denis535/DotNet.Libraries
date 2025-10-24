@@ -8,8 +8,7 @@ namespace GameFramework.Pro {
 
         public ProgramBase() {
         }
-        public override void Dispose() {
-            base.Dispose();
+        protected override void OnDispose() {
         }
 
     }

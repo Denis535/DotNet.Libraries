@@ -6,6 +6,11 @@ namespace System {
     using System.Threading;
 
     public abstract class DisposableBase : IDisposable {
+        private enum Lifecycle {
+            Alive,
+            Disposing,
+            Disposed,
+        }
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
         private CancellationTokenSource? m_DisposeCancellationTokenSource = null;
@@ -33,14 +38,16 @@ namespace System {
 
         public DisposableBase() {
         }
-        public virtual void Dispose() {
+        public void Dispose() {
             Assert.Operation.NotDisposed( $"Disposable {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
             {
+                this.OnDispose();
                 this.m_DisposeCancellationTokenSource?.Cancel();
             }
             this.m_Lifecycle = Lifecycle.Disposed;
         }
+        protected abstract void OnDispose();
 
     }
 }

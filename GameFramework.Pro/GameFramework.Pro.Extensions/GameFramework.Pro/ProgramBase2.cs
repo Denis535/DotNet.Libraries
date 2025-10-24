@@ -62,8 +62,8 @@ namespace GameFramework.Pro {
 
         public ProgramBase2() {
         }
-        public override void Dispose() {
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
         object? IDependencyProvider.GetValue(Type type, object? argument) {

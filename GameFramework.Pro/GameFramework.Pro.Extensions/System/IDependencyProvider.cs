@@ -17,12 +17,12 @@ namespace System {
 
         public sealed T RequireDependency<T>(object? argument = null) where T : notnull {
             var value = this.GetValue( typeof( T ), argument );
-            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument}) was not found", value != null );
+            Assert.Operation.Valid( $"Dependency {typeof( T )} ({argument ?? "Null"}) was not found", value != null );
             return (T) value;
         }
         public sealed T RequireDependency<T>(Type type, object? argument = null) where T : notnull {
             var value = this.GetValue( type, argument );
-            Assert.Operation.Valid( $"Dependency {type} ({argument}) was not found", value != null );
+            Assert.Operation.Valid( $"Dependency {type} ({argument ?? "Null"}) was not found", value != null );
             return (T) value;
         }
 

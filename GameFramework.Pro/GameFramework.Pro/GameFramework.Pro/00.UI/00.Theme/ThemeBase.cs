@@ -19,10 +19,8 @@ namespace GameFramework.Pro {
         public ThemeBase() {
             this.m_Machine = new StateMachine<ThemeBase, PlayListBase>( this );
         }
-        public override void Dispose() {
-            Assert.Operation.NotDisposed( $"Theme {this} must be non-disposed", !this.IsDisposed );
+        protected override void OnDispose() {
             this.Machine.Dispose();
-            base.Dispose();
         }
 
     }

@@ -18,8 +18,8 @@ namespace GameFramework.Pro {
         public ApplicationBase2(IDependencyProvider provider) {
             this.m_Provider = provider ?? throw new ArgumentNullException( nameof( provider ) );
         }
-        public override void Dispose() {
-            base.Dispose();
+        protected override void OnDispose() {
+            base.OnDispose();
         }
 
     }
