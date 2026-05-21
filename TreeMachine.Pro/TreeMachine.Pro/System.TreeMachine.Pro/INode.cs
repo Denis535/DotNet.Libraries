@@ -12,7 +12,7 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposed { get; }
 
     }
-    public partial interface INode<T> : INode where T : INode {
+    public partial interface INode<T> : INode where T : INode<T> {
 
         // Owner
         public object? Owner { get; }
@@ -23,7 +23,6 @@ namespace System.TreeMachine.Pro {
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )]
         public bool IsRoot { get; }
-
         public T Root { get; }
 
         // Parent

@@ -11,7 +11,7 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposed { get; }
 
     }
-    public interface ITreeMachine<out T> : ITreeMachine where T : INode {
+    public interface ITreeMachine<out T> : ITreeMachine where T : INode<T> {
 
         // Root
         public T? Root { get; }
