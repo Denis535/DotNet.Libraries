@@ -7,7 +7,7 @@ namespace System.StateMachine.Pro {
     public partial class State<T> {
 
         // Attach
-        void IState<T>.Attach(IStateMachine<T> machine, object? argument) {
+        void IState<T>.Attach(StateMachine<T> machine, object? argument) {
             this.Attach( machine, argument );
         }
         void IState<T>.Attach(T parent, object? argument) {
@@ -15,7 +15,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        void IState<T>.Detach(IStateMachine<T> machine, object? argument) {
+        void IState<T>.Detach(StateMachine<T> machine, object? argument) {
             this.Detach( machine, argument );
         }
         void IState<T>.Detach(T parent, object? argument) {

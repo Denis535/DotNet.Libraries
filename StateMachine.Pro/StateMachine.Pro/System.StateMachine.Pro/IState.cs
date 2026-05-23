@@ -12,13 +12,13 @@ namespace System.StateMachine.Pro {
         public bool IsDisposed { get; }
 
     }
-    public partial interface IState<T> : IState where T : IState<T> {
+    public partial interface IState<T> : IState where T : class, IState<T> {
 
         // Owner
         public object? Owner { get; }
 
         // Machine
-        public IStateMachine<T>? Machine { get; }
+        public StateMachine<T>? Machine { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )]
@@ -37,11 +37,11 @@ namespace System.StateMachine.Pro {
     public partial interface IState<T> {
 
         // Attach
-        protected internal void Attach(IStateMachine<T> machine, object? argument);
+        protected internal void Attach(StateMachine<T> machine, object? argument);
         protected internal void Attach(T parent, object? argument);
 
         // Detach
-        protected internal void Detach(IStateMachine<T> machine, object? argument);
+        protected internal void Detach(StateMachine<T> machine, object? argument);
         protected internal void Detach(T parent, object? argument);
 
         // Activate

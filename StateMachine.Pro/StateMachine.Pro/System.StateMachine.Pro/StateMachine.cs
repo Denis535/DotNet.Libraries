@@ -4,7 +4,7 @@ namespace System.StateMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed partial class StateMachine<T> : IStateMachine<T> where T : class, IState<T> {
+    public sealed partial class StateMachine<T> : IDisposable where T : class, IState<T> {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
         private T? m_Root = null;

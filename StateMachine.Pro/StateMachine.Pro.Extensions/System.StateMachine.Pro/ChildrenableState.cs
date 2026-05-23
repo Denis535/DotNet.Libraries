@@ -50,10 +50,10 @@ namespace System.StateMachine.Pro {
         }
 
         // Machine
-        public IStateMachine<T>? Machine {
+        public StateMachine<T>? Machine {
             get {
                 Check.Operation.Alive( $"State {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as IStateMachine<T>) ?? (this.Owner as T)?.Machine;
+                return (this.Owner as StateMachine<T>) ?? (this.Owner as T)?.Machine;
             }
         }
 
@@ -139,7 +139,7 @@ namespace System.StateMachine.Pro {
     public abstract partial class ChildrenableState<T> {
 
         // Attach
-        private void Attach(IStateMachine<T> machine, object? argument) {
+        private void Attach(StateMachine<T> machine, object? argument) {
             Check.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Check.Operation.Alive( $"State {this} must be non-disposed", !this.IsDisposed );
             Check.Operation.Valid( $"State {this} must have no {this.Owner} owner", this.Owner == null );
@@ -165,7 +165,7 @@ namespace System.StateMachine.Pro {
         }
 
         // Detach
-        private void Detach(IStateMachine<T> machine, object? argument) {
+        private void Detach(StateMachine<T> machine, object? argument) {
             Check.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Check.Operation.Alive( $"State {this} must be non-disposed", !this.IsDisposed );
             Check.Operation.Valid( $"State {this} must have {machine} owner", this.Owner == machine );
