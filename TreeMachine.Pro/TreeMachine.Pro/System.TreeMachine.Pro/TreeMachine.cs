@@ -4,7 +4,7 @@ namespace System.TreeMachine.Pro {
     using System.Collections.Generic;
     using System.Text;
 
-    public sealed partial class TreeMachine<T> : ITreeMachine<T> where T : class, INode<T> {
+    public sealed partial class TreeMachine<T> : IDisposable where T : class, INode<T> {
 
         private Lifecycle m_Lifecycle = Lifecycle.Alive;
         private T? m_Root = null;
@@ -82,7 +82,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // RemoveRoot
-        private void RemoveRoot(T root, object? argument, Action<T, object?>? callback = null) {
+        internal void RemoveRoot(T root, object? argument, Action<T, object?>? callback = null) {
             Check.Argument.NotNull( $"Argument 'root' must be non-null", root != null );
             Check.Argument.Valid( $"Argument 'root' ({root}) must be non-disposed", !root.IsDisposed );
             Check.Argument.Valid( $"Argument 'root' ({root}) must have {this} owner", root.Owner == this );

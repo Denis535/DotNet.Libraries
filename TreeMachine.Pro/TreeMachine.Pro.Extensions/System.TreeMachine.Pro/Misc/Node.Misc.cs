@@ -7,7 +7,7 @@ namespace System.TreeMachine.Pro {
     public partial class Node<T> {
 
         // Attach
-        void INode<T>.Attach(ITreeMachine<T> machine, object? argument) {
+        void INode<T>.Attach(TreeMachine<T> machine, object? argument) {
             this.Attach( machine, argument );
         }
         void INode<T>.Attach(T parent, object? argument) {
@@ -15,7 +15,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        void INode<T>.Detach(ITreeMachine<T> machine, object? argument) {
+        void INode<T>.Detach(TreeMachine<T> machine, object? argument) {
             this.Detach( machine, argument );
         }
         void INode<T>.Detach(T parent, object? argument) {

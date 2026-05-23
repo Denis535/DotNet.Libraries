@@ -50,10 +50,10 @@ namespace System.TreeMachine.Pro {
         }
 
         // Machine
-        public ITreeMachine<T>? Machine {
+        public TreeMachine<T>? Machine {
             get {
                 Check.Operation.Alive( $"Node {this} must be non-disposed", !this.IsDisposed );
-                return (this.Owner as ITreeMachine<T>) ?? (this.Owner as T)?.Machine;
+                return (this.Owner as TreeMachine<T>) ?? (this.Owner as T)?.Machine;
             }
         }
 
@@ -154,7 +154,7 @@ namespace System.TreeMachine.Pro {
     public abstract partial class Node<T> {
 
         // Attach
-        private void Attach(ITreeMachine<T> machine, object? argument) {
+        private void Attach(TreeMachine<T> machine, object? argument) {
             Check.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Check.Operation.Alive( $"Node {this} must be non-disposed", !this.IsDisposed );
             Check.Operation.Valid( $"Node {this} must have no {this.Owner} owner", this.Owner == null );
@@ -180,7 +180,7 @@ namespace System.TreeMachine.Pro {
         }
 
         // Detach
-        private void Detach(ITreeMachine<T> machine, object? argument) {
+        private void Detach(TreeMachine<T> machine, object? argument) {
             Check.Argument.NotNull( $"Argument 'machine' must be non-null", machine != null );
             Check.Operation.Alive( $"Node {this} must be non-disposed", !this.IsDisposed );
             Check.Operation.Valid( $"Node {this} must have {machine} owner", this.Owner == machine );
@@ -295,7 +295,7 @@ namespace System.TreeMachine.Pro {
             Check.Operation.Alive( $"Node {this} must be non-disposed", !this.IsDisposed );
             Check.Operation.Valid( $"Node {this} must have owner", this.Owner != null );
             if (this.Owner is TreeMachine<T> machine) {
-                machine.SetRoot( null, argument, callback );
+                machine.RemoveRoot( this.Self, argument, callback );
             } else {
                 ((Node<T>) this.Owner).RemoveChild( this.Self, argument, callback );
             }

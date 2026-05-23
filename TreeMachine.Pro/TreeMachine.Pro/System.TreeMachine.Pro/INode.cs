@@ -12,13 +12,13 @@ namespace System.TreeMachine.Pro {
         public bool IsDisposed { get; }
 
     }
-    public partial interface INode<T> : INode where T : INode<T> {
+    public partial interface INode<T> : INode where T : class, INode<T> {
 
         // Owner
         public object? Owner { get; }
 
         // Machine
-        public ITreeMachine<T>? Machine { get; }
+        public TreeMachine<T>? Machine { get; }
 
         // Root
         [MemberNotNullWhen( false, nameof( Parent ) )]
@@ -42,11 +42,11 @@ namespace System.TreeMachine.Pro {
     public partial interface INode<T> {
 
         // Attach
-        protected internal void Attach(ITreeMachine<T> machine, object? argument);
+        protected internal void Attach(TreeMachine<T> machine, object? argument);
         protected internal void Attach(T parent, object? argument);
 
         // Detach
-        protected internal void Detach(ITreeMachine<T> machine, object? argument);
+        protected internal void Detach(TreeMachine<T> machine, object? argument);
         protected internal void Detach(T parent, object? argument);
 
         // Activate
