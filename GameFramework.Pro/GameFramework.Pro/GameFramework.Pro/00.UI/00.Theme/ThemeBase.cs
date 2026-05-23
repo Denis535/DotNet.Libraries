@@ -11,7 +11,7 @@ namespace GameFramework.Pro {
 
         protected StateMachine<PlayListBase.State2> Machine {
             get {
-                Check.Operation.Alive($"Theme {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Theme {this} must be alive", !this.IsDisposed );
                 return this.m_Machine;
             }
         }

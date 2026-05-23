@@ -8,7 +8,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"PlayList {this} must be alive", !this.State.IsDisposed);
+                Check.Operation.Alive( $"PlayList {this} must be alive", !this.State.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }

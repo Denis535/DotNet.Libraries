@@ -9,7 +9,7 @@
     public class Tests {
         [OneTimeSetUp]
         public void OneTimeSetUp() {
-            _ = Trace.Listeners.Add(new ConsoleTraceListener());
+            _ = Trace.Listeners.Add( new ConsoleTraceListener() );
         }
 
         [OneTimeTearDown]

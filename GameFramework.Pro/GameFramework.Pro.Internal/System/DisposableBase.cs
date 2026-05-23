@@ -32,7 +32,7 @@ namespace System {
         public DisposableBase() {
         }
         public void Dispose() {
-            Check.Operation.Alive($"Disposable {this} must be alive", this.m_Lifecycle == Lifecycle.Alive);
+            Check.Operation.Alive( $"Disposable {this} must be alive", this.m_Lifecycle == Lifecycle.Alive );
             this.m_Lifecycle = Lifecycle.Disposing;
             {
                 this.OnDispose();

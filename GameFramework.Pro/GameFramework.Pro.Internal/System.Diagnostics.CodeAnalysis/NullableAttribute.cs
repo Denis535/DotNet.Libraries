@@ -66,8 +66,8 @@ namespace System.Diagnostics.CodeAnalysis {
     //}
 
     // MemberNotNull
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    [EditorBrowsable( EditorBrowsableState.Never )]
+    [AttributeUsage( AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true )]
     internal sealed class MemberNotNullAttribute : Attribute {
         public string[] Members { get; }
 
@@ -80,8 +80,8 @@ namespace System.Diagnostics.CodeAnalysis {
         }
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    [EditorBrowsable( EditorBrowsableState.Never )]
+    [AttributeUsage( AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true )]
     internal sealed class MemberNotNullWhenAttribute : Attribute {
         public bool ReturnValue { get; }
         public string[] Members { get; }

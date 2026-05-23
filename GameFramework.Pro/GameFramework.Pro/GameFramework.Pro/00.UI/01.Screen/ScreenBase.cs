@@ -11,7 +11,7 @@ namespace GameFramework.Pro {
 
         protected TreeMachine<WidgetBase.Node2> Machine {
             get {
-                Check.Operation.Alive($"Screen {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Screen {this} must be alive", !this.IsDisposed );
                 return this.m_Machine;
             }
         }

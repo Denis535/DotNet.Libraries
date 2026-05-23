@@ -7,7 +7,7 @@
         <RootNamespace />
         <Title>$(AssemblyName)</Title>
         <Product>$(AssemblyName)</Product>
-        <Version>1.13.4</Version>
+        <Version>1.13.5</Version>
         <Description>The framework that guides you to design a high-quality architecture for your game project.</Description>
         <Authors>Denis535</Authors>
         <Company>Denis535</Company>

@@ -8,7 +8,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Game {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Game {this} must be alive", !this.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
@@ -25,7 +25,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Player {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Player {this} must be alive", !this.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
@@ -42,7 +42,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"World {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"World {this} must be alive", !this.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
@@ -59,7 +59,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Entity {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Entity {this} must be alive", !this.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }

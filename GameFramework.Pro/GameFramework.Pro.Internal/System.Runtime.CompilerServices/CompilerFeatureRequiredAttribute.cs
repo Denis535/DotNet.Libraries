@@ -5,7 +5,7 @@ namespace System.Runtime.CompilerServices {
     using System.ComponentModel;
     using System.Text;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [EditorBrowsable( EditorBrowsableState.Never )]
     internal class CompilerFeatureRequiredAttribute : Attribute {
         public const string RefStructs = nameof(RefStructs);
         public const string RequiredMembers = nameof(RequiredMembers);

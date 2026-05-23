@@ -13,21 +13,21 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Screen {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Screen {this} must be alive", !this.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
 
         protected TRouter Router {
             get {
-                Check.Operation.Alive($"Screen {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Screen {this} must be alive", !this.IsDisposed );
                 return this.m_Router;
             }
         }
 
         protected TApplication Application {
             get {
-                Check.Operation.Alive($"Screen {this} must be alive", !this.IsDisposed);
+                Check.Operation.Alive( $"Screen {this} must be alive", !this.IsDisposed );
                 return this.m_Application;
             }
         }

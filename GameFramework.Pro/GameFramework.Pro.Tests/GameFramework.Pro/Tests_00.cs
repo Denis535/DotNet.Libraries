@@ -33,8 +33,8 @@ namespace GameFramework.Pro {
     internal class Theme : ThemeBase2<Router, Application> {
 
         public Theme() {
-            this.Machine.SetRoot(new MainPlayList().State, null);
-            this.Machine.SetRoot(new GamePlayList().State, null);
+            this.Machine.SetRoot( new MainPlayList().State, null );
+            this.Machine.SetRoot( new GamePlayList().State, null );
         }
         protected override void OnDispose() {
             this.Machine.Root!.Dispose();
@@ -74,7 +74,7 @@ namespace GameFramework.Pro {
     internal class Screen : ScreenBase2<Router, Application> {
 
         public Screen() {
-            this.Machine.SetRoot(new RootWidget().Node, null);
+            this.Machine.SetRoot( new RootWidget().Node, null );
         }
         protected override void OnDispose() {
             this.Machine.Root!.Dispose();
@@ -85,8 +85,8 @@ namespace GameFramework.Pro {
     internal class RootWidget : WidgetBase2 {
 
         public RootWidget() {
-            this.Node.AddChild(new MainWidget().Node, null);
-            this.Node.AddChild(new GameWidget().Node, null);
+            this.Node.AddChild( new MainWidget().Node, null );
+            this.Node.AddChild( new GameWidget().Node, null );
         }
         protected internal override void OnDispose() {
             this.Node.Children.Reverse().DisposeAll();

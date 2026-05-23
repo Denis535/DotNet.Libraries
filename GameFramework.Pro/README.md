@@ -52,4 +52,4 @@ The framework that guides you to design a high-quality architecture for your gam
 
 - https://github.com/Denis535/DotNet-Libraries/tree/main/GameFramework.Pro
 - https://nuget.org/packages/GameFramework.Pro
-- https://medium.com/@Denis535/best-practices-for-software-architecture-design-bf21ba790b1a
+- https://habr.com/ru/articles/1033776

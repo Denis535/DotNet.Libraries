@@ -12,7 +12,7 @@ namespace GameFramework.Pro {
 
             public PlayListBase PlayList {
                 get {
-                    Check.Operation.Alive($"State {this} must be alive", !this.IsDisposed);
+                    Check.Operation.Alive( $"State {this} must be alive", !this.IsDisposed );
                     return this.m_PlayList;
                 }
             }
@@ -26,10 +26,10 @@ namespace GameFramework.Pro {
             }
 
             protected override void OnActivate(object? argument) {
-                this.PlayList.OnActivate(argument);
+                this.PlayList.OnActivate( argument );
             }
             protected override void OnDeactivate(object? argument) {
-                this.PlayList.OnDeactivate(argument);
+                this.PlayList.OnDeactivate( argument );
             }
 
         }
@@ -39,7 +39,7 @@ namespace GameFramework.Pro {
         public State2 State => this.m_State;
 
         public PlayListBase() {
-            this.m_State = new State2(this);
+            this.m_State = new State2( this );
         }
         protected internal abstract void OnDispose();
         private protected virtual void OnDisposeInternal() {

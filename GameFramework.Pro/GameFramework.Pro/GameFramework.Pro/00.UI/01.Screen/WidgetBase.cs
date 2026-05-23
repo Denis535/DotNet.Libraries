@@ -13,7 +13,7 @@ namespace GameFramework.Pro {
 
             public WidgetBase Widget {
                 get {
-                    Check.Operation.Alive($"Node {this} must be alive", !this.IsDisposed);
+                    Check.Operation.Alive( $"Node {this} must be alive", !this.IsDisposed );
                     return this.m_Widget;
                 }
             }
@@ -29,28 +29,28 @@ namespace GameFramework.Pro {
             protected override void OnActivate(object? argument) {
                 // top-down
                 foreach (var ancestor in this.Ancestors.ToList().AsEnumerable().Reverse()) {
-                    ancestor.Widget.OnBeforeDescendantActivate(this, argument);
+                    ancestor.Widget.OnBeforeDescendantActivate( this, argument );
                 }
-                this.Widget.OnActivate(argument);
+                this.Widget.OnActivate( argument );
                 // down-top
                 foreach (var ancestor in this.Ancestors.ToList()) {
-                    ancestor.Widget.OnAfterDescendantActivate(this, argument);
+                    ancestor.Widget.OnAfterDescendantActivate( this, argument );
                 }
             }
             protected override void OnDeactivate(object? argument) {
                 // top-down
                 foreach (var ancestor in this.Ancestors.ToList().AsEnumerable().Reverse()) {
-                    ancestor.Widget.OnBeforeDescendantDeactivate(this, argument);
+                    ancestor.Widget.OnBeforeDescendantDeactivate( this, argument );
                 }
-                this.Widget.OnDeactivate(argument);
+                this.Widget.OnDeactivate( argument );
                 // down-top
                 foreach (var ancestor in this.Ancestors.ToList()) {
-                    ancestor.Widget.OnAfterDescendantDeactivate(this, argument);
+                    ancestor.Widget.OnAfterDescendantDeactivate( this, argument );
                 }
             }
 
             protected override void Sort(List<Node2> children) {
-                this.Widget.Sort(children);
+                this.Widget.Sort( children );
             }
 
         }
@@ -60,7 +60,7 @@ namespace GameFramework.Pro {
         public Node2 Node => this.m_Node;
 
         public WidgetBase() {
-            this.m_Node = new Node2(this);
+            this.m_Node = new Node2( this );
         }
         protected internal abstract void OnDispose();
         private protected virtual void OnDisposeInternal() {
@@ -89,12 +89,12 @@ namespace GameFramework.Pro {
 
         public object View {
             get {
-                Check.Operation.Alive($"Widget {this} must be alive", !this.Node.IsDisposed);
+                Check.Operation.Alive( $"Widget {this} must be alive", !this.Node.IsDisposed );
                 return this.m_View;
             }
             protected init {
-                Check.Argument.NotNull($"Argument 'value' must be non-null", value != null);
-                Check.Operation.Alive($"Widget {this} must be alive", !this.Node.IsDisposed);
+                Check.Argument.NotNull( $"Argument 'value' must be non-null", value != null );
+                Check.Operation.Alive( $"Widget {this} must be alive", !this.Node.IsDisposed );
                 this.m_View = value;
             }
         }

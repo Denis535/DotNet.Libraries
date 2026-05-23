@@ -8,7 +8,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Widget {this} must be alive", !this.Node.IsDisposed);
+                Check.Operation.Alive( $"Widget {this} must be alive", !this.Node.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
@@ -26,7 +26,7 @@ namespace GameFramework.Pro {
 
         protected IDependencyProvider Provider {
             get {
-                Check.Operation.Alive($"Widget {this} must be alive", !this.Node.IsDisposed);
+                Check.Operation.Alive( $"Widget {this} must be alive", !this.Node.IsDisposed );
                 return IDependencyProvider.Instance;
             }
         }
